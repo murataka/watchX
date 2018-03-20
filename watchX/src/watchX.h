@@ -16,7 +16,7 @@
 
 
 
-
+extern volatile uint8_t animating;
 extern volatile uint8_t lastcolon;
 
 // Scrolling #defines

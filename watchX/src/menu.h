@@ -5,7 +5,8 @@
 
 //#define MENU_LENGTH 8
   extern int menuindex;
-void drawMenu( );
+#define MENU_EXIT 5
+
 void drawMenus( );
 
 void menusw1( );

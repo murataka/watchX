@@ -12,7 +12,7 @@ extern unsigned char DEVICESTATE;
 
 
 
-volatile uint8_t animating=1;
+
 
 //unsigned int i=0;
 

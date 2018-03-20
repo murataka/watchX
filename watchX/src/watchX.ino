@@ -35,9 +35,10 @@
 #include "temperature.h"
 #include "rtc.h"
 //#include "gyroaccel.h"
-#//include "bluetooth.h"
+//include "bluetooth.h"
 
 //BMP280 bmp280;
+volatile uint8_t animating=1;
  unsigned char mbuf[128*8];
 extern volatile uint8_t animating;
 volatile uint8_t lastcolon;
@@ -67,9 +68,9 @@ void gotoMenu( ){
          functions[sw1Func]=menusw1;
          functions[sw2Func]=menusw2;
           functions[sw3Func]=menusw3;
-          functions[batteryFunc]=NULL;
+      //    functions[batteryFunc]=NULL;
         //  batteryFunc=drawBattery;
-         functions[usbFunc]=NULL;
+    //     functions[usbFunc]=NULL;
          // Old_DEVICESTATE=DEVICESTATE; /// TODO DEFINE ACTIONCOMPLETE
 
 
@@ -226,42 +227,15 @@ pinMode(13,OUTPUT);
 
    pinMode(BATTERY_EN, OUTPUT);
   digitalWrite(BATTERY_EN,LOW);
-  //ssd1306_setFixedFont(font_mid);
-  //ssd1306_setContrast(255);
-//activekeyframe=mainmenu;
 
-
-//  batterylevel= readBattery(  );
-//Rtc.Begin();
-
-
-
-
-//Rtc.Enable32kHzPin(false);
-// Rtc.SetSquareWavePin(DS3231SquareWavePin_ModeNone);
-//batterylevel= readBattery();
-//bmp280.initialize();
-
-//bmp280.setEnabled(0);
-//   bmp280.triggerMeasurement();
-
-  // bmp280.awaitMeasurement();
-  //   bmp280.getTemperature(temperature);
-  //   bmp280.getAltitude(altitude);
-  //     bmp280.getPressure(pressure);
-
-
-//         dt=Rtc.GetDateTime();
-
-//         secondsofday=dt.Second()+(60*dt.Minute())+(3600*dt.Hour());
-//secondsofday=3000;
          pinMode(PIN_INTERRUPT, INPUT_PULLUP);
  attachInterrupt(digitalPinToInterrupt(PIN_INTERRUPT), nextSecond, FALLING);
 
-    //   accelgyro.getMotion6(&RawValue[0], &RawValue[1], &RawValue[2],    &RawValue[3], &RawValue[4], &RawValue[5]);
 
 
 startSqw(); /// Starts 1 second SquareWave from DS3231
+
+
 get3231Temp();
 get3231Date();
 
@@ -292,11 +266,11 @@ void drawLoop( ){
  if(oldUIFunc!=NULL&&oldUIFunc!=functions[uiFunc]){
 
 //     ssd1306_sendCommand(SSD1306_SETSTARTLINE | (animPos) % 64);
-     handleFunction(oldUIFunc);
+  //   handleFunction(oldUIFunc);
 //     animPos++;
      //if(animPos==64){
 //      animPos=0;
-      oldUIFunc=NULL;
+//      oldUIFunc=NULL;
      // }
 
  }else{

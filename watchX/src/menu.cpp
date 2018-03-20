@@ -6,7 +6,7 @@
 #include "watchX.h"
 #include "stopwatch.h"
 #include "diag.h"
-
+#include "oled.h"
 // #include "intf/ssd1306_interface.h"
 
 
@@ -20,9 +20,38 @@ int scrollto=0;
 
 
 void menusw1( ){
-   if((~SW1_WASPUSHED)&SW1_PUSHED){
+  if((~SW1_WASPUSHED)&SW1_PUSHED){
+    switch(menuindex){
+      case MENU_EXIT:
+    // ssd1306_clearScreen();
+  gotoWatchFace();
+
+      break;
+      case 0:
+
+//       uiFunc=drawStopwatch;
+ //     sw1Func=gotoMenu;
+ //     sw2Func=gotoMenu;
+ //     sw3Func=NULL;
+
+      break;
+
+      case 6:
+ //     uiFunc=drawDiag;
+ //     sw1Func=gotoMenu;
+ //     sw2Func=gotoMenu;
+ //     sw3Func=NULL;
+//       batteryFunc=NULL;
+//       usbFunc=NULL;
+      break;
+
+      default:
+   //   itoa(getSelectedMenu(),strtmpbuf,10);
+     //      c2.charF6x8(32,56,strtmpbuf);
+      break;
 
     }
+}
 }
 
 
@@ -36,7 +65,7 @@ void menusw2( ){
 }
 void menusw3( ){
      if((~SW3_WASPUSHED)&SW3_PUSHED){
-     if(menuindex>0){
+     if(menuindex>-2){
         speed=1;
      }
      }
@@ -140,14 +169,12 @@ void menusw2(unsigned long microseconds,unsigned long miliseconds,unsigned long 
 
 */
 void drawMenus(){
-  /*
-  unsigned char buf2[128*4];
-  NanoCanvas c2(128,32,buf2);
 
-for( long a=-1;a<4;a++)
-  c2.drawBitmap(_x+(a*48),0,32,32,menus_bits+((menuindex+a+1)*4*32) );
+memset(mbuf, 0x00, 128*8);
 
-c2.blt(0,2);
+for(   char a=-1;a<4;a++)
+//  c2.drawBitmap(_x+(a*48),0,32,32,menus_bits+((menuindex+a+1)*4*32) );
+if(menuindex+a+1>=0)  draw_bitmap(_x+(a*48) , 16, menus_bits+((menuindex+a+1)*4*32), 32, 32, false, 0);
 
 _x+=speed;
  if(_x==48){
@@ -160,7 +187,7 @@ _x+=speed;
   _x=0;
   menuindex++;
   }
-*/
+
 }
 
 /*
