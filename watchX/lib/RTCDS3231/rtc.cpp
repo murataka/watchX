@@ -14,19 +14,7 @@ void startSqw(){
 }
 void set3231Date()
 {
-//T(sec)(min)(hour)(dayOfWeek)(dayOfMonth)(month)(year)
-//T(00-59)(00-59)(00-23)(1-7)(01-31)(01-12)(00-99)
-//Example: 02-Feb-09 @ 19:57:11 for the 3rd day of the week -> T1157193020209
-// T1124154091014
- /* seconds = (byte) ((Serial.read() - 48) * 10 + (Serial.read() - 48)); // Use of (byte) type casting and ascii math to achieve result.
-  minutes = (byte) ((Serial.read() - 48) *10 +  (Serial.read() - 48));
-  hours   = (byte) ((Serial.read() - 48) *10 +  (Serial.read() - 48));
-  day     = (byte) (Serial.read() - 48);
-  date    = (byte) ((Serial.read() - 48) *10 +  (Serial.read() - 48));
-  month   = (byte) ((Serial.read() - 48) *10 +  (Serial.read() - 48));
-  year    = (byte) ((Serial.read() - 48) *10 +  (Serial.read() - 48));
-  */
-  //year=18;
+
   Wire.beginTransmission(DS3231_I2C_ADDRESS);
   Wire.write(0x00);
   for(char a=0;a<7;a++)
