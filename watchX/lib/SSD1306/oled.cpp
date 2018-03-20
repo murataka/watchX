@@ -4,7 +4,7 @@
  unsigned char animation_offsetY=0;
 
 
-   
+
  void ssd1306_drawBuffer(uint8_t x, uint8_t y, uint8_t w, uint8_t h, const uint8_t *buf)
 {
     uint8_t i, j;
@@ -39,9 +39,9 @@ void ssd1306_sendData(uint8_t data)
 
  void ssd1306_spiStop_hw()
 {
-     
+
         digitalWrite(cesPin, HIGH);
-    
+
     SPI.endTransaction();
 }
 
@@ -49,12 +49,12 @@ void ssd1306_sendData(uint8_t data)
 {
   ///20000000 ////4000000
     SPI.beginTransaction(SPISettings(20000000, MSBFIRST, SPI_MODE0));
-    
+
         digitalWrite(cesPin,LOW);
-     
+
 }
 
- 
+
 
 void ssd1306_spiCommandStart()
 {
@@ -65,7 +65,7 @@ void ssd1306_spiCommandStart()
 
 
 
- 
+
 
 static void ssd1306_setBlock(uint8_t x, uint8_t y, uint8_t w)
 {
@@ -102,29 +102,29 @@ void draw_bitmap(byte x, byte yy, const byte* bitmap, byte w, byte h, bool inver
   // Apply animation offset
   yy += animation_offsetY;
 
-  // 
+  //
   byte y = yy - offsetY;
 
-  // 
+  //
   byte h2 = h / 8;
-  
-  // 
+
+  //
   byte pixelOffset = (y % 8);
 
   byte thing3 = (yy+h);
-  
-  // 
+
+  //
   LOOP(h2, hh)
   {
-    // 
+    //
     byte hhh = (hh * 8) + y; // Current Y pos (every 8 pixels)
     byte hhhh = hhh + 8; // Y pos at end of pixel column (8 pixels)
 
-    // 
+    //
     if(offsetY && (hhhh < yy || hhhh > FRAME_HEIGHT || hhh > thing3))
       continue;
 
-    // 
+    //
     byte offsetMask = 0xFF;
     if(offsetY)
     {
@@ -135,19 +135,19 @@ void draw_bitmap(byte x, byte yy, const byte* bitmap, byte w, byte h, bool inver
     }
 
     uint aa = ((hhh / 8) * FRAME_WIDTH);
-    
+
     const byte* b = bitmap + (hh*w);
-    
+
     // If() outside of loop makes it faster (doesn't have to keep re-evaluating it)
     // Downside is code duplication
     if(!pixelOffset && hhh < FRAME_HEIGHT)
     {
-      // 
+      //
       LOOP(w, ww)
       {
         // Workout X co-ordinate in frame buffer to place next 8 pixels
         byte xx = ww + x;
-      
+
         // Stop if X co-ordinate is outside the frame
         if(xx >= FRAME_WIDTH)
           continue;
@@ -163,13 +163,13 @@ void draw_bitmap(byte x, byte yy, const byte* bitmap, byte w, byte h, bool inver
     else
     {
       uint aaa = ((hhhh / 8) * FRAME_WIDTH);
-      
-      // 
+
+      //
       LOOP(w, ww)
       {
         // Workout X co-ordinate in frame buffer to place next 8 pixels
         byte xx = ww + x;
-    
+
         // Stop if X co-ordinate is outside the frame
         if(xx >= FRAME_WIDTH)
           continue;
@@ -177,15 +177,15 @@ void draw_bitmap(byte x, byte yy, const byte* bitmap, byte w, byte h, bool inver
         // Read pixels
         byte pixels = readPixels(b + ww, invert) & offsetMask;
 
-        // 
+        //
         if(hhh < FRAME_HEIGHT)
           mbuf[xx + aa] |= pixels << pixelOffset;
-          //setBuffByte(buff, xx, hhh, pixels << pixelOffset, colour);        
+          //setBuffByte(buff, xx, hhh, pixels << pixelOffset, colour);
 
-        // 
+        //
         if(hhhh < FRAME_HEIGHT)
           mbuf[xx + aaa] |= pixels >> (8 - pixelOffset);
-          //setBuffByte(buff, xx, hhhh, pixels >> (8 - pixelOffset), colour);   
+          //setBuffByte(buff, xx, hhhh, pixels >> (8 - pixelOffset), colour);
       }
     }
   }

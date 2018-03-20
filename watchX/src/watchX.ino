@@ -261,35 +261,14 @@ pinMode(13,OUTPUT);
     //   accelgyro.getMotion6(&RawValue[0], &RawValue[1], &RawValue[2],    &RawValue[3], &RawValue[4], &RawValue[5]);
 
 
-startSqw(); /// Starts 1 second SquareWave from DS3231          
+startSqw(); /// Starts 1 second SquareWave from DS3231
 get3231Temp();
 get3231Date();
-//set3231Date();
-//            ble_connect();
-//for(int i=0;i<3;i++)
+
      pinMode(SW1,INPUT_PULLUP);
        pinMode(SW2,INPUT_PULLUP);
        pinMode(SW3,INPUT_PULLUP);
- //ssd1306_sendCommand(0x21);
-// ssd1306_sendCommand(0x5);
-//ssd1306_sendCommand(0x13);
-//ssd1306_sendCommand(0xC0);
-//Set Row Address
-  /*
-   ssd1306_sendCommand(SSD1306_MEMORYMODE);                    // 0x20
-    ssd1306_sendCommand(0x00);          // 0x00 horizontal addressing
 
-ssd1306_sendCommand(SSD1306_COLUMNADDR); // 0x21 COMMAND
-
-  ssd1306_sendCommand(0x40|30); // Column start address
-  ssd1306_sendCommand(12); // Column end address
-      ssd1306_sendCommand(0xD3);
- ssd1306_sendCommand(0x10);
- ssd1306_sendCommand(0xA0);
-  ssd1306_sendCommand(0xA1);
-// ssd1306_sendCommand(0xA7);
-*/
-  //ssd1306_clearScreen();
 
 
 
@@ -300,13 +279,6 @@ ssd1306_sendCommand(SSD1306_COLUMNADDR); // 0x21 COMMAND
     }
 
 
-// if(animation_offsetY>64)animation_offsetY=0;
- //memset(mbuf, 0x00, 128*8);
- // draw_bitmap( 0, 0, font_mid, 19, 24, false, 0);
-
- //ssd1306_drawBuffer(0, 0, 128,64, mbuf);
-
-   //for(;;){}
      gotoWatchFace();
 
 
@@ -314,12 +286,7 @@ ssd1306_sendCommand(SSD1306_COLUMNADDR); // 0x21 COMMAND
 //uint8_t buffer[64*128/8];
 
 void drawLoop( ){
-//  ssd1306_fillScreen( 0x00 );
-// ssd1306_clearScreen();
-  //
-//c.clear();
-//DEVICESTATE=(USBDEVICE )|((digitalRead(switches[0])==LOW))|((digitalRead(switches[1])==LOW)<<1)|((digitalRead(switches[2])==LOW)<<2);
-//wdt_reset();
+ 
   for(int a=0;a<HANDLEDFUNCTIONS_COUNT;a++)
  handleFunction(functions[a]);
  if(oldUIFunc!=NULL&&oldUIFunc!=functions[uiFunc]){

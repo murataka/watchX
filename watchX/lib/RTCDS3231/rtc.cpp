@@ -8,7 +8,7 @@ void startSqw(){
   Wire.beginTransmission(0x68);
   Wire.write(0x0e);        // set register address
 
-    Wire.write(B01100011);         // ... and send it from buffer
+    Wire.write(0B01100011);         // ... and send it from buffer
 
   Wire.endTransmission();
 }
