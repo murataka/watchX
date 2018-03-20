@@ -261,12 +261,7 @@ pinMode(13,OUTPUT);
     //   accelgyro.getMotion6(&RawValue[0], &RawValue[1], &RawValue[2],    &RawValue[3], &RawValue[4], &RawValue[5]);
 
 
-             Wire.beginTransmission(0x68);
-             Wire.write(0x0e);        // set register address
-
-               Wire.write(B01100011);         // ... and send it from buffer
-
-             Wire.endTransmission();
+startSqw(); /// Starts 1 second SquareWave from DS3231          
 get3231Temp();
 get3231Date();
 //set3231Date();

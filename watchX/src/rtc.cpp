@@ -3,13 +3,22 @@
 //unsigned char seconds, minutes, hours, day, date, month, year;
 unsigned char   curtm[7] ;
 
+void startSqw(){
+
+  Wire.beginTransmission(0x68);
+  Wire.write(0x0e);        // set register address
+
+    Wire.write(B01100011);         // ... and send it from buffer
+
+  Wire.endTransmission();
+}
 void set3231Date()
 {
 //T(sec)(min)(hour)(dayOfWeek)(dayOfMonth)(month)(year)
 //T(00-59)(00-59)(00-23)(1-7)(01-31)(01-12)(00-99)
 //Example: 02-Feb-09 @ 19:57:11 for the 3rd day of the week -> T1157193020209
 // T1124154091014
- /* seconds = (byte) ((Serial.read() - 48) * 10 + (Serial.read() - 48)); // Use of (byte) type casting and ascii math to achieve result.  
+ /* seconds = (byte) ((Serial.read() - 48) * 10 + (Serial.read() - 48)); // Use of (byte) type casting and ascii math to achieve result.
   minutes = (byte) ((Serial.read() - 48) *10 +  (Serial.read() - 48));
   hours   = (byte) ((Serial.read() - 48) *10 +  (Serial.read() - 48));
   day     = (byte) (Serial.read() - 48);
@@ -22,14 +31,14 @@ void set3231Date()
   Wire.write(0x00);
   for(char a=0;a<7;a++)
   Wire.write(decToBcd(curtm[a]));
-  
-  
+
+
   Wire.endTransmission();
 }
 uint8_t bcdToDec(uint8_t num, uint8_t mod){
   return (((num & mod)>>4)*10 + (num & 0B00001111));
   }
- 
+
 void get3231Date()
 {
   // send request to receive data starting at register 0
@@ -42,7 +51,7 @@ void get3231Date()
     int a=0;
     while(a!=7){
     curtm[a] = Wire.read(); // get seconds
-   
+
     a++;
     }
    /* seconds = bcdToDec(seconds);// convert BCD to decimal
