@@ -15,5 +15,5 @@ extern unsigned char curtm[];
 #define decToBcd(val) ( (val/10*16) + (val%10) )
 void get3231Date();
 void set3231Date();
-void startSqw()
+void startSqw();
 #endif
