@@ -65,7 +65,7 @@ void menusw2( ){
 }
 void menusw3( ){
      if((~SW3_WASPUSHED)&SW3_PUSHED){
-     if(menuindex>-2){
+     if(menuindex>0){
         speed=1;
      }
      }
@@ -174,7 +174,7 @@ memset(mbuf, 0x00, 128*8);
 
 for(   char a=-1;a<4;a++)
 //  c2.drawBitmap(_x+(a*48),0,32,32,menus_bits+((menuindex+a+1)*4*32) );
-if(menuindex+a+1>=0)  draw_bitmap(_x+(a*48) , 16, menus_bits+((menuindex+a+1)*4*32), 32, 32, false, 0);
+if(menuindex+a-1>=0)  draw_bitmap(_x+(a*48) , 16, menus_bits+((menuindex+a-1)*4*32), 32, 32, false, 0);
 
 _x+=speed;
  if(_x==48){
