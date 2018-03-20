@@ -1,3 +1,3 @@
 #include "altitude.h"
 
-float altitude;
+unsigned long altitude;

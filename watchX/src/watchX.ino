@@ -108,7 +108,7 @@ get3231Date();
 
 
   if(millis()-batteryread>1000){
-    batterylevel=readBattery();
+    batterylevel=readBattery(BATTERY_EN,BATTERY_PIN);
     batteryread=millis();
 
 /*
@@ -286,7 +286,7 @@ get3231Date();
 //uint8_t buffer[64*128/8];
 
 void drawLoop( ){
- 
+
   for(int a=0;a<HANDLEDFUNCTIONS_COUNT;a++)
  handleFunction(functions[a]);
  if(oldUIFunc!=NULL&&oldUIFunc!=functions[uiFunc]){

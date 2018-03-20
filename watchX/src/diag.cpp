@@ -1,14 +1,11 @@
 #include "watchX.h"
 #include "diag.h"
-#include "battery.h"
-#include "temperature.h"
-#include "altitude.h"
-#include "pressure.h"
+
 //#include "gyroaccel.h"
 
 //unsigned long last=0;
 
-void drawDiag(unsigned long microseconds,unsigned long miliseconds,unsigned long seconds ,unsigned long minutes,unsigned long hours){
+void drawDiag(){
 /*
 if(millis()-last>1000){
   batterylevel=readBattery();

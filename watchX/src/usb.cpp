@@ -1,4 +1,3 @@
-#include "watchX.h"
 
 //#include <nano_gfx.h>
 
@@ -11,7 +10,7 @@
 extern unsigned char DEVICESTATE;
 
 
-void drawUsb( ){
+void drawUsb(  ){
 
 
 

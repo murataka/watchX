@@ -1,5 +1,5 @@
 #ifndef ALTITUDE_H
 #define ALTITUDE_H
 
-extern float altitude;
+extern unsigned long altitude;
 #endif

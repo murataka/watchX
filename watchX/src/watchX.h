@@ -4,7 +4,7 @@
 //#include <nano_gfx.h>
 //#include <ssd1306.h>
 
-
+#include "batteryui.h"
 #include "watchface.h"
 #include "menu.h"
 #include "temperature.h"
@@ -58,7 +58,9 @@ typedef void (*func_type)(     );
 
 
 #define BATTERY_PIN  A11
-#define  BATTERY_EN  4
+
+
+#define BATTERY_EN  4
 //#define LED = 6;
 
 #define SW1_PUSHED DEVICESTATE&1
@@ -90,6 +92,7 @@ void handleFunction(func_type f);
 void ssd1306_drawBuffer(uint8_t x, uint8_t y, uint8_t w, uint8_t h, const uint8_t *buf);
 void gotoMenu(  );
 void gotoWatchFace();
+
 
 
 //void drawFun(  char *cmd);
