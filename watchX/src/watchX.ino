@@ -8,7 +8,7 @@
 #include "watchX.h"
 #include "oled.h"
 #include "cpu.h"
-
+#include "timerone.h"
 //#include <sprite_pool.h>
 
 //#include <lcd/ssd1306_commands.h>
@@ -190,10 +190,6 @@ void ssd1306_drawHLineEx(uint8_t x1, uint8_t y1, uint8_t x2)
 }
 */
 
-ISR(TIMER1_COMPA_vect){
-  // pick next note
-
-}
 
 void setup()
 {
@@ -202,15 +198,7 @@ void setup()
 setPrescale();
 
           /* Set timer1 interrupt to 20Hz */
-      cli();//stop interrupts
-      TCCR1A = 0;// set entire TCCR1A register to 0
-      TCCR1B = 0;// same for TCCR1B
-      TCNT1  = 0;//initialize counter value to 0
-      OCR1A = 781; // approximately 20Hz
-      TCCR1B |= (1 << WGM12);// turn on CTC mode
-      TCCR1B |= (1 << CS12) | (1 << CS10);  // 1024 presxaler
-      TIMSK1 |= (1 << OCIE1A); // enable timer compare interrupt
-      sei();//allow interrupts
+    startTimerOne();
 
 
      SPI.begin();
