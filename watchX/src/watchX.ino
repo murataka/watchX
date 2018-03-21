@@ -9,6 +9,7 @@
 #include "oled.h"
 #include "cpu.h"
 #include "timerone.h"
+#include "buzzer.h"
 //#include <sprite_pool.h>
 
 //#include <lcd/ssd1306_commands.h>
@@ -190,13 +191,17 @@ void ssd1306_drawHLineEx(uint8_t x1, uint8_t y1, uint8_t x2)
 }
 */
 
+void timerOneTones(){
 
+//tone(BUZZER_PIN, TONE_a);
+}
 void setup()
 {
   //while(!Serial);
     /* Do not init Wire library for Attiny controllers */
 setPrescale();
 
+timerOneFunc=timerOneTones;
           /* Set timer1 interrupt to 20Hz */
     startTimerOne();
 

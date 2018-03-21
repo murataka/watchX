@@ -13,6 +13,7 @@
 #define SW2 11
 #define SW3 10
 
+#define BUZZER_PIN 9
 
 
 
