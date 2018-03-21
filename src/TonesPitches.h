@@ -5,8 +5,8 @@
 
 // Definitions ending with "H" indicate high volume
 
-#ifndef ARDUBOY_TONES_PITCHES_H
-#define ARDUBOY_TONES_PITCHES_H
+#ifndef TONES_PITCHES_H
+#define TONES_PITCHES_H
 
 #define NOTE_REST 0
 #define NOTE_C0  16

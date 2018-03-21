@@ -1,11 +1,11 @@
 /**
- * @file ArduboyTones.h
+ * @file Tones.h
  * \brief An Arduino library for playing tones and tone sequences, 
  * intended for the Arduboy game system.
  */
 
 /*****************************************************************************
-  ArduboyTones
+  Tones
 
 An Arduino library to play tones and tone sequences.
 
@@ -36,8 +36,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 *****************************************************************************/
 
-#ifndef ARDUBOY_TONES_H
-#define ARDUBOY_TONES_H
+#ifndef TONES_H
+#define TONES_H
 
 #include <Arduino.h>
 
@@ -146,21 +146,21 @@ THE SOFTWARE.
 
 
 /** \brief
- * The ArduboyTones class for generating tones by specifying
+ * The Tones class for generating tones by specifying
  * frequency/duration pairs.
  */
-class ArduboyTones
+class Tones
 {
  public:
   /** \brief
-   * The ArduboyTones class constructor.
+   * The Tones class constructor.
    *
    * \param outEn A function which returns a boolean value of `true` if sound
    * should be played or `false` if sound should be muted. This function will
    * be called from the timer interrupt service routine, at the start of each
    * tone, so it should be as fast as possible.
    */
-  ArduboyTones(bool (*outEn)());
+  Tones(bool (*outEn)());
 
   /** \brief
    * Play a single tone.
@@ -293,6 +293,6 @@ public:
   static void nextTone();
 };
 
-#include "ArduboyTonesPitches.h"
+#include "TonesPitches.h"
 
 #endif

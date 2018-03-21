@@ -1,11 +1,11 @@
 /**
- * @file ArduboyTones.cpp
+ * @file Tones.cpp
  * \brief An Arduino library for playing tones and tone sequences, 
  * intended for the Arduboy game system.
  */
 
 /*****************************************************************************
-  ArduboyTones
+  Tones
 
 An Arduino library to play tones and tone sequences.
 
@@ -36,7 +36,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 *****************************************************************************/
 
-#include "ArduboyTones.h"
+#include "Tones.h"
 
 // pointer to a function that indicates if sound is enabled
 static bool (*outputEnabled)();
@@ -56,7 +56,7 @@ static volatile uint16_t toneSequence[MAX_TONES * 2 + 1];
 static volatile bool inProgmem;
 
 
-ArduboyTones::ArduboyTones(boolean (*outEn)())
+Tones::Tones(boolean (*outEn)())
 {
   outputEnabled = outEn;
 
@@ -70,7 +70,7 @@ ArduboyTones::ArduboyTones(boolean (*outEn)())
 #endif
 }
 
-void ArduboyTones::tone(uint16_t freq, uint16_t dur)
+void Tones::tone(uint16_t freq, uint16_t dur)
 {
   bitWrite(TIMSK3, OCIE3A, 0); // disable the output compare match interrupt
   inProgmem = false;
@@ -81,7 +81,7 @@ void ArduboyTones::tone(uint16_t freq, uint16_t dur)
   nextTone(); // start playing
 }
 
-void ArduboyTones::tone(uint16_t freq1, uint16_t dur1,
+void Tones::tone(uint16_t freq1, uint16_t dur1,
                         uint16_t freq2, uint16_t dur2)
 {
   bitWrite(TIMSK3, OCIE3A, 0); // disable the output compare match interrupt
@@ -95,7 +95,7 @@ void ArduboyTones::tone(uint16_t freq1, uint16_t dur1,
   nextTone(); // start playing
 }
 
-void ArduboyTones::tone(uint16_t freq1, uint16_t dur1,
+void Tones::tone(uint16_t freq1, uint16_t dur1,
                         uint16_t freq2, uint16_t dur2,
                         uint16_t freq3, uint16_t dur3)
 {
@@ -112,7 +112,7 @@ void ArduboyTones::tone(uint16_t freq1, uint16_t dur1,
   nextTone(); // start playing
 }
 
-void ArduboyTones::tones(const uint16_t *tones)
+void Tones::tones(const uint16_t *tones)
 {
   bitWrite(TIMSK3, OCIE3A, 0); // disable the output compare match interrupt
   inProgmem = true;
@@ -120,7 +120,7 @@ void ArduboyTones::tones(const uint16_t *tones)
   nextTone(); // start playing
 }
 
-void ArduboyTones::tonesInRAM(uint16_t *tones)
+void Tones::tonesInRAM(uint16_t *tones)
 {
   bitWrite(TIMSK3, OCIE3A, 0); // disable the output compare match interrupt
   inProgmem = false;
@@ -128,7 +128,7 @@ void ArduboyTones::tonesInRAM(uint16_t *tones)
   nextTone(); // start playing
 }
 
-void ArduboyTones::noTone()
+void Tones::noTone()
 {
   bitWrite(TIMSK3, OCIE3A, 0); // disable the output compare match interrupt
   TCCR3B = 0; // stop the counter
@@ -139,7 +139,7 @@ void ArduboyTones::noTone()
   tonesPlaying = false;
 }
 
-void ArduboyTones::volumeMode(uint8_t mode)
+void Tones::volumeMode(uint8_t mode)
 {
 #ifdef TONES_VOLUME_CONTROL
   forceNormVol = false; // assume volume is tone controlled
@@ -154,12 +154,12 @@ void ArduboyTones::volumeMode(uint8_t mode)
 #endif
 }
 
-bool ArduboyTones::playing()
+bool Tones::playing()
 {
   return tonesPlaying;
 }
 
-void ArduboyTones::nextTone()
+void Tones::nextTone()
 {
   uint16_t freq;
   uint16_t dur;
@@ -258,7 +258,7 @@ void ArduboyTones::nextTone()
   bitWrite(TIMSK3, OCIE3A, 1); // enable the output compare match interrupt
 }
 
-uint16_t ArduboyTones::getNext()
+uint16_t Tones::getNext()
 {
   if (inProgmem) {
     return pgm_read_word(tonesIndex++);
@@ -282,6 +282,6 @@ ISR(TIMER3_COMPA_vect)
     }
   }
   else {
-    ArduboyTones::nextTone();
+    Tones::nextTone();
   }
 }
