@@ -1,4 +1,6 @@
-## This library was forked from 
+# The Tones Library
+
+## This library was forked from
 https://github.com/MLXXXp/ArduboyTones
 
 The following text is from the main library .
