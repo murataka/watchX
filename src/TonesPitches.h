@@ -1,8 +1,4 @@
-/**
- * @file ArduboyTonesPitches.h
- * \brief Frequency definitions for standard note pitches.
- */
-
+ 
 // Definitions ending with "H" indicate high volume
 
 #ifndef TONES_PITCHES_H
