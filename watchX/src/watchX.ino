@@ -10,24 +10,11 @@
 #include "cpu.h"
 #include "timerone.h"
 #include "buzzer.h"
-//#include <sprite_pool.h>
-
-//#include <lcd/ssd1306_commands.h>
-//#include <lcd/lcd_common.h>
-//#include "intf/ssd1306_interface.h"
 // Define which sensors are attached
 //#define SENSORS_BMP180_ATTACHED
 //#define SENSORS_HMC5883L_ATTACHED
 //#include <MPU6050.h>
-//#include <Wire.h> // must be included here so that Arduino library object file references work
 
-
-//char strtmpbuf[10];
-//#include <i2c_BMP280.h>
-
-//#include "spi/ssd1306_spi.h"
-//#include "spi/ssd1306_spi_hw.h"
-//#include "lcd/oled_ssd1306.h"
 #include "resources.h"
 #include "usb.h"
 #include "watchface.h"
