@@ -1,3 +1,8 @@
+## This library was forked from 
+https://github.com/MLXXXp/ArduboyTones
+
+The following text is a from the main library .
+
 # The ArduboyTones Library
 
 The ArduboyTones library is maintained in a git repository hosted on [GitHub](https://github.com/) at:
