@@ -2,10 +2,10 @@
 #define OLED_H
 
 
- 
+
 
 /** SSD1306 LCD driver commands */
- 
+
 #define     SSD1306_SETLOWCOLUMN      0x00
 #define     SSD1306_SETHIGHCOLUMN     0x10
 #define    SSD1306_MEMORYMODE        0x20
@@ -35,18 +35,18 @@
 #define    SSD1306_NOP               0xE3
 
 /** SSD1306 supported memory modes. */
- 
+
 #define    HORIZONTAL_ADDRESSING_MODE   0x00
 #define    VERTICAL_ADDRESSING_MODE     0x01
 #define    PAGE_ADDRESSING_MODE         0x02
 
   #define cesPin A5
   #define dcPin A3
-  
+
   #define rstPin A4
 #define s_displayWidth 128
 #define s_displayHeight 64
- 
+
 
 
 // Scrolling #defines
@@ -57,7 +57,7 @@
 #define SSD1306_LEFT_HORIZONTAL_SCROLL 0x27
 #define SSD1306_VERTICAL_AND_RIGHT_HORIZONTAL_SCROLL 0x29
 #define SSD1306_VERTICAL_AND_LEFT_HORIZONTAL_SCROLL 0x2A
- 
+
 
 
  #define FRAME_WIDTH     128
@@ -65,13 +65,13 @@
 
  // Quick and easy macro for a for loop
 #define LOOP(count, var) for(byte var=0;var<count;var++)
- 
+
 // Reverse loop sometimes produces smaller/faster code
 #define LOOPR(count, var) for(byte var=count;var--;)
 
 #define CONCAT(a, b) a ## b
 
-#define uint unsigned int 
+#define uint unsigned int
 //#define byte unsigned char
 extern unsigned char mbuf[128*8];
 
@@ -79,11 +79,11 @@ extern unsigned char mbuf[128*8];
 extern unsigned char animation_offsetY;
 
 void ssd1306_sendCommand(uint8_t command);
-
+void ssd1306_configure();
 void draw_bitmap(byte x, byte yy, const byte* bitmap, byte w, byte h, bool invert, byte offsetY);
  byte readPixels(const byte* loc, bool invert);
  void ssd1306_spiStop_hw();
 void ssd1306_spiCommandStart();
  void ssd1306_spiDataStart();
- 
+
 #endif
