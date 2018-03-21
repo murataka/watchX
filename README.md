@@ -2,6 +2,7 @@
 https://github.com/MLXXXp/ArduboyTones
 
 The following text is from the main library .
+We will modify and make it simpler to make use for one speaker.
 
 # The ArduboyTones Library
 
