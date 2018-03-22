@@ -178,18 +178,11 @@ void timerOneTones(){
 
 void setup()
 {
-  //cli();
-  //for(unsigned long aa=0;aa<500000;aa++)sound.noTone();
-//  sei();
-    //// wait if a firmware is uploading TODO: interrupt disable workoround
+ 
 soundenabled=true;
-  sound.tones(allNotes);
-//  while (sound.playing()) {
-//  }
-  //while(1);
-  //while(!Serial);
-    /* Do not init Wire library for Attiny controllers */
-//setPrescale();
+//  sound.tones(allNotes);
+
+setPrescale();
 
 //timerOneFunc=timerOneTones;
           /* Set timer1 interrupt to 20Hz */
