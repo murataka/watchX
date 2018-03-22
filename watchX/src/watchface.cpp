@@ -85,11 +85,11 @@ memset(mbuf, 0x00, 128*8);
 //  draw_bitmap( 117, 24-((animating&&(lastcolon<300))?(lastcolon/10):0), small2Font+(((animating?seconds:seconds)%10)*22), 11, 16, false, 0);
 //  draw_bitmap( 117, 48-((animating&&(lastcolon<300))?(lastcolon/10):0), small2Font+(((animating?seconds+1:seconds)%10)*22), 11, 16, false, 0);
 draw_bitmap( 104, 24, small2Font+((seconds/10)*22), 11, 16, false, (lastcolon*48/255));
-draw_bitmap( 104, 36-((lastcolon)*24/255), small2Font+(((seconds+1)/10)*22), 11,  16, false,-((128-lastcolon)*48/255));
+draw_bitmap( 104, 36-((lastcolon)*24/255), small2Font+(((seconds+1)/10)*22), 11,  16, false,-((128-lastcolon)*24/255));
 
 
   draw_bitmap( 117, 24, small2Font+(((seconds)%10)*22), 11, 16, false, (lastcolon*48/255));
-  draw_bitmap( 117, 36-((lastcolon)*24/255), small2Font+(((seconds+1)%10)*22), 11,  16, false,-((128-lastcolon)*48/255));
+  draw_bitmap( 117, 36-((lastcolon)*24/255), small2Font+(((seconds+1)%10)*22), 11,  16, false,-((128-lastcolon)*24/255));
 //draw_bitmap( 117, 48-((lastcolon)*32/255), small2Font+(((seconds+1)%10)*22), 11,  16, false,-((128-lastcolon)*32/255));
 
 //  draw_bitmap( 117, 24-(lastcolon*48/255), small2Font+(((seconds)%10)*22), 11, 16, false, 0);

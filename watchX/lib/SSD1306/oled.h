@@ -85,5 +85,8 @@ void draw_bitmap(byte x, byte yy, const byte* bitmap, byte w, byte h, bool inver
  void ssd1306_spiStop_hw();
 void ssd1306_spiCommandStart();
  void ssd1306_spiDataStart();
+ void clearAll();
+ void drawLine( uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2);
+ void drawPixel(uint8_t x, uint8_t y,char color=1);
 
 #endif

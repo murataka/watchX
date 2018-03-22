@@ -82,7 +82,64 @@ void ssd1306_sendData(uint8_t data)
 
 }
 
+void clearAll(){
 
+  memset(mbuf, 0x00, 128*8);
+}
+void drawLine( uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2)
+{
+  uint8_t tmp;
+  uint8_t x,y;
+  uint8_t dx, dy;
+  int8_t err;
+  int8_t ystep;
+
+  uint8_t swapxy = 0;
+
+  /* no intersection check at the moment, should be added... */
+
+  if ( x1 > x2 ) dx = x1-x2; else dx = x2-x1;
+  if ( y1 > y2 ) dy = y1-y2; else dy = y2-y1;
+
+  if ( dy > dx )
+  {
+    swapxy = 1;
+    tmp = dx; dx =dy; dy = tmp;
+    tmp = x1; x1 =y1; y1 = tmp;
+    tmp = x2; x2 =y2; y2 = tmp;
+  }
+  if ( x1 > x2 )
+  {
+    tmp = x1; x1 =x2; x2 = tmp;
+    tmp = y1; y1 =y2; y2 = tmp;
+  }
+  err = dx >> 1;
+  if ( y2 > y1 ) ystep = 1; else ystep = -1;
+  y = y1;
+
+
+  if ( x2 == 255 )
+    x2--;
+
+
+  for( x = x1; x <= x2; x++ )
+  {
+    if ( swapxy == 0 )
+      drawPixel( x, y);
+    else
+      drawPixel( y, x);
+    err -= (uint8_t)dy;
+    if ( err < 0 )
+    {
+      y += (uint8_t)ystep;
+      err += (uint8_t)dx;
+    }
+  }
+}
+
+void drawPixel(uint8_t x, uint8_t y,char color=1) {
+mbuf[(y/8)*128 +x]|=1<<y%8;
+}
 
 void ssd1306_spiCommandStart()
 {

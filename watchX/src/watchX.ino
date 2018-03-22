@@ -10,6 +10,7 @@
 #include "cpu.h"
 #include "timerone.h"
 #include "buzzer.h"
+#include "gyrocube.h"
 // Define which sensors are attached
 //#define SENSORS_BMP180_ATTACHED
 //#define SENSORS_HMC5883L_ATTACHED
@@ -135,7 +136,18 @@ void gotoWatchFace(){
 functions[batteryFunc]=drawBattery;
 functions[updateFunc]=updateThings;
   }
-
+  void gotoGyroFace(){
+    functions[uiFunc]= drawGyroCube;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
+      functions[sw1Func]=gotoMenu;
+      functions[sw2Func]=NULL;
+      functions[sw3Func]=NULL;
+    //  sw2Func=gotoMenu;
+    //  sw3Func=NULL;
+  //functions[  bleFunc] =handleBle;
+     functions[usbFunc]=drawUsb;
+  functions[batteryFunc]=drawBattery;
+  functions[updateFunc]=updateThings;
+    }
 void gotoStopWatch(){
          functions[uiFunc]=drawStopwatch;
         functions[sw1Func]=gotoMenu;
@@ -254,9 +266,9 @@ get3231Date();
 
     ssd1306_configure();
 
-
-     gotoWatchFace();
-
+//goto
+    // gotoWatchFace();
+gotoGyroFace();
 
 }
 //uint8_t buffer[64*128/8];
