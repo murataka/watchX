@@ -18,7 +18,7 @@ extern unsigned char DEVICESTATE;
 
 void printWatchFace( ){
  //char strtmpbuf[10];
-memset(mbuf, 0x00, 128*8);
+clearAll();
  // uint8_t buf[128*5];
 //    NanoCanvas c(128,40,buf);
 

@@ -14,7 +14,7 @@ extern unsigned char DEVICESTATE;
 
 void drawStopwatch( ){
 unsigned char date,year,seconds,minutes,hours;
-  memset(mbuf, 0x00, 128*8);
+clearAll();
 
 
     draw_bitmap( 0, 16, font_mid+((hours/10)*57), 19, 24, false, 0);
