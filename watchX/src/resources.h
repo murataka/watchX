@@ -110,6 +110,7 @@
    NOTE_REST, 410  ,
    TONES_END
  };
+const byte  COLON[] PROGMEM={0B11100111};
 
  const byte small2Font[] PROGMEM={
 

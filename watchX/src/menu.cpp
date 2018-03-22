@@ -27,12 +27,9 @@ void menusw1( ){
   gotoWatchFace();
 
       break;
-      case 0:
+      case MENU_STOPWATCH:
+gotoStopWatch();
 
-//       uiFunc=drawStopwatch;
- //     sw1Func=gotoMenu;
- //     sw2Func=gotoMenu;
- //     sw3Func=NULL;
 
       break;
 

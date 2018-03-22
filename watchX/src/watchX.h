@@ -74,14 +74,14 @@ typedef void (*func_type)(     );
 #define SECOND_WASCHANGED Old_DEVICESTATE&8
 
 #define HANDLEDFUNCTIONS_COUNT 8
-#define usbFunc 0
+#define usbFunc 7
 #define sw1Func 1
 #define sw2Func 2
 #define sw3Func 3
 #define uiFunc 4
 #define batteryFunc 5
 #define bleFunc 6
-#define updateFunc 7
+#define updateFunc 0
 
 extern unsigned char DEVICESTATE;
 //extern char *activekeyframe;
@@ -90,11 +90,11 @@ extern unsigned char mbuf[128*8];
 //extern func_type usbFunc ,sw1Func,sw2Func,sw3Func,uiFunc,batteryFunc,bleFunc;
 extern func_type functions[];
 void handleFunction(func_type f);
-void ssd1306_drawBuffer(uint8_t x, uint8_t y, uint8_t w, uint8_t h, const uint8_t *buf);
+
 void gotoMenu(  );
 void gotoWatchFace();
 
-
+void gotoStopWatch();
 
 //void drawFun(  char *cmd);
 

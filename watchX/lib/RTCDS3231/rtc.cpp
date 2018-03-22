@@ -1,7 +1,7 @@
 #include "rtc.h"
 #include "Wire.h"
 //unsigned char seconds, minutes, hours, day, date, month, year;
-unsigned char   curtm[7] ;
+volatile unsigned char   curtm[7] ;
 
 void startSqw(){
 

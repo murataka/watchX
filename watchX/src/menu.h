@@ -6,7 +6,7 @@
 //#define MENU_LENGTH 8
   extern int menuindex;
 #define MENU_EXIT 5
-
+#define MENU_STOPWATCH 0
 void drawMenus( );
 
 void menusw1( );

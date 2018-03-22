@@ -1,6 +1,6 @@
 #include "watchX.h"
 #include "stopwatch.h"
-//#include <nano_gfx.h>
+#include <oled.h>
 
 
 
@@ -13,6 +13,54 @@ extern unsigned char DEVICESTATE;
 
 
 void drawStopwatch( ){
+unsigned char date,year,seconds,minutes,hours;
+  memset(mbuf, 0x00, 128*8);
+
+
+    draw_bitmap( 0, 16, font_mid+((hours/10)*57), 19, 24, false, 0);
+    draw_bitmap( 20, 16, font_mid+((hours%10)*57), 19, 24, false, 0);
+
+    draw_bitmap( 56, 16, font_mid+((minutes/10)*57), 19, 24, false, 0);
+    draw_bitmap( 76, 16, font_mid+((minutes/10)*57), 19, 24, false, 0);
+
+    draw_bitmap( 104, 24, small2Font+((seconds/10)*22), 11, 16, false, 0);
+
+  //  draw_bitmap( 117, 24-((animating&&(lastcolon<300))?(lastcolon/10):0), small2Font+(((animating?seconds:seconds)%10)*22), 11, 16, false, 0);
+  //  draw_bitmap( 117, 48-((animating&&(lastcolon<300))?(lastcolon/10):0), small2Font+(((animating?seconds+1:seconds)%10)*22), 11, 16, false, 0);
+
+
+    draw_bitmap( 117, 24-(lastcolon*48/255), small2Font+(((seconds)%10)*22), 11, 16, false, 0);
+    draw_bitmap( 117, 48-lastcolon*48/255, small2Font+(((seconds+1)%10)*22), 11,  16, false, 0);
+
+
+    draw_bitmap( 117, 24-(lastcolon*48/255), small2Font+(((seconds)%10)*22), 11, 16, false, 0);
+    draw_bitmap( 117, 48-lastcolon*48/255, small2Font+(((seconds+1)%10)*22), 11,  16, false, 0);
+
+
+  //if(lastcolon>249)
+
+
+   //    c.drawBitmap(22,16,19,24,font_mid+((hours%10)*57));////30 byte //// 19 *3
+
+
+      draw_bitmap(0,0,lastcolon<=128?0xff:0B11001111,1,8,false,0);
+
+  // c.drawBitmap(62,16,19,24,font_mid+((minutes/10)*57));
+    //   c.drawBitmap(84,16,19,24,font_mid+((minutes%10)*57));////30 byte
+
+    //   c.drawBitmap(105,24,11,16,small2Font+((seconds/10)*22));
+    //   c.drawBitmap(117,24,11,16,small2Font+((seconds%10)*22));////30 byte
+
+
+    //  c.blt(0,0);
+
+
+        if(lastcolon<=128){
+           lastcolon++;
+
+        }
+
+
 /*
  uint8_t buf[128*7];
      NanoCanvas c(128,56,buf);

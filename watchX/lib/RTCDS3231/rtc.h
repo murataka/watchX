@@ -1,7 +1,7 @@
 #ifndef RTC_H
 #define RTC_H
 #define DS3231_I2C_ADDRESS 0x68
-extern unsigned char curtm[];
+extern volatile unsigned char curtm[];
 #define seconds curtm[0] %60
 #define minutes curtm[1]%60
 #define hours curtm[2]%24

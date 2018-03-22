@@ -54,7 +54,7 @@ memset(mbuf, 0x00, 128*8);
     b[2]=year/10;
     b[3]=year%10;
 
-    for(int a=0;a<4;a++){
+    for(char a=0;a<4;a++){
     //  strtmpbuf[a]= pgm_read_byte_near(months[month]+a);
   //  draw_bitmap( 0, 32, font_mid, 19, 24, false, 0);
 
@@ -80,25 +80,20 @@ memset(mbuf, 0x00, 128*8);
   draw_bitmap( 56, 16, font_mid+((minutes/10)*57), 19, 24, false, 0);
   draw_bitmap( 76, 16, font_mid+((minutes/10)*57), 19, 24, false, 0);
 
-  draw_bitmap( 104, 24, small2Font+((seconds/10)*22), 11, 16, false, 0);
+  //draw_bitmap( 104, 24, small2Font+((seconds/10)*22), 11, 16, false, 0);
 
 //  draw_bitmap( 117, 24-((animating&&(lastcolon<300))?(lastcolon/10):0), small2Font+(((animating?seconds:seconds)%10)*22), 11, 16, false, 0);
 //  draw_bitmap( 117, 48-((animating&&(lastcolon<300))?(lastcolon/10):0), small2Font+(((animating?seconds+1:seconds)%10)*22), 11, 16, false, 0);
+draw_bitmap( 104, 24, small2Font+((seconds/10)*22), 11, 16, false, (lastcolon*48/255));
+draw_bitmap( 104, 36-((lastcolon)*24/255), small2Font+(((seconds+1)/10)*22), 11,  16, false,-((128-lastcolon)*48/255));
 
 
-  draw_bitmap( 117, 24-(lastcolon*48/255), small2Font+(((seconds)%10)*22), 11, 16, false, 0);
-  draw_bitmap( 117, 48-lastcolon*48/255, small2Font+(((seconds+1)%10)*22), 11,  16, false, 0);
+  draw_bitmap( 117, 24, small2Font+(((seconds)%10)*22), 11, 16, false, (lastcolon*48/255));
+  draw_bitmap( 117, 36-((lastcolon)*24/255), small2Font+(((seconds+1)%10)*22), 11,  16, false,-((128-lastcolon)*48/255));
+//draw_bitmap( 117, 48-((lastcolon)*32/255), small2Font+(((seconds+1)%10)*22), 11,  16, false,-((128-lastcolon)*32/255));
 
-
-  draw_bitmap( 117, 24-(lastcolon*48/255), small2Font+(((seconds)%10)*22), 11, 16, false, 0);
-  draw_bitmap( 117, 48-lastcolon*48/255, small2Font+(((seconds+1)%10)*22), 11,  16, false, 0);
-
-
-//if(lastcolon>249)
-
-
- //    c.drawBitmap(22,16,19,24,font_mid+((hours%10)*57));////30 byte //// 19 *3
-
+//  draw_bitmap( 117, 24-(lastcolon*48/255), small2Font+(((seconds)%10)*22), 11, 16, false, 0);
+//  draw_bitmap( 117, 48-lastcolon*48/255, small2Font+(((seconds+1)%10)*22), 11,  16, false, 0);
 
   //  c.fillRect(48,23,52,34,animating?0:0B11001111);
 
@@ -112,7 +107,12 @@ memset(mbuf, 0x00, 128*8);
   //  c.blt(0,0);
 
 
-      if(lastcolon<=128){
+      if(lastcolon<128){
+        for(char a=-2;a<2;a++){
+
+    draw_bitmap(48+a,24,COLON,1,8,false,0);
+
+    }
          lastcolon++;
 
       }

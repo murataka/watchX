@@ -77,7 +77,7 @@ extern unsigned char mbuf[128*8];
 
 
 extern unsigned char animation_offsetY;
-
+void ssd1306_drawBuffer(byte x, byte y, byte w, byte h, const byte *buf);
 void ssd1306_sendCommand(uint8_t command);
 void ssd1306_configure();
 void draw_bitmap(byte x, byte yy, const byte* bitmap, byte w, byte h, bool invert, byte offsetY);

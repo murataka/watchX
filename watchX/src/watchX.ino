@@ -18,6 +18,7 @@
 #include "resources.h"
 #include "usb.h"
 #include "watchface.h"
+#include "stopwatch.h"
 #include "menu.h"
 #include "battery.h"
 #include "diag.h"
@@ -83,7 +84,7 @@ void gotoMenu( ){
 
 
 void updateThings( ){
-get3231Date();
+//get3231Date();
 //  dt =Rtc.GetDateTime();// RtcDateTime(__DATE__, __TIME__);
 
 //  if(seconds==0) {   /// TODO change batteryread to something more global
@@ -116,7 +117,7 @@ void nextSecond(/* arguments */) {
 
 
 //   animating=1;
-
+curtm[0]++;
 lastcolon=0;
 ///secondsofday+=animating;
 
@@ -135,7 +136,13 @@ functions[batteryFunc]=drawBattery;
 functions[updateFunc]=updateThings;
   }
 
+void gotoStopWatch(){
+         functions[uiFunc]=drawStopwatch;
+        functions[sw1Func]=gotoMenu;
+        functions[sw2Func]=NULL;
+        functions[sw3Func]=NULL;
 
+}
 
 
 /*
@@ -178,9 +185,9 @@ void timerOneTones(){
 
 void setup()
 {
- 
+
 soundenabled=true;
-//  sound.tones(allNotes);
+  sound.tones(allNotes);
 
 setPrescale();
 
@@ -228,7 +235,7 @@ pinMode(13,OUTPUT);
   digitalWrite(BATTERY_EN,LOW);
 
          pinMode(PIN_INTERRUPT, INPUT_PULLUP);
- attachInterrupt(digitalPinToInterrupt(PIN_INTERRUPT), nextSecond, FALLING);
+ attachInterrupt(digitalPinToInterrupt(PIN_INTERRUPT), nextSecond, RISING);
 
 
 

@@ -33,7 +33,7 @@ for( uint8_t i=0; i<sizeof(s_oled128x64_initData); i++)
 }
 
 }
- void ssd1306_drawBuffer(uint8_t x, uint8_t y, uint8_t w, uint8_t h, const uint8_t *buf)
+ void ssd1306_drawBuffer(byte x, byte y, byte w, byte h, const byte *buf)
 {
     uint8_t i, j;
     // ssd1306_setRamBlock(x, y, w);
@@ -93,7 +93,7 @@ void ssd1306_spiCommandStart()
 
 
 
-
+/*
 
 static void ssd1306_setBlock(uint8_t x, uint8_t y, uint8_t w)
 {
@@ -107,7 +107,7 @@ static void ssd1306_setBlock(uint8_t x, uint8_t y, uint8_t w)
     SPI.transfer((s_displayHeight >> 3) - 1);
     ssd1306_spiStop_hw();
 }
-
+*/
 void ssd1306_spiDataStart()
 {
     digitalWrite(dcPin, HIGH);
