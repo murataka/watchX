@@ -25,8 +25,18 @@
 #include "pressure.h"
 #include "temperature.h"
 #include "rtc.h"
+#include <Tones.h>
 //#include "gyroaccel.h"
 //include "bluetooth.h"
+bool soundenabled=false;
+
+
+bool outEnabled(){
+
+  return soundenabled;
+}
+Tones sound(outEnabled);
+
 
 //BMP280 bmp280;
 volatile uint8_t animating=1;
@@ -163,18 +173,51 @@ void timerOneTones(){
 
 //tone(BUZZER_PIN, NOTE_B0);
 }
+#define NDUR 100
+const uint16_t allNotes[]PROGMEM  = {
+  NOTE_C0H,NDUR, NOTE_CS0,NDUR, NOTE_D0,NDUR, NOTE_DS0,NDUR, NOTE_E0,NDUR, NOTE_F0,NDUR,
+  NOTE_FS0,NDUR, NOTE_G0,NDUR, NOTE_GS0,NDUR, NOTE_A0,NDUR, NOTE_AS0,NDUR, NOTE_B0,NDUR,
+  NOTE_C1H,NDUR, NOTE_CS1,NDUR, NOTE_D1,NDUR, NOTE_DS1,NDUR, NOTE_E1,NDUR, NOTE_F1,NDUR,
+  NOTE_FS1,NDUR, NOTE_G1,NDUR, NOTE_GS1,NDUR, NOTE_A1,NDUR, NOTE_AS1,NDUR, NOTE_B1,NDUR,
+  NOTE_C2H,NDUR, NOTE_CS2,NDUR, NOTE_D2,NDUR, NOTE_DS2,NDUR, NOTE_E2,NDUR, NOTE_F2,NDUR,
+  NOTE_FS2,NDUR, NOTE_G2,NDUR, NOTE_GS2,NDUR, NOTE_A2,NDUR, NOTE_AS2,NDUR, NOTE_B2,NDUR,
+  NOTE_C3H,NDUR, NOTE_CS3,NDUR, NOTE_D3,NDUR, NOTE_DS3,NDUR, NOTE_E3,NDUR, NOTE_F3,NDUR,
+  NOTE_FS3,NDUR, NOTE_G3,NDUR, NOTE_GS3,NDUR, NOTE_A3,NDUR, NOTE_AS3,NDUR, NOTE_B3,NDUR,
+  NOTE_C4H,NDUR, NOTE_CS4,NDUR, NOTE_D4,NDUR, NOTE_DS4,NDUR, NOTE_E4,NDUR, NOTE_F4,NDUR,
+  NOTE_FS4,NDUR, NOTE_G4,NDUR, NOTE_GS4,NDUR, NOTE_A4,NDUR, NOTE_AS4,NDUR, NOTE_B4,NDUR,
+  NOTE_C5H,NDUR, NOTE_CS5,NDUR, NOTE_D5,NDUR, NOTE_DS5,NDUR, NOTE_E5,NDUR, NOTE_F5,NDUR,
+  NOTE_FS5,NDUR, NOTE_G5,NDUR, NOTE_GS5,NDUR, NOTE_A5,NDUR, NOTE_AS5,NDUR, NOTE_B5,NDUR,
+  NOTE_C6H,NDUR, NOTE_CS6,NDUR, NOTE_D6,NDUR, NOTE_DS6,NDUR, NOTE_E6,NDUR, NOTE_F6,NDUR,
+  NOTE_FS6,NDUR, NOTE_G6,NDUR, NOTE_GS6,NDUR, NOTE_A6,NDUR, NOTE_AS6,NDUR, NOTE_B6,NDUR,
+  NOTE_C7H,NDUR, NOTE_CS7,NDUR, NOTE_D7,NDUR, NOTE_DS7,NDUR, NOTE_E7,NDUR, NOTE_F7,NDUR,
+  NOTE_FS7,NDUR, NOTE_G7,NDUR, NOTE_GS7,NDUR, NOTE_A7,NDUR, NOTE_AS7,NDUR, NOTE_B7,NDUR,
+  NOTE_C8H,NDUR, NOTE_CS8,NDUR, NOTE_D8,NDUR, NOTE_DS8,NDUR, NOTE_E8,NDUR, NOTE_F8,NDUR,
+  NOTE_FS8,NDUR, NOTE_G8,NDUR, NOTE_GS8,NDUR, NOTE_A8,NDUR, NOTE_AS8,NDUR, NOTE_B8,NDUR,
+  NOTE_C9H,NDUR, NOTE_CS9,NDUR, NOTE_D9,NDUR, NOTE_DS9,NDUR, NOTE_E9,NDUR, NOTE_F9,NDUR,
+  NOTE_FS9,NDUR, NOTE_G9,NDUR, NOTE_GS9,NDUR, NOTE_A9,NDUR, NOTE_AS9,NDUR, NOTE_B9,NDUR,
+  NOTE_REST,    TONES_END
+};
 void setup()
 {
+  //cli();
+  //for(unsigned long aa=0;aa<500000;aa++)sound.noTone();
+//  sei();
+    //// wait if a firmware is uploading TODO: interrupt disable workoround
+soundenabled=true;
+  sound.tones(allNotes);
+//  while (sound.playing()) {
+//  }
+  //while(1);
   //while(!Serial);
     /* Do not init Wire library for Attiny controllers */
-setPrescale();
+//setPrescale();
 
-timerOneFunc=timerOneTones;
+//timerOneFunc=timerOneTones;
           /* Set timer1 interrupt to 20Hz */
-    startTimerOne();
-
+  //  startTimerOne();
 
      SPI.begin();
+
 
 
 //Serial.begin(115200);
@@ -259,7 +302,7 @@ void drawLoop( ){
 
 
  }
-
+ //while(1);
 //handleFunction(drawMenus);
 
 if(DEVICESTATE!=Old_DEVICESTATE){

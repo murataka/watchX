@@ -1,6 +1,6 @@
 /**
  * @file Tones.cpp
- * \brief An Arduino library for playing tones and tone sequences, 
+ * \brief An Arduino library for playing tones and tone sequences,
  * intended for the Arduboy game system.
  */
 

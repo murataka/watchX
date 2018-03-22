@@ -16,6 +16,6 @@ void startTimerOne(){
 }
 
 ISR(TIMER1_COMPA_vect){
-if(timerOneFunc)timerOneFunc(); /// TODO : multiple timerone handler functions 
+if(timerOneFunc)timerOneFunc(); /// TODO : multiple timerone handler functions
 
 }
