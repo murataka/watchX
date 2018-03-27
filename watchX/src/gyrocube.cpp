@@ -3,7 +3,7 @@
 #include "oled.h"
 
 // Overall scale and perspective distance
-uint8_t sZ = 4, scale = 16;
+uint8_t sZ = 4, scale = 8;
 // screen center
 uint8_t centerX = 64;
 uint8_t centerY = 32;
@@ -92,9 +92,7 @@ void vectRotXYZ(double angle, int axe) {
 
 }
 
-
-void drawGyroCube(){
-clearAll();
+void gyroCube(uint8_t scale){
   // scale angles down, rotate
   //char r=(rand()%20)==0?r:(rand()%3)-1;
 char r=1;
@@ -128,4 +126,9 @@ char r=1;
 
 
 
+
+}
+void drawGyroCube(){
+clearAll();
+gyroCube(16);
 }

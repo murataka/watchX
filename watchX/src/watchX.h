@@ -13,12 +13,14 @@
 #define SW2 11
 #define SW3 10
 
+#define LED1 13
+#define LED2 6
 #define BUZZER_PIN 9
 
 
 
 extern volatile uint8_t animating;
-extern volatile uint8_t lastcolon;
+extern volatile uint16_t lastcolon;
 
 // Scrolling #defines
 
@@ -93,6 +95,7 @@ void handleFunction(func_type f);
 
 void gotoMenu(  );
 void gotoWatchFace();
+void gotoGyroFace();
 
 void gotoStopWatch();
 

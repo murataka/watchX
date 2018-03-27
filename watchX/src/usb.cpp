@@ -3,8 +3,8 @@
 
   #include "usb.h"
 #include "battery.h"
-
-
+#include "oled.h"
+#include "resources.h"
 
 
 extern unsigned char DEVICESTATE;
@@ -21,13 +21,14 @@ void drawUsb(  ){
            //c.drawBitmap(2, 0, 16,8, usbIcon);
 
 
+           draw_bitmap( 0, 54, watchXui, 16, 8, false, 0);
 
 
-
-
+  draw_bitmap( 18, 54, watchXui+64, 8, 8, false, 0);
         if(batterylevel<4.15f){
 
             //  uint8_t buf3[8];
+
 
 
         //    c.drawBitmap(18, 0, 8,8, chargeIcon);

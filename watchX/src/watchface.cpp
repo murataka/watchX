@@ -2,13 +2,13 @@
 #include "watchface.h"
 #include "rtc.h"
 #include "oled.h"
+#include "cpu.h"
 //#include <nano_gfx.h>
 
 
 
 extern unsigned char DEVICESTATE;
 //uint8_t buf2[16*2];
-
 
 
 
@@ -84,12 +84,38 @@ clearAll();
 
 //  draw_bitmap( 117, 24-((animating&&(lastcolon<300))?(lastcolon/10):0), small2Font+(((animating?seconds:seconds)%10)*22), 11, 16, false, 0);
 //  draw_bitmap( 117, 48-((animating&&(lastcolon<300))?(lastcolon/10):0), small2Font+(((animating?seconds+1:seconds)%10)*22), 11, 16, false, 0);
-draw_bitmap( 104, 24, small2Font+((seconds/10)*22), 11, 16, false, (lastcolon*48/255));
-draw_bitmap( 104, 36-((lastcolon)*24/255), small2Font+(((seconds+1)/10)*22), 11,  16, false,-((128-lastcolon)*24/255));
+/////draw_bitmap( 104, 24, small2Font+((seconds/10)*22), 11, 16, false, (lastcolon*48/255));
+/////draw_bitmap( 104, 36-((lastcolon)*24/255), small2Font+(((seconds+1)/10)*22), 11,  16, false,-((128-lastcolon)*24/255));
 
 
-  draw_bitmap( 117, 24, small2Font+(((seconds)%10)*22), 11, 16, false, (lastcolon*48/255));
-  draw_bitmap( 117, 36-((lastcolon)*24/255), small2Font+(((seconds+1)%10)*22), 11,  16, false,-((128-lastcolon)*24/255));
+//  draw_bitmap( 117, 24, small2Font+(((seconds)%10)*22), 11, 16, false, (lastcolon*48/255));
+//draw_bitmap( 117, 24, small2Font+(((seconds)%10)*22), 11,  16, false,(lastcolon*48/255));
+
+//  if(lastcolon<160)
+//draw_bitmap( 117, 24, small2Font+(((seconds)%10)*22), 11,  16, false,(((lastcolon/8)%16)+16)%16); //// top side
+
+////draw_bitmap( 117, 24, small2Font+(((seconds +1 )%10)*22), 11,  16, false,(lastcolon*22/128)); //// bottom side funny
+
+//// draw_bitmap( 117, 24, small2Font+(((seconds +1 )%10)*22), 11,  16, false,((256-lastcolon)*22/128)); //// bottom side funny
+
+
+if(animating){
+ draw_bitmap( 117, 24, small2Font+(((seconds  )%10)*22), 11,  16, false,(lastcolon*22/128)); //// bottom side
+
+  draw_bitmap( 117, 24, small2Font+(((seconds +1 )%10)*22), 11,  16, false,((lastcolon-144)*22/128)); //// bottom side
+
+
+}else{
+  draw_bitmap( 117, 24, small2Font+(((seconds +1 )%10)*22), 11,  16, false,0); //// bottom side
+
+}
+
+
+////draw_bitmap( 117, 48-(lastcolon/8), small2Font+(((seconds+1)%10)*22), 11,  16, false,(((128-lastcolon)*48/255)));
+
+
+
+
 //draw_bitmap( 117, 48-((lastcolon)*32/255), small2Font+(((seconds+1)%10)*22), 11,  16, false,-((128-lastcolon)*32/255));
 
 //  draw_bitmap( 117, 24-(lastcolon*48/255), small2Font+(((seconds)%10)*22), 11, 16, false, 0);
@@ -106,17 +132,25 @@ draw_bitmap( 104, 36-((lastcolon)*24/255), small2Font+(((seconds+1)/10)*22), 11,
 
   //  c.blt(0,0);
 
-
+/* COLONNN
       if(lastcolon<128){
         for(char a=-2;a<2;a++){
 
     draw_bitmap(48+a,24,COLON,1,8,false,0);
 
     }
-         lastcolon++;
+
 
       }
 
+      */
+
+
+if(lastcolon<256){
+//curtm[0]++;
+ lastcolon++;
+}
+//else lastcolon=0;
 }
 /*
 void drawWatchFace( ){

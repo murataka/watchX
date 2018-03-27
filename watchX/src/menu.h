@@ -5,8 +5,9 @@
 
 //#define MENU_LENGTH 8
   extern int menuindex;
-#define MENU_EXIT 5
-#define MENU_STOPWATCH 0
+#define MENU_WATCH 0
+#define MENU_STOPWATCH 1
+#define MENU_GYROCUBE 2
 void drawMenus( );
 
 void menusw1( );

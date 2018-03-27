@@ -28,23 +28,20 @@
 #include "temperature.h"
 #include "rtc.h"
 #include <Tones.h>
+#include "soundfx.h"
+
 //#include "gyroaccel.h"
 //include "bluetooth.h"
-bool soundenabled=false;
 
 
-bool outEnabled(){
 
-  return soundenabled;
-}
-Tones sound(outEnabled);
 
 
 //BMP280 bmp280;
 volatile uint8_t animating=1;
  unsigned char mbuf[128*8];
 extern volatile uint8_t animating;
-volatile uint8_t lastcolon;
+volatile uint16_t lastcolon;
 
 //extern volatile unsigned long lastcolon;
 func_type functions[HANDLEDFUNCTIONS_COUNT];
@@ -61,8 +58,25 @@ unsigned char Old_DEVICESTATE=DEVICESTATE;
 //func_type usbFunc =NULL,sw1Func=NULL,sw2Func=NULL,sw3Func=NULL,uiFunc=NULL,batteryFunc=NULL,bleFunc=NULL;
 
 
+void nextSecond(/* arguments */) {
+
+//if(lastcolon>=160){
+
+
+
+//}
+if(!animating) lastcolon=0;
+  animating=!animating;
+curtm[0]+=animating;
+//lastcolon=0;
+///secondsofday+=animating;
+
+
+}
+
+
 void gotoMenu( ){
-  menuindex=0;
+//  menuindex=0;
        if((~SW1_WASPUSHED)&SW1_PUSHED){
 //    ssd1306_clearScreen();
         //  usbFunc= drawUsb;
@@ -114,16 +128,6 @@ void updateThings( ){
   //}
 }
 
-void nextSecond(/* arguments */) {
-
-
-//   animating=1;
-curtm[0]++;
-lastcolon=0;
-///secondsofday+=animating;
-
-
-}
 void gotoWatchFace(){
   functions[uiFunc]= printWatchFace;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
     functions[sw1Func]=gotoMenu;
@@ -199,8 +203,7 @@ void setup()
 {
 
 soundenabled=true;
-  sound.tones(allNotes);
-
+sound.tone(1200, 100,1000, 50,1800, 200);
 setPrescale();
 
 //timerOneFunc=timerOneTones;
@@ -213,6 +216,9 @@ setPrescale();
 
 //Serial.begin(115200);
 pinMode(rstPin, OUTPUT);
+
+pinMode(LED1, OUTPUT);
+pinMode(LED2, OUTPUT);
 
     pinMode(cesPin, OUTPUT);
     pinMode(dcPin, OUTPUT);
@@ -247,7 +253,7 @@ pinMode(13,OUTPUT);
   digitalWrite(BATTERY_EN,LOW);
 
          pinMode(PIN_INTERRUPT, INPUT_PULLUP);
- attachInterrupt(digitalPinToInterrupt(PIN_INTERRUPT), nextSecond, RISING);
+ attachInterrupt(digitalPinToInterrupt(PIN_INTERRUPT), nextSecond, CHANGE);
 
 
 
@@ -267,8 +273,8 @@ get3231Date();
     ssd1306_configure();
 
 //goto
-    // gotoWatchFace();
-gotoGyroFace();
+     gotoWatchFace();
+//gotoGyroFace();
 
 }
 //uint8_t buffer[64*128/8];
@@ -296,15 +302,6 @@ void drawLoop( ){
  //while(1);
 //handleFunction(drawMenus);
 
-if(DEVICESTATE!=Old_DEVICESTATE){
-//      ssd1306_fillScreen(0x00);
-//  interact();
-//// singlepush handle
-
-
-
-    Old_DEVICESTATE=DEVICESTATE;
-  }
 
 
  ssd1306_drawBuffer(0, 0, 128,64, mbuf);
@@ -321,11 +318,19 @@ void loop()
                 // 0xD3
    // ssd1306_sendCommand(animPos);                                   // no offset
 //    animPos++;
+digitalWrite(LED2,sound.playing()?HIGH: LOW);
+
    DEVICESTATE=(USBDEVICE )|((digitalRead(SW1)==LOW))|((digitalRead(SW2)==LOW)<<1)|((digitalRead(SW3)==LOW)<<2);
      drawLoop();
               if(DEVICESTATE!=Old_DEVICESTATE){
             //      ssd1306_fillScreen(0x00);
             //  interact();
+if(DEVICESTATE&0B00000111){
+  buttonFX(1200);
+
+}
+
+
                   Old_DEVICESTATE=DEVICESTATE;
                 }
    // DEVICESTATE=(USBDEVICE )|((digitalRead(SW1)==LOW))|((digitalRead(SW2)==LOW)<<1)|((digitalRead(SW3)==LOW)<<2);

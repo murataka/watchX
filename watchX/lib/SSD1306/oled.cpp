@@ -3,7 +3,7 @@
 #include <SPI.h>
  unsigned char animation_offsetY=0;
 
-
+/// TODO global left right position setting
 void ssd1306_configure(){
 
     const uint8_t  s_oled128x64_initData[] =
