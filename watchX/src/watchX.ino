@@ -29,7 +29,7 @@
 #include "rtc.h"
 #include <Tones.h>
 #include "soundfx.h"
-
+#include "menu.h"
 //#include "gyroaccel.h"
 //include "bluetooth.h"
 
@@ -41,7 +41,7 @@
 volatile uint8_t animating=1;
  unsigned char mbuf[128*8];
 extern volatile uint8_t animating;
-volatile uint16_t lastcolon;
+volatile unsigned long lastcolon;
 
 //extern volatile unsigned long lastcolon;
 func_type functions[HANDLEDFUNCTIONS_COUNT];
@@ -85,6 +85,7 @@ void gotoMenu( ){
          functions[sw1Func]=menusw1;
          functions[sw2Func]=menusw2;
           functions[sw3Func]=menusw3;
+          speed=0;
       //    functions[batteryFunc]=NULL;
         //  batteryFunc=drawBattery;
     //     functions[usbFunc]=NULL;
@@ -133,6 +134,7 @@ void gotoWatchFace(){
     functions[sw1Func]=gotoMenu;
     functions[sw2Func]=NULL;
     functions[sw3Func]=NULL;
+    speed=4;
   //  sw2Func=gotoMenu;
   //  sw3Func=NULL;
 //functions[  bleFunc] =handleBle;

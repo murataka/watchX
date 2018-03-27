@@ -20,7 +20,7 @@
 
 
 extern volatile uint8_t animating;
-extern volatile uint16_t lastcolon;
+extern volatile unsigned long lastcolon;
 
 // Scrolling #defines
 

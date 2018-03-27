@@ -77,8 +77,6 @@ clearAll();
   draw_bitmap( 0, 16, font_mid+((hours/10)*57), 19, 24, false, 0);
   draw_bitmap( 20, 16, font_mid+((hours%10)*57), 19, 24, false, 0);
 
-  draw_bitmap( 56, 16, font_mid+((minutes/10)*57), 19, 24, false, 0);
-  draw_bitmap( 76, 16, font_mid+((minutes/10)*57), 19, 24, false, 0);
 
   //draw_bitmap( 104, 24, small2Font+((seconds/10)*22), 11, 16, false, 0);
 
@@ -100,17 +98,63 @@ clearAll();
 
 
 if(animating){
- draw_bitmap( 117, 24, small2Font+(((seconds  )%10)*22), 11,  16, false,(lastcolon*22/128)); //// bottom side
+ draw_bitmap( 117, 24, small2Font+(((seconds  )%10)*22), 11,  16, false,(lastcolon*22/256)); //// top side
 
-  draw_bitmap( 117, 24, small2Font+(((seconds +1 )%10)*22), 11,  16, false,((lastcolon-144)*22/128)); //// bottom side
+  draw_bitmap( 117, 24, small2Font+(((seconds +1 )%10)*22), 11,  16, false,((lastcolon-256)*22/256)); //// bottom side
 
 
 }else{
   draw_bitmap( 117, 24, small2Font+(((seconds +1 )%10)*22), 11,  16, false,0); //// bottom side
+speed=4;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+if(animating&&seconds%10==9 ){
+ draw_bitmap( 104, 24, small2Font+(((seconds %60 )/10)*22), 11,  16, false,(lastcolon*22/256)); //// top side
+
+  draw_bitmap( 104, 24, small2Font+((((seconds +1 )%60)/10)*22), 11,  16, false,((lastcolon-256)*22/256)); //// bottom side
+
+
+}else{
+  draw_bitmap( 104, 24, small2Font+((((seconds +1) %60 )/10)*22), 11,  16, false,0); //// bottom side
+
+}
+////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////
+if(animating&&seconds==59){
+//  draw_bitmap( 56, 16, font_mid+(((minutes+1)%10)*57), 19, 24, false, (lastcolon*24/256));
+//  draw_bitmap( 56, 16, font_mid+(((minutes)%10)*57), 19, 24, false, ((lastcolon-256)*24/256));
+
+  draw_bitmap( 76, 16, font_mid+((minutes%10)*57), 19, 24, false, (lastcolon*24/256));
+  draw_bitmap( 76, 16, font_mid+((minutes%10)*57), 19, 24, false, ((lastcolon-256)*24/256));
+
+}else{
+
+//  draw_bitmap( 56, 16, font_mid+((minutes/10)*57), 19, 24, false, 0);
+  draw_bitmap( 76, 16, font_mid+((minutes%10)*57), 19, 24, false, 0);
+
+}
+
+if(animating&&minutes%10==9){
+//  draw_bitmap( 56, 16, font_mid+(((minutes+1)%10)*57), 19, 24, false, (lastcolon*24/256));
+//  draw_bitmap( 56, 16, font_mid+(((minutes)%10)*57), 19, 24, false, ((lastcolon-256)*24/256));
+
+  draw_bitmap( 56, 16, font_mid+(((minutes+1)%10)*57), 19, 24, false, (lastcolon*24/256));
+  draw_bitmap( 56, 16, font_mid+(((minutes)%10)*57), 19, 24, false, ((lastcolon-256)*24/256));
+
+}else{
+
+//  draw_bitmap( 56, 16, font_mid+((minutes/10)*57), 19, 24, false, 0);
+  draw_bitmap( 56, 16, font_mid+((minutes%10)*57), 19, 24, false, 0);
 
 }
 
 
+
+///////////////////////////////
 ////draw_bitmap( 117, 48-(lastcolon/8), small2Font+(((seconds+1)%10)*22), 11,  16, false,(((128-lastcolon)*48/255)));
 
 
@@ -145,10 +189,13 @@ if(animating){
 
       */
 
+if(lastcolon==160) speed=2;
+if(lastcolon==210) speed=1;
 
 if(lastcolon<256){
 //curtm[0]++;
- lastcolon++;
+
+ lastcolon+=speed;
 }
 //else lastcolon=0;
 }
