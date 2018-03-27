@@ -68,6 +68,21 @@ void nextSecond(/* arguments */) {
 if(!animating) lastcolon=0;
   animating=!animating;
 curtm[0]+=animating;
+if(animating){
+  if(curtm[0]==60){
+
+     curtm[0]=0;
+
+     curtm[1]++;
+          if(curtm[1]==60){
+              curtm[1]=0;
+              curtm[2]++;
+
+          }
+
+  }
+}
+
 //lastcolon=0;
 ///secondsofday+=animating;
 
@@ -247,7 +262,7 @@ digitalWrite(rstPin, HIGH);
      * 15,7  means right-bottom block of lcd:                     *
      *                         that is 15*8+7=127-th pixel        *
      *                                 7*8+7=63-rd pixel          */
-
+setDateTime();
 
 pinMode(13,OUTPUT);
 
@@ -263,7 +278,7 @@ startSqw(); /// Starts 1 second SquareWave from DS3231
 
 
 get3231Temp();
-get3231Date();
+setDateTime();
 
      pinMode(SW1,INPUT_PULLUP);
        pinMode(SW2,INPUT_PULLUP);

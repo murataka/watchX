@@ -12,71 +12,46 @@ void startSqw(){
 
   Wire.endTransmission();
 }
-void set3231Date()
+#define DS3231_I2C_ADDRESS 0x68
+/*
+// Convert normal decimal numbers to binary coded decimal
+byte decToBcd(byte val)
 {
+  return( (val/10*16) + (val%10) );
+}
+// Convert binary coded decimal to normal decimal numbers
+byte bcdToDec(byte val)
+{
+  return( (val/16*10) + (val%16) );
+}
+*/
 
+void setDateTime( )
+{
+  // sets time and date data to DS3231
   Wire.beginTransmission(DS3231_I2C_ADDRESS);
-  Wire.write(0x00);
-  for(char a=0;a<7;a++)
-  Wire.write(decToBcd(curtm[a]));
-
-
+  Wire.write(0); // set next input to start at the seconds register
+  Wire.write(decToBcd(seconds)); // set seconds
+  Wire.write(decToBcd(minutes)); // set minutes
+  Wire.write(decToBcd(hours)); // set hours
+  Wire.write(decToBcd(day)); // set day of week (1=Sunday, 7=Saturday)
+  Wire.write(decToBcd(date)); // set date (1 to 31)
+  Wire.write(decToBcd(month)); // set month
+  Wire.write(decToBcd(year)); // set year (0 to 99)
   Wire.endTransmission();
 }
-uint8_t bcdToDec(uint8_t num, uint8_t mod){
-  return (((num & mod)>>4)*10 + (num & 0B00001111));
-  }
-
-void get3231Date()
+void getDateTime( )
 {
-  // send request to receive data starting at register 0
-  Wire.beginTransmission(DS3231_I2C_ADDRESS); // 104 is DS3231 device address
-  Wire.write(0x00); // start at register 0
+  Wire.beginTransmission(DS3231_I2C_ADDRESS);
+  Wire.write(0); // set DS3231 register pointer to 00h
   Wire.endTransmission();
-  Wire.requestFrom(DS3231_I2C_ADDRESS, 7); // request seven bytes
-
-  if(Wire.available()) {
-    int a=0;
-    while(a!=7){
-    curtm[a] = Wire.read(); // get seconds
-
-    a++;
-    }
-   /* seconds = bcdToDec(seconds);// convert BCD to decimal
-    minutes = bcdToDec(minutes); // convert BCD to decimal
-    hours   = (((hours   & 0B00110000)>>4)*10 + (hours & 0B00001111)); // convert BCD to decimal (assume 24 hour mode)
-    day     = (day & 0B00000111); // 1-7
-    date    = (((date & 0B00110000)>>4)*10 + (date & 0B00001111)); // 1-31
-    month   = (((month & 0B00010000)>>4)*10 + (month & 0B00001111)); //msb7 is century overflow
-    year    = (((year & 0B11110000)>>4)*10 + (year & 0B00001111));
-    */
-  }
-  else {
-    //oh noes, no data!
-  }
- /*
-  switch (day) {
-    case 1:
-      strcpy(weekDay, "Sun");
-      break;
-    case 2:
-      strcpy(weekDay, "Mon");
-      break;
-    case 3:
-      strcpy(weekDay, "Tue");
-      break;
-    case 4:
-      strcpy(weekDay, "Wed");
-      break;
-    case 5:
-      strcpy(weekDay, "Thu");
-      break;
-    case 6:
-      strcpy(weekDay, "Fri");
-      break;
-    case 7:
-      strcpy(weekDay, "Sat");
-      break;
-  }
-  */
+  Wire.requestFrom(DS3231_I2C_ADDRESS, 7);
+  // request seven bytes of data from DS3231 starting from register 00h
+  curtm[0] = bcdToDec(Wire.read() & 0x7f);
+  curtm[1] = bcdToDec(Wire.read());
+  curtm[2] = bcdToDec(Wire.read() & 0x3f);
+  curtm[3] = bcdToDec(Wire.read());
+  curtm[4] = bcdToDec(Wire.read());
+  curtm[5] = bcdToDec(Wire.read());
+  curtm[6] = bcdToDec(Wire.read());
 }
