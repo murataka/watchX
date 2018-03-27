@@ -11,8 +11,7 @@
 #include <Arduino.h>
 #include "english.h"
 #include "Tones.h"
-#define BUFFSIZE_STR_MONTHS 100
-#define BUFFSIZE_STR_DAYS 100
+
 
  #define SMALLFONT_WIDTH 5
  #define SMALLFONT_HEIGHT 8
@@ -36,7 +35,7 @@ const uint16_t beep[]PROGMEM  = {
 
 };
 
-const byte watchXui[] PROGMEM ={
+const byte watchXui[] PROGMEM ={ ////small icons
 0xFF,0x81,0xBD,0x81,0x81,0x81,0x81,0x81,
 0x81,0x81,0x81,0x81,0x81,0x81,0xFF,0x3C,
 0xFF,0x81,0xBD,0xBD,0xBD,0xBD,0x81,0x81,
@@ -303,7 +302,7 @@ const byte dow_bits[] PROGMEM ={
 
 
 // 5x8
-const byte smallFont[][5] PROGMEM ={
+const byte smallFont[] PROGMEM ={
 CHARACTER_SET
 };
 const byte font_mid[] PROGMEM ={
@@ -349,31 +348,6 @@ const byte font_mid[] PROGMEM ={
     0x7E,0xFE,0xFE,0xFE,0xFE,0xF0,0xF0,0xF0,0xF0,0xF0,0xF0,0xF0,0xF0,0xF0,0xFF,0xFF,0xFF,0xFF,0x7F
   };
 
-const char months[12][BUFFSIZE_STR_MONTHS] PROGMEM = {
-  "JAN",
-  "FEB",
-  "MAR",
-  "APR",
-  "MAY",
-  "JUN",
-  "JUL",
-  "AUG",
-  "SEP",
-  "OCT",
-  "NOV",
-  "DEC"
-};
-
-
-const char days[7][BUFFSIZE_STR_DAYS] PROGMEM = {
-  "MON",
-  "TUE",
-  "WED",
-  "THU",
-  "FRI",
-  "SAT",
-  "SUN"
-};
 
 
 #endif /* RESOURCES_H_ */

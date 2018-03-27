@@ -29,6 +29,11 @@ byte bcdToDec(byte val)
 void setDateTime( )
 {
   // sets time and date data to DS3231
+  year=18;
+  date=28;
+  day=2;
+  month=2;
+  seconds=57;
   Wire.beginTransmission(DS3231_I2C_ADDRESS);
   Wire.write(0); // set next input to start at the seconds register
   Wire.write(decToBcd(seconds)); // set seconds

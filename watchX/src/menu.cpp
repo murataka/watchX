@@ -88,7 +88,7 @@ for(   char a=-1;a<4;a++)
 
 if(menuindex+a-1>=0){
   if(menuindex==MENU_GYROCUBE&&speed==0)
-  gyroCube(8);
+ gyroCube(8);
 
 if(menuindex!=MENU_GYROCUBE|| menuindex+a-1!=MENU_GYROCUBE||speed!=0)
   draw_bitmap(_x+(a*48) , 16, menus_bits+((menuindex+a-1)*4*32), 32, 32, false, 0);

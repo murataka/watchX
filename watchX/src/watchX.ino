@@ -31,7 +31,7 @@
 #include "soundfx.h"
 #include "menu.h"
 //#include "gyroaccel.h"
-//include "bluetooth.h"
+#include "bluetooth.h"
 
 
 
@@ -69,12 +69,12 @@ if(!animating) lastcolon=0;
   animating=!animating;
 curtm[0]+=animating;
 if(animating){
-  if(curtm[0]==60){
+  if(curtm[0]==59){
 
      curtm[0]=0;
 
      curtm[1]++;
-          if(curtm[1]==60){
+          if(curtm[1]==59){
               curtm[1]=0;
               curtm[2]++;
 
@@ -101,9 +101,9 @@ void gotoMenu( ){
          functions[sw2Func]=menusw2;
           functions[sw3Func]=menusw3;
           speed=0;
-      //    functions[batteryFunc]=NULL;
+          functions[batteryFunc]=NULL;
         //  batteryFunc=drawBattery;
-    //     functions[usbFunc]=NULL;
+      functions[usbFunc]=NULL;
          // Old_DEVICESTATE=DEVICESTATE; /// TODO DEFINE ACTIONCOMPLETE
 
 
@@ -152,7 +152,7 @@ void gotoWatchFace(){
     speed=4;
   //  sw2Func=gotoMenu;
   //  sw3Func=NULL;
-//functions[  bleFunc] =handleBle;
+functions[  bleFunc] =handleBle;
    functions[usbFunc]=drawUsb;
 functions[batteryFunc]=drawBattery;
 functions[updateFunc]=updateThings;
@@ -164,7 +164,7 @@ functions[updateFunc]=updateThings;
       functions[sw3Func]=NULL;
     //  sw2Func=gotoMenu;
     //  sw3Func=NULL;
-  //functions[  bleFunc] =handleBle;
+  functions[  bleFunc] =handleBle;
      functions[usbFunc]=drawUsb;
   functions[batteryFunc]=drawBattery;
   functions[updateFunc]=updateThings;
@@ -262,7 +262,7 @@ digitalWrite(rstPin, HIGH);
      * 15,7  means right-bottom block of lcd:                     *
      *                         that is 15*8+7=127-th pixel        *
      *                                 7*8+7=63-rd pixel          */
-setDateTime();
+//setDateTime();
 
 pinMode(13,OUTPUT);
 

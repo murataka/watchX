@@ -17,12 +17,38 @@ extern unsigned char DEVICESTATE;
 //unsigned int i=0;
 
 void printWatchFace( ){
+  const char months[12][BUFFSIZE_STR_MONTHS]  = {
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC"
+  };
+
+
+  const char days[7][BUFFSIZE_STR_DAYS]  = {
+    "MON",
+    "TUE",
+    "WED",
+    "THU",
+    "FRI",
+    "SAT",
+    "SUN"
+  };
+
  //char strtmpbuf[10];
 clearAll();
  // uint8_t buf[128*5];
 //    NanoCanvas c(128,40,buf);
 
-
+/*
  for(int a=0;a<3;a++){
       //strtmpbuf[a]= ;
       draw_bitmap( 16+ (a*6), 0, smallFont[pgm_read_byte_near(days[day]+a)-32], 5, 8, false, 0);
@@ -31,7 +57,7 @@ clearAll();
 
 
     }
-
+*/
   //  strtmpbuf[3]=0;
 //    c.charF6x8(16, 0,strtmpbuf);
 
@@ -40,28 +66,42 @@ clearAll();
     ///////////////
    // ltoa(date,strtmpbuf,10);
     //if(date<10) //c.charF6x8(42, 0,"0");
-       draw_bitmap( 42, 0, smallFont[(date/10)+16], 5, 8, false, 0);
+    //   draw_bitmap( 42, 0, smallFont[(date/10)+16], 5, 8, false, 0);
 
 
-         draw_bitmap( 48, 0, smallFont[(date%10)+16], 5, 8, false, 0);
+      //   draw_bitmap( 48, 0, smallFont[(date%10)+16], 5, 8, false, 0);
 
   //  c.charF6x8(48, 0,strtmpbuf);
 
 
     //////////////
     {
-    unsigned char b[4]={2,0,0,0};
+    unsigned char b[16]="    00     2000";
+memcpy(b,days[day],3);
 
-    b[2]=year/10;
-    b[3]=year%10;
+memcpy(b+7,months[month],3);
 
-    for(char a=0;a<4;a++){
+    b[13]+=year/10;
+    b[14]+=year%10;
+    b[4]+=date/10;
+    b[5]+=date%10;
+
+drawString(20,0,b,smallFont);
+
+
+//drawString(42,0,"30",smallFont);
+//    drawString(60,0,months[month],smallFont);
+
+  /*  for(char a=0;a<4;a++){
     //  strtmpbuf[a]= pgm_read_byte_near(months[month]+a);
   //  draw_bitmap( 0, 32, font_mid, 19, 24, false, 0);
 
        draw_bitmap( 86+(a*6), 0, smallFont[b[a]+16], 5, 8, false, 0);
     }
+    */
   }
+
+
   //  strtmpbuf[3]=0;
    // c.charF6x8(60, 0,strtmpbuf);
 
@@ -135,11 +175,11 @@ if(animating&&seconds==0){
 }else{
 
 //  draw_bitmap( 56, 16, font_mid+((minutes/10)*57), 19, 24, false, 0);
-  draw_bitmap( 76, 16, font_mid+(((minutes)%10)*57), 19, 24, false, 0);
+  draw_bitmap( 76, 16, font_mid+(((minutes+1)%10)*57), 19, 24, false, 0);
 
 }
 
-if(animating&&seconds==0&&minutes%10==0){
+if(animating&&seconds==0&&minutes%10==9){
 //  draw_bitmap( 56, 16, font_mid+(((minutes+1)%10)*57), 19, 24, false, (lastcolon*24/256));
 //  draw_bitmap( 56, 16, font_mid+(((minutes)%10)*57), 19, 24, false, ((lastcolon-256)*24/256));
 
@@ -155,27 +195,6 @@ if(animating&&seconds==0&&minutes%10==0){
 
 
 
-///////////////////////////////
-////draw_bitmap( 117, 48-(lastcolon/8), small2Font+(((seconds+1)%10)*22), 11,  16, false,(((128-lastcolon)*48/255)));
-
-
-
-
-//draw_bitmap( 117, 48-((lastcolon)*32/255), small2Font+(((seconds+1)%10)*22), 11,  16, false,-((128-lastcolon)*32/255));
-
-//  draw_bitmap( 117, 24-(lastcolon*48/255), small2Font+(((seconds)%10)*22), 11, 16, false, 0);
-//  draw_bitmap( 117, 48-lastcolon*48/255, small2Font+(((seconds+1)%10)*22), 11,  16, false, 0);
-
-  //  c.fillRect(48,23,52,34,animating?0:0B11001111);
-
-// c.drawBitmap(62,16,19,24,font_mid+((minutes/10)*57));
-  //   c.drawBitmap(84,16,19,24,font_mid+((minutes%10)*57));////30 byte
-
-  //   c.drawBitmap(105,24,11,16,small2Font+((seconds/10)*22));
-  //   c.drawBitmap(117,24,11,16,small2Font+((seconds%10)*22));////30 byte
-
-
-  //  c.blt(0,0);
 
 
       if(lastcolon<256){

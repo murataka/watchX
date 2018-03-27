@@ -86,6 +86,19 @@ void clearAll(){
 
   memset(mbuf, 0x00, 128*8);
 }
+
+void drawString(uint8_t x,uint8_t y,const char*s,const byte* font,char startindex=-32){
+char a=0;
+if(!s)return;
+  while(s[a]!=0){
+  //  strtmpbuf[a]= pgm_read_byte_near(months[month]+a);
+//  draw_bitmap( 0, 32, font_mid, 19, 24, false, 0);
+
+     draw_bitmap( x+(a*6), 0, font+((s[a]+startindex)*5), 5, 8, false, 0);
+     a++;
+  }
+
+}
 void drawLine( uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2)
 {
   uint8_t tmp;
