@@ -150,7 +150,7 @@ speed=4;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
-if(animating&&seconds%10==0){
+if(animating&&seconds%10==9){
  draw_bitmap( 104, 24, small2Font+(((seconds %60 )/10)*22), 11,  16, false,(lastcolon*22/256)); //// top side
 
   draw_bitmap( 104, 24, small2Font+((((seconds +1 )%60)/10)*22), 11,  16, false,((lastcolon-256)*22/256)); //// bottom side
