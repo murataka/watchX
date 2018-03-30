@@ -2,6 +2,7 @@
 #include "oled.h"
 #include <SPI.h>
  unsigned char animation_offsetY=0;
+uint8_t uiX,uiY;
 
 /// TODO global left right position setting
 void ssd1306_configure(){
@@ -83,18 +84,18 @@ void ssd1306_sendData(uint8_t data)
 }
 
 void clearAll(){
-
+//if(animation_offsetY==0)
   memset(mbuf, 0x00, 128*8);
 }
 
-void drawString(uint8_t x,uint8_t y,const char*s,const byte* font,char startindex=-32){
+void drawString(uint8_t x,uint8_t y,const char*s,const byte* font,char startindex){
 char a=0;
 if(!s)return;
   while(s[a]!=0){
   //  strtmpbuf[a]= pgm_read_byte_near(months[month]+a);
 //  draw_bitmap( 0, 32, font_mid, 19, 24, false, 0);
 
-     draw_bitmap( x+(a*6), 0, font+((s[a]+startindex)*5), 5, 8, false, 0);
+     draw_bitmap( x+(a*6),  y, font+((s[a]+startindex)*5), 5, 8, false, 0);
      a++;
   }
 
@@ -108,7 +109,8 @@ void drawLine( uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2)
   int8_t ystep;
 
   uint8_t swapxy = 0;
-
+y1+=animation_offsetY;
+y2+=animation_offsetY;
   /* no intersection check at the moment, should be added... */
 
   if ( x1 > x2 ) dx = x1-x2; else dx = x2-x1;

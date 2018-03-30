@@ -59,4 +59,52 @@ void getPressure(){
   Wire.write(0xA0);
   // Stop I2C Transmission
   Wire.endTransmission();
+
+
+
+  for (int i = 0; i < 8; i++)
+  {
+    // Start I2C Transmission
+    Wire.beginTransmission(Addr);
+    // Select data register
+    Wire.write((247 + i));
+    // Stop I2C Transmission
+    Wire.endTransmission();
+
+    // Request 1 byte of data
+    Wire.requestFrom(Addr, 1);
+
+    // Read 1 byte of data
+    if (Wire.available() == 1)
+    {
+      data[i] = Wire.read();
+    }
+  }
+
+  // Convert pressure and temperature data to 19-bits
+  long adc_p = (((long)(data[0] & 0xFF) * 65536) + ((long)(data[1] & 0xFF) * 256) + (long)(data[2] & 0xF0)) / 16;
+  long adc_t = (((long)(data[3] & 0xFF) * 65536) + ((long)(data[4] & 0xFF) * 256) + (long)(data[5] & 0xF0)) / 16;
+
+  // Temperature offset calculations
+  double var1 = (((double)adc_t) / 16384.0 - ((double)dig_T1) / 1024.0) * ((double)dig_T2);
+  double var2 = ((((double)adc_t) / 131072.0 - ((double)dig_T1) / 8192.0) *
+                 (((double)adc_t) / 131072.0 - ((double)dig_T1) / 8192.0)) * ((double)dig_T3);
+  double t_fine = (long)(var1 + var2);
+  double cTemp = (var1 + var2) / 5120.0;
+  double fTemp = cTemp * 1.8 + 32;
+
+  // Pressure offset calculations
+  var1 = ((double)t_fine / 2.0) - 64000.0;
+  var2 = var1 * var1 * ((double)dig_P6) / 32768.0;
+  var2 = var2 + var1 * ((double)dig_P5) * 2.0;
+  var2 = (var2 / 4.0) + (((double)dig_P4) * 65536.0);
+  var1 = (((double) dig_P3) * var1 * var1 / 524288.0 + ((double) dig_P2) * var1) / 524288.0;
+  var1 = (1.0 + var1 / 32768.0) * ((double)dig_P1);
+  double p = 1048576.0 - (double)adc_p;
+  p = (p - (var2 / 4096.0)) * 6250.0 / var1;
+  var1 = ((double) dig_P9) * p * p / 2147483648.0;
+  var2 = p * ((double) dig_P8) / 32768.0;
+  double pressure = (p + (var1 + var2 + ((double)dig_P7)) / 16.0) / 100;
+
+
 }

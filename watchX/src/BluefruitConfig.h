@@ -54,5 +54,3 @@
 #define BLUEFRUIT_SPI_SCK              13
 #define BLUEFRUIT_SPI_MISO             12
 #define BLUEFRUIT_SPI_MOSI             11
-
-

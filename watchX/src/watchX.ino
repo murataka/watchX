@@ -10,16 +10,15 @@
 #include "cpu.h"
 #include "timerone.h"
 #include "buzzer.h"
+#include "gyroaccel.h"
 #include "gyrocube.h"
-// Define which sensors are attached
-//#define SENSORS_BMP180_ATTACHED
-//#define SENSORS_HMC5883L_ATTACHED
-//#include <MPU6050.h>
+#include "mag3110.h"
+#include "pressure.h"
 
 #include "resources.h"
 #include "usb.h"
 #include "watchface.h"
-#include "stopwatch.h"
+
 #include "menu.h"
 #include "battery.h"
 #include "diag.h"
@@ -30,23 +29,24 @@
 #include <Tones.h>
 #include "soundfx.h"
 #include "menu.h"
-//#include "gyroaccel.h"
+
 #include "bluetooth.h"
+#include "watchXmpu6050.h"
+#include "settings.h"
 
 
-
-
-
+MPU6050 mpu;
 //BMP280 bmp280;
 volatile uint8_t animating=1;
  unsigned char mbuf[128*8];
 extern volatile uint8_t animating;
 volatile unsigned long lastcolon;
+char strtmpbuf[50];
 
 //extern volatile unsigned long lastcolon;
 func_type functions[HANDLEDFUNCTIONS_COUNT];
 
-func_type oldUIFunc=NULL;
+func_type nextUIFunc=NULL;
 
 //MPU6050 accelgyro(0x69);
 
@@ -90,26 +90,6 @@ if(animating){
 }
 
 
-void gotoMenu( ){
-//  menuindex=0;
-       if((~SW1_WASPUSHED)&SW1_PUSHED){
-//    ssd1306_clearScreen();
-        //  usbFunc= drawUsb;
-      //  oldUIFunc=printWatchFace;
-         functions[ uiFunc]= drawMenus;
-         functions[sw1Func]=menusw1;
-         functions[sw2Func]=menusw2;
-          functions[sw3Func]=menusw3;
-          speed=0;
-          functions[batteryFunc]=NULL;
-        //  batteryFunc=drawBattery;
-      functions[usbFunc]=NULL;
-         // Old_DEVICESTATE=DEVICESTATE; /// TODO DEFINE ACTIONCOMPLETE
-
-
-        }
-}
-
 
 
 
@@ -123,104 +103,141 @@ void updateThings( ){
 
   if(millis()-batteryread>1000){
     batterylevel=readBattery(BATTERY_EN,BATTERY_PIN);
-    batteryread=millis();
+if(batterylevel<530){
 
-/*
-    bmp280.triggerMeasurement();
-
-    bmp280.awaitMeasurement();
-
-    bmp280.getTemperature(temperature);
-
-    bmp280.getAltitude(altitude);  //// TODO altitude update frequency setting ?
-
-    bmp280.getPressure(pressure);
-*/
-  //  accelgyro.getMotion6(&RawValue[0], &RawValue[1], &RawValue[2],         &RawValue[3], &RawValue[4], &RawValue[5]);
+}else{
+   mpu.readRawGyro();
+// MPU6050_update();
+//  MPU6050_calc();
+//  getPressure();
+//  handleBle(true);
+}
 
 
+
+  batteryread=millis();
 
     }
   //}
 }
+void gotoMenu( bool fromfunction){
+//if(menuindex<2)
+//menuindex=1;
+    //  if(animation_offsetY==0)
+  //     if(fromfunction|| (~SW1_WASPUSHED)&SW1_PUSHED){
+//    ssd1306_clearScreen();
+        //  usbFunc= drawUsb;
+        nextUIFunc=drawMenus;
+//      functions[uiFunc]= drawMenus;
+         functions[sw1Func]=menusw1;
+         functions[sw2Func]=menusw2;
+          functions[sw3Func]=menusw3;
+        //  speed=0;
+          functions[batteryFunc]=NULL;
+        //  batteryFunc=drawBattery;
+      functions[usbFunc]=NULL;
+         // Old_DEVICESTATE=DEVICESTATE; /// TODO DEFINE ACTIONCOMPLETE
 
-void gotoWatchFace(){
-  functions[uiFunc]= printWatchFace;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
-    functions[sw1Func]=gotoMenu;
-    functions[sw2Func]=NULL;
-    functions[sw3Func]=NULL;
-    speed=4;
-  //  sw2Func=gotoMenu;
-  //  sw3Func=NULL;
-functions[  bleFunc] =handleBle;
-   functions[usbFunc]=drawUsb;
-functions[batteryFunc]=drawBattery;
-functions[updateFunc]=updateThings;
-  }
-  void gotoGyroFace(){
-    functions[uiFunc]= drawGyroCube;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
-      functions[sw1Func]=gotoMenu;
-      functions[sw2Func]=NULL;
-      functions[sw3Func]=NULL;
-    //  sw2Func=gotoMenu;
-    //  sw3Func=NULL;
-  functions[  bleFunc] =handleBle;
-     functions[usbFunc]=drawUsb;
-  functions[batteryFunc]=drawBattery;
-  functions[updateFunc]=updateThings;
-    }
-void gotoStopWatch(){
-         functions[uiFunc]=drawStopwatch;
-        functions[sw1Func]=gotoMenu;
-        functions[sw2Func]=NULL;
-        functions[sw3Func]=NULL;
 
+    //    }
 }
+void gotoSettings( bool fromfunction){
+//if(menuindex<2)
+//menuindex=1;
+  if(animation_offsetY==0)
+       if(fromfunction|| (~SW1_WASPUSHED)&SW1_PUSHED){
+//    ssd1306_clearScreen();
+        //  usbFunc= drawUsb;
+      ///  nextUIFunc=functions[ uiFunc];
+    nextUIFunc=drawSettings;
+         functions[sw1Func]=gotoMenu;
+         functions[sw2Func]=menusw2;
+          functions[sw3Func]=menusw3;
+        //  speed=0;
+          functions[batteryFunc]=NULL;
+        //  batteryFunc=drawBattery;
+      functions[usbFunc]=NULL;
+         // Old_DEVICESTATE=DEVICESTATE; /// TODO DEFINE ACTIONCOMPLETE
 
 
-/*
-void ssd1306_clearScreen()
-{
-    ssd1306_setBlock(0, 0, 0);
-    ssd1306_spiDataStart();
-    for(uint8_t m=(s_displayHeight >> 3); m>0; m--)
-    {
-        for(uint8_t n=s_displayWidth; n>0; n--)
-        {
-            SPI.transfer(data);
         }
-//        ssd1306_nextRamPage();
-    }
-    ssd1306_spiStop_hw();
 }
-*/
 
-/*
-void ssd1306_drawHLineEx(uint8_t x1, uint8_t y1, uint8_t x2)
-{
-    ssd1306_setRamBlock(x1, y1 >> 3, x2 - x1 + 1);
-    ssd1306_dataStart();
-    for (uint8_t x = x1; x <= x2; x++)
-    {
-        ssd1306_sendPixels((1 << (y1 & 0x07))^s_invertByte);
+
+void gotoWatchFace(bool fromfunction){
+  //  if(animation_offsetY==0)
+    //       if(fromfunction|| (~SW1_WASPUSHED)&SW1_PUSHED){
+          nextUIFunc= drawWatchFace;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
+          functions[sw1Func]=gotoMenu; /// TODO here i am
+          functions[sw2Func]=NULL;
+          functions[sw3Func]=NULL;
+        //  functions[ uiFunc];
+            //  nextUIFunc=functions[ uiFunc];
+        //  speed=4;
+        //  sw2Func=gotoMenu;
+        //  sw3Func=NULL;
+    //  functions[  bleFunc] =handleBle;
+         functions[usbFunc]=drawUsb;
+      functions[batteryFunc]=drawBattery;
+      functions[updateFunc]=updateThings;
+  //    }
+  }
+  void gotoGyroFace(bool fromfunction){
+      if(animation_offsetY==0)
+       if(fromfunction|| (~SW1_WASPUSHED)&SW1_PUSHED){
+            nextUIFunc=drawGyroCube;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
+            functions[sw1Func]=gotoMenu;
+            functions[sw2Func]=NULL;
+            functions[sw3Func]=NULL;
+            //    nextUIFunc=functions[ uiFunc];
+          //  sw2Func=gotoMenu;
+          //  sw3Func=NULL;
+      //  functions[  bleFunc] =handleBle;
+           functions[usbFunc]=drawUsb;
+        functions[batteryFunc]=drawBattery;
+        functions[updateFunc]=updateThings;
+      }
     }
-    ssd1306_endTransmission();
+void gotoStopWatch(bool fromfunction){
+   watchMode = 1;
+              nextUIFunc=drawWatchFace;
+              functions[sw1Func]=gotoMenu;
+              functions[sw2Func]=NULL;
+              functions[sw3Func]=NULL;
+
 }
-*/
+void gotoBlueTooth(bool fromfunction){
+    if(animation_offsetY==0)
+           if(fromfunction|| (~SW1_WASPUSHED)&SW1_PUSHED){
+                nextUIFunc=drawBle;
+              functions[sw1Func]=gotoMenu;
+              functions[sw2Func]=NULL;
+              functions[sw3Func]=NULL;
+      }
+}
+
+void gotoDiagnostic(bool fromfunction){
+    if(animation_offsetY==0)
+           if(fromfunction|| (~SW1_WASPUSHED)&SW1_PUSHED){
+              functions[uiFunc]=drawDiag;
+              functions[sw1Func]=gotoMenu;
+              functions[sw2Func]=NULL;
+              functions[sw3Func]=NULL;
+      }
+}
+
+
+
+
 
 const uint8_t melody[]={NOTE_B0};
-void timerOneTones(){
-
-//tone(BUZZER_PIN, NOTE_B0);
-}
-#define NDUR 100
 
 
 void setup()
 {
 
 soundenabled=true;
-sound.tone(1200, 100,1000, 50,1800, 200);
+//sound.tone(1200, 100,1000, 50,1800, 200);
 setPrescale();
 
 //timerOneFunc=timerOneTones;
@@ -233,7 +250,7 @@ setPrescale();
 
 //Serial.begin(115200);
 pinMode(rstPin, OUTPUT);
-
+pinMode(CHARGE_PIN,INPUT);
 pinMode(LED1, OUTPUT);
 pinMode(LED2, OUTPUT);
 
@@ -245,6 +262,14 @@ digitalWrite(rstPin, HIGH);
   digitalWrite(rstPin, HIGH);
   digitalWrite(dcPin, HIGH);
   digitalWrite(cesPin, HIGH);
+
+
+  pinMode(13,OUTPUT);
+
+     pinMode(BATTERY_EN, OUTPUT);
+    digitalWrite(BATTERY_EN,LOW);
+
+           pinMode(PIN_INTERRUPT, INPUT_PULLUP);
 
 //wdt_enable (WDTO_250MS);
  // wdt_disable();
@@ -264,14 +289,29 @@ digitalWrite(rstPin, HIGH);
      *                                 7*8+7=63-rd pixel          */
 //setDateTime();
 
-pinMode(13,OUTPUT);
 
-   pinMode(BATTERY_EN, OUTPUT);
-  digitalWrite(BATTERY_EN,LOW);
-
-         pinMode(PIN_INTERRUPT, INPUT_PULLUP);
  attachInterrupt(digitalPinToInterrupt(PIN_INTERRUPT), nextSecond, CHANGE);
 
+//MPU6050_Initialize();
+//MPU6050_begin();
+mpu.begin();
+mpu.setAccelPowerOnDelay(MPU6050_DELAY_3MS);
+
+mpu.setIntFreeFallEnabled(true);
+mpu.setIntZeroMotionEnabled(true);
+mpu.setIntMotionEnabled(true);
+
+mpu.setDHPFMode(MPU6050_DHPF_5HZ);
+
+mpu.setMotionDetectionThreshold(2);
+mpu.setMotionDetectionDuration(5);
+
+mpu.setZeroMotionDetectionThreshold(4);
+mpu.setZeroMotionDetectionDuration(2);
+
+MAG3110_begin();
+
+//   mpu6050.calcGyroOffsets(true);
 
 
 startSqw(); /// Starts 1 second SquareWave from DS3231
@@ -290,35 +330,43 @@ setDateTime();
     ssd1306_configure();
 
 //goto
-     gotoWatchFace();
-//gotoGyroFace();
+//functions[uiFunc]=drawWatchFace;
+    //  functions[  bleFunc] =handleBle;
+     gotoWatchFace(true);
+    // gotoDiagnostic(true);
+  //  ble_connect(); // TODO: bluetoot enable / disable
+updateThings();
 
 }
 //uint8_t buffer[64*128/8];
 
 void drawLoop( ){
 
-  for(int a=0;a<HANDLEDFUNCTIONS_COUNT;a++)
- handleFunction(functions[a]);
- if(oldUIFunc!=NULL&&oldUIFunc!=functions[uiFunc]){
+clearAll();
+
+ if(nextUIFunc!=NULL){
 
 //     ssd1306_sendCommand(SSD1306_SETSTARTLINE | (animPos) % 64);
-  //   handleFunction(oldUIFunc);
-//     animPos++;
-     //if(animPos==64){
-//      animPos=0;
-//      oldUIFunc=NULL;
-     // }
+//if(functions[uiFunc]!=NULL)
+  //  handleFunction(functions[uiFunc]);
+handleFunction(nextUIFunc);
+animation_offsetY++;
+     if(animation_offsetY>=64){
+      animation_offsetY=0;
+      functions[uiFunc]=nextUIFunc;
+ nextUIFunc=NULL;
+      }
 
  }else{
+//animation_offsetY=0;
 
-
+for(int a=3;a<HANDLEDFUNCTIONS_COUNT;a++)
+handleFunction(functions[a]);
 
 
  }
- //while(1);
-//handleFunction(drawMenus);
 
+ //while(1);
 
 
  ssd1306_drawBuffer(0, 0, 128,64, mbuf);
@@ -329,52 +377,46 @@ void drawLoop( ){
 void loop()
 {
 
-//if(micros()-lastdraw>16000){ ///// 60 frames per second
-//digitalWrite(13,(secondsofday%2)==0?LOW:HIGH);
-    //   ssd1306_sendCommand(SSD1306_SETSTARTLINE|16);
-                // 0xD3
-   // ssd1306_sendCommand(animPos);                                   // no offset
-//    animPos++;
+//  buttons = buttons | (((~PINF) & B10000000) >>4);
+//  buttons = buttons | (((~PIND) & B00010000) >>3); ///B00011000 => SQW pin _BV(4)
+
+//  DEVICESTATE=(USBDEVICE )|((digitalRead(SW1)==LOW))|((digitalRead(SW2)==LOW)<<1)|((digitalRead(SW3)==LOW)<<2);
+  DEVICESTATE= USBDEVICE|((((~PINB) & B11010000)+B00010000)>>5);//;//|((digitalRead(SW2)==LOW)<<1)|((digitalRead(SW3)==LOW)<<2);
+  if(DEVICESTATE!=Old_DEVICESTATE){
+//      ssd1306_fillScreen(0x00);
+//  interact();
+//buttonFX(2400);
+if(animation_offsetY==0)
+switch(DEVICESTATE&B00000111){
+    case 1:
+    if(~(SW1_WASPUSHED))
+      handleFunction(functions[sw1Func]);
+    break;
+    case 2:
+      if(~(SW2_WASPUSHED))
+      handleFunction(functions[sw2Func]);
+    break;
+    case 4:
+    if(~(SW3_WASPUSHED))
+      handleFunction(functions[sw3Func]);
+    break;
+
+
+
+}
+if(DEVICESTATE&B00000111){
+
+buttonFX(500|((DEVICESTATE&B00000111)*300));
+
+}
+
+      Old_DEVICESTATE=DEVICESTATE;
+    }
+
 digitalWrite(LED2,sound.playing()?HIGH: LOW);
 
-   DEVICESTATE=(USBDEVICE )|((digitalRead(SW1)==LOW))|((digitalRead(SW2)==LOW)<<1)|((digitalRead(SW3)==LOW)<<2);
+
      drawLoop();
-              if(DEVICESTATE!=Old_DEVICESTATE){
-            //      ssd1306_fillScreen(0x00);
-            //  interact();
-if(DEVICESTATE&0B00000111){
-  buttonFX(1200);
-
-}
-
-
-                  Old_DEVICESTATE=DEVICESTATE;
-                }
-   // DEVICESTATE=(USBDEVICE )|((digitalRead(SW1)==LOW))|((digitalRead(SW2)==LOW)<<1)|((digitalRead(SW3)==LOW)<<2);
- //  lastdraw=micros();
-
-//}
-/*
-if(millis()-lastinteract>100){
-
-
-              if(DEVICESTATE!=Old_DEVICESTATE){
-            //      ssd1306_fillScreen(0x00);
-            //  interact();
-                  Old_DEVICESTATE=DEVICESTATE;
-                }
-
-   lastinteract=millis();
-}
-
-if(millis()-lastsecond>1000){
-
-//   fps=framecount;
-  // framecount=0;
-//    interact();
- //  lastsecond=millis();
-  }
-*/
 
 
 
@@ -382,6 +424,6 @@ if(millis()-lastsecond>1000){
 }
 
 void handleFunction(func_type f){
-  if(f!=NULL)f( );
+  if(f!=NULL)f( false );
 
 }

@@ -20,8 +20,8 @@
 #define MINIMUM_FIRMWARE_VERSION    "0.6.6"
 #define MODE_LED_BEHAVIOUR          "MODE"
 
-void bleUI();
-void handleBle();
+void drawBle();
+void handleBle(bool fromfunction);
 void ble_connect();
 void ble_sw1();
 /* ...hardware SPI, using SCK/MOSI/MISO hardware SPI pins and then user selected CS/IRQ/RST */

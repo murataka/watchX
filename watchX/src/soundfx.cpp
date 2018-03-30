@@ -9,6 +9,6 @@ bool outEnabled(){
 Tones sound(outEnabled);
 void buttonFX(uint16_t tone=1200){
 
-sound.tone(tone, 100);
+sound.tone(tone, 100,tone+300,50);
 
 }

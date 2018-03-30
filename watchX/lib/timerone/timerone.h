@@ -4,7 +4,7 @@
 
 
 #ifndef func_type
-typedef void (*func_type)(     );
+typedef void (*func_type)(  bool fromfunction   );
 #endif
 
 extern func_type timerOneFunc;

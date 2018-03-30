@@ -1,14 +1,12 @@
 #ifndef WATCHX_H
 #define WATCHX_H
 
-//#include <nano_gfx.h>
-//#include <ssd1306.h>
-
+#include <Arduino.h>
 #include "batteryui.h"
 #include "watchface.h"
 #include "menu.h"
 #include "temperature.h"
-
+#include "watchXmpu6050.h"
 #define SW1 8
 #define SW2 11
 #define SW3 10
@@ -18,6 +16,10 @@
 #define BUZZER_PIN 9
 
 
+
+
+
+extern MPU6050 mpu;
 
 extern volatile uint8_t animating;
 extern volatile unsigned long lastcolon;
@@ -43,7 +45,7 @@ extern unsigned char Old_DEVICESTATE;
 
 
 
-extern char strtmpbuf[];
+//extern char strtmpbuf[];
 //extern   unsigned char buf[128*64/8];
 //extern  NanoCanvas c;
 
@@ -53,7 +55,7 @@ enum ANIMATIONS{LINEARX=0,LINEARY,SWINGX,SWINGY};
 
 enum WATCHKEYS{PREVKEY=10,NEXTKEY=11,SELECTKEY=8};
 
-typedef void (*func_type)(     );
+typedef void (*func_type)(  bool fromfunction   );
 
 
 #define USBDEVICE UDADDR & _BV(ADDEN)
@@ -75,30 +77,33 @@ typedef void (*func_type)(     );
 #define SECOND_CHANGED DEVICESTATE&8
 #define SECOND_WASCHANGED Old_DEVICESTATE&8
 
-#define HANDLEDFUNCTIONS_COUNT 8
-#define usbFunc 7
-#define sw1Func 1
-#define sw2Func 2
-#define sw3Func 3
+#define HANDLEDFUNCTIONS_COUNT 5
+#define usbFunc 0
+#define sw1Func 7
+#define sw2Func 6
+#define sw3Func 5
 #define uiFunc 4
-#define batteryFunc 5
-#define bleFunc 6
-#define updateFunc 0
+#define batteryFunc 2
+#define bleFunc 1
+#define updateFunc 3
 
 extern unsigned char DEVICESTATE;
 //extern char *activekeyframe;
 extern char strtmpbuf[];
 extern unsigned char mbuf[128*8];
+extern func_type nextUIFunc;
+
 //extern func_type usbFunc ,sw1Func,sw2Func,sw3Func,uiFunc,batteryFunc,bleFunc;
 extern func_type functions[];
 void handleFunction(func_type f);
 
-void gotoMenu(  );
-void gotoWatchFace();
-void gotoGyroFace();
-
-void gotoStopWatch();
-
+void gotoMenu( bool fromfunction =false);
+void gotoWatchFace(bool fromfunction=false);
+void gotoGyroFace(bool fromfunction=false);
+void gotoDiagnostic(bool fromfunction=false);
+void gotoStopWatch(bool fromfunction=false);
+void gotoBlueTooth(bool fromfunction=false);
+void gotoSettings(bool fromfunction=false);
 //void drawFun(  char *cmd);
 
 
