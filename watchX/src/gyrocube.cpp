@@ -1,6 +1,9 @@
 #include "gyrocube.h"
 #include "watchX.h"
 #include "oled.h"
+#include "gyroaccel.h"
+
+
 
 // Overall scale and perspective distance
 uint8_t sZ = 4, scale = 8;
@@ -129,6 +132,6 @@ char r=1;
 
 }
 void drawGyroCube(){
-clearAll();
+
 gyroCube(16);
 }

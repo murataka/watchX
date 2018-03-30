@@ -75,14 +75,14 @@
 //#define byte unsigned char
 extern unsigned char mbuf[128*8];
 
-
+extern uint8_t uiX,uiY;
 extern unsigned char animation_offsetY;
 void ssd1306_drawBuffer(byte x, byte y, byte w, byte h, const byte *buf);
 void drawString(uint8_t x,uint8_t y,const char*s,const byte* font,char startindex=-32);
 
 void ssd1306_sendCommand(uint8_t command);
 void ssd1306_configure();
-void draw_bitmap(byte x, byte yy, const byte* bitmap, byte w, byte h, bool invert, byte offsetY);
+void draw_bitmap(byte x, byte yy, const byte* bitmap, byte w, byte h, bool invert=false, byte offsetY=0);
  byte readPixels(const byte* loc, bool invert);
  void ssd1306_spiStop_hw();
 void ssd1306_spiCommandStart();

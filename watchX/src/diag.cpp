@@ -1,11 +1,14 @@
 #include "watchX.h"
 #include "diag.h"
+#include "oled.h"
 
 //#include "gyroaccel.h"
 
 //unsigned long last=0;
 
 void drawDiag(){
+
+  drawString(16,0,"< DIAGNOSTICS >",smallFont);
 /*
 if(millis()-last>1000){
   batterylevel=readBattery();

@@ -18,30 +18,17 @@ void drawUsb(  ){
 
       //NanoCanvas c(24,8,buf);
         if(DEVICESTATE&128){
-           //c.drawBitmap(2, 0, 16,8, usbIcon);
+        //   draw_bitmap(40, 0, watchXui,8,8,false,0);
+if(digitalRead(CHARGE_PIN)==LOW&& batterylevel<630)
+draw_bitmap( 36, 56, watchXui+64, 8, 8, false, 0);
+//
+draw_bitmap(18, 56, watchXui+80,16,8,false,0);
 
+//
 
-           draw_bitmap( 0, 54, watchXui, 16, 8, false, 0);
-
-
-  draw_bitmap( 18, 54, watchXui+64, 8, 8, false, 0);
-        if(batterylevel<4.15f){
-
-            //  uint8_t buf3[8];
-
-
-
-        //    c.drawBitmap(18, 0, 8,8, chargeIcon);
-
-}
     }
 
-//c.blt(16,7);
 
-  //sprintf(strtmpbuf, "%d.%02d", (int)batterylevel, abs((int)(batterylevel*100)%100));
-
-//  SPRITE sprite;
-  //  canvas.printFixed(0, 0, "USB" );
 //  sprite = ssd1306_createSprite( 112, 56, 16, usbIcon );
 
   /* Draw sprite on the display */

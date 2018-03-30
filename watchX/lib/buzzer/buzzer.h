@@ -1,5 +1,6 @@
 #ifndef BUZZER_H
 #define BUZZER_H
+/*
 /// Buzzer tones
 #define TONE_c 261
 #define TONE_d 294
@@ -113,6 +114,6 @@
 #define NOTE_CS8 4435
 #define NOTE_D8  4699
 #define NOTE_DS8 4978
-
+*/
 
 #endif

@@ -11,12 +11,12 @@ extern unsigned char DEVICESTATE;
 //uint8_t buf2[16*2];
 
 
-
+  int speed;
 
 
 //unsigned int i=0;
 
-void printWatchFace( ){
+void drawWatchFace( ){
   const char months[12][BUFFSIZE_STR_MONTHS]  = {
     "JAN",
     "FEB",
@@ -44,7 +44,7 @@ void printWatchFace( ){
   };
 
  //char strtmpbuf[10];
-clearAll();
+
  // uint8_t buf[128*5];
 //    NanoCanvas c(128,40,buf);
 
@@ -115,8 +115,8 @@ drawString(20,0,b,smallFont);
 
 
 
-  draw_bitmap( 0, 16, font_mid+((hours/10)*57), 19, 24, false, 0);
-  draw_bitmap( 20, 16, font_mid+((hours%10)*57), 19, 24, false, 0);
+  draw_bitmap( 0, 24, font_mid+((hours/10)*57), 19, 24, false, 0);
+  draw_bitmap( 22, 24, font_mid+((hours%10)*57), 19, 24, false, 0);
 
 
   //draw_bitmap( 104, 24, small2Font+((seconds/10)*22), 11, 16, false, 0);
@@ -139,25 +139,25 @@ drawString(20,0,b,smallFont);
 
 
 if(animating){
- draw_bitmap( 117, 24, small2Font+(((seconds  )%10)*22), 11,  16, false,(lastcolon*22/256)); //// top side
+ draw_bitmap( 117, 32, small2Font+(((seconds  )%10)*22), 11,  16, false,(lastcolon*22/256)); //// top side
 
-  draw_bitmap( 117, 24, small2Font+(((seconds +1 )%10)*22), 11,  16, false,((lastcolon-256)*22/256)); //// bottom side
+  draw_bitmap( 117, 32, small2Font+(((seconds +1 )%10)*22), 11,  16, false,((lastcolon-256)*22/256)); //// bottom side
 
 
 }else{
-  draw_bitmap( 117, 24, small2Font+(((seconds +1 )%10)*22), 11,  16, false,0); //// bottom side
+  draw_bitmap( 117, 32, small2Font+(((seconds +1 )%10)*22), 11,  16, false,0); //// bottom side
 speed=4;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
-if(animating&&seconds%10==9){
- draw_bitmap( 104, 24, small2Font+(((seconds %60 )/10)*22), 11,  16, false,(lastcolon*22/256)); //// top side
+if(animating&&seconds%10==9||seconds==0 ){
+ draw_bitmap( 104, 32, small2Font+(((seconds %60 )/10)*22), 11,  16, false,(lastcolon*22/256)); //// top side
 
-  draw_bitmap( 104, 24, small2Font+((((seconds +1 )%60)/10)*22), 11,  16, false,((lastcolon-256)*22/256)); //// bottom side
+  draw_bitmap( 104, 32, small2Font+((((seconds +1 )%60)/10)*22), 11,  16, false,((lastcolon-256)*22/256)); //// bottom side
 
 
 }else{
-  draw_bitmap( 104, 24, small2Font+((((seconds +1) %60 )/10)*22), 11,  16, false,0); //// bottom side
+  draw_bitmap( 104, 32, small2Font+((((seconds +1) %60 )/10)*22), 11,  16, false,0); //// bottom side
 
 }
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -169,13 +169,13 @@ if(animating&&seconds==0){
 //  draw_bitmap( 56, 16, font_mid+(((minutes+1)%10)*57), 19, 24, false, (lastcolon*24/256));
 //  draw_bitmap( 56, 16, font_mid+(((minutes)%10)*57), 19, 24, false, ((lastcolon-256)*24/256));
 
-  draw_bitmap( 76, 16, font_mid+(((minutes)%10)*57), 19, 24, false, (lastcolon*24/256));
-  draw_bitmap( 76, 16, font_mid+(((minutes+1)%10)*57), 19, 24, false, ((lastcolon-256)*24/256));
+  draw_bitmap( 78, 24, font_mid+(((minutes)%10)*57), 19, 24, false, (lastcolon*24/256));
+  draw_bitmap( 78, 24, font_mid+(((minutes+1)%10)*57), 19, 24, false, ((lastcolon-256)*24/256));
 
 }else{
 
 //  draw_bitmap( 56, 16, font_mid+((minutes/10)*57), 19, 24, false, 0);
-  draw_bitmap( 76, 16, font_mid+(((minutes+1)%10)*57), 19, 24, false, 0);
+  draw_bitmap( 78, 24, font_mid+(((minutes+1)%10)*57), 19, 24, false, 0);
 
 }
 
@@ -183,13 +183,13 @@ if(animating&&seconds==0&&minutes%10==9){
 //  draw_bitmap( 56, 16, font_mid+(((minutes+1)%10)*57), 19, 24, false, (lastcolon*24/256));
 //  draw_bitmap( 56, 16, font_mid+(((minutes)%10)*57), 19, 24, false, ((lastcolon-256)*24/256));
 
-  draw_bitmap( 56, 16, font_mid+(((minutes)/10)*57), 19, 24, false, (lastcolon*24/256));
-  draw_bitmap( 56, 16, font_mid+(((minutes+1)/10)*57), 19, 24, false, ((lastcolon-256)*24/256));
+  draw_bitmap( 56, 24, font_mid+(((minutes)/10)*57), 19, 24, false, (lastcolon*24/256));
+  draw_bitmap( 56, 24, font_mid+(((minutes+1)/10)*57), 19, 24, false, ((lastcolon-256)*24/256));
 
 }else{
 
 //  draw_bitmap( 56, 16, font_mid+((minutes/10)*57), 19, 24, false, 0);
-  draw_bitmap( 56, 16, font_mid+(((minutes)/10)*57), 19, 24, false, 0);
+  draw_bitmap( 56, 24, font_mid+(((minutes)/10)*57), 19, 24, false, 0);
 
 }
 
@@ -198,11 +198,10 @@ if(animating&&seconds==0&&minutes%10==9){
 
 
       if(lastcolon<256){
-        for(char a=-2;a<2;a++){
 
-    draw_bitmap(48+a,24,COLON,1,8,false,0);
+    draw_bitmap(46,24,watchXui+144,6,24,false,0);
 
-    }
+
 
 
       }

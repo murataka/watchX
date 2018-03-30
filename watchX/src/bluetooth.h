@@ -20,7 +20,7 @@
 #define MINIMUM_FIRMWARE_VERSION    "0.6.6"
 #define MODE_LED_BEHAVIOUR          "MODE"
 
-void bleUI();
+void drawBle();
 void handleBle();
 void ble_connect();
 void ble_sw1();

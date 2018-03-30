@@ -1,5 +1,6 @@
 #include "watchX.h"
 #include "bluetooth.h"
+#include "oled.h"
 
 /* ...hardware SPI, using SCK/MOSI/MISO hardware SPI pins and then user selected CS/IRQ/RST */
 Adafruit_BluefruitLE_SPI *ble=NULL;
@@ -12,34 +13,39 @@ void ble_sw1(){
 void error(const __FlashStringHelper*err){
 
   }
-
+  unsigned char i;
   void handleBle(){
 
-    unsigned char i=0;
-    /*
+if(ble->available()){ i=0;
+
      while ( ble->available() )
         {
-            ble->read();
-      //   strtmpbuf[i++]=ble->read();
 
-          functions[uiFunc]=bleUI;
-           functions[sw1Func]= ble_sw1;
+         strtmpbuf[i++]=ble->read();
+
+
+      //     functions[sw1Func]= ble_sw1;
          // Serial.print((char)c);
+//digitalWrite(13,HIGH);
 
         }
-          */
-       if(i>0){
-  //       strtmpbuf[i-1]=0;
-        uint8_t buf3[128* 4];
 
+       if(i>0){
+         strtmpbuf[i-1]=0;
+  //      uint8_t buf3[128* 4];
+          //digitalWrite(13);
     //    NanoCanvas c(128,32,buf3);
     //      c.charF6x8(0, 0,strtmpbuf);
     //  c.blt(0,0);
+        nextUIFunc=drawBle;
        }
-
+}
     }
-    void bleUI(){
+    void drawBle(){
      /// TODO do we need ?
+        drawString(4,0,"< INCOMING MESSAGE >",smallFont);
+        drawString(0,8,strtmpbuf,smallFont);
+
       }
      // int timepassed=0;
 void ble_connect(){
@@ -49,14 +55,14 @@ void ble_connect(){
    //error(F("Couldn't find Bluefruit, make sure it's in CoMmanD mode & check wiring?"));
   }
 
-
+/*
     if ( FACTORYRESET_ENABLE )
   {
     if ( ! ble->factoryReset() ){
      // error(F("Couldn't factory reset"));
     }
   }
-
+*/
   /* Disable command echo from Bluefruit */
   ble->echo(false);
   ble->verbose(false);  // debug info is a little annoying after this point!

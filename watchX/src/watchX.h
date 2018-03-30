@@ -43,7 +43,7 @@ extern unsigned char Old_DEVICESTATE;
 
 
 
-extern char strtmpbuf[];
+//extern char strtmpbuf[];
 //extern   unsigned char buf[128*64/8];
 //extern  NanoCanvas c;
 
@@ -89,6 +89,8 @@ extern unsigned char DEVICESTATE;
 //extern char *activekeyframe;
 extern char strtmpbuf[];
 extern unsigned char mbuf[128*8];
+extern func_type nextUIFunc;
+
 //extern func_type usbFunc ,sw1Func,sw2Func,sw3Func,uiFunc,batteryFunc,bleFunc;
 extern func_type functions[];
 void handleFunction(func_type f);
@@ -96,7 +98,7 @@ void handleFunction(func_type f);
 void gotoMenu(  );
 void gotoWatchFace();
 void gotoGyroFace();
-
+void gotoDiagnostic();
 void gotoStopWatch();
 
 //void drawFun(  char *cmd);

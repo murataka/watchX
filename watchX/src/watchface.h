@@ -5,8 +5,7 @@
 
 
 #include "resources.h"
-
-void printWatchFace( );
+ 
 
 void drawWatchFace( );
 
