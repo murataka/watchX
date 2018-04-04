@@ -10,12 +10,10 @@
 #define MENU_STOPWATCH 1
 #define MENU_GYROCUBE 2
 #define MENU_DIAGNOSTIC 3
-<<<<<<< HEAD
+
 #define MENU_BLUETOOTH 4
 #define MENU_SETTINGS 5
-
-=======
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
+ 
 void drawMenus( );
 
 void menusw1( );

@@ -31,14 +31,6 @@ void menusw1( ){
       break;
       case MENU_GYROCUBE:
       //  gotoGyroFace();
-<<<<<<< HEAD
-=======
-
-      break;
-
-      case MENU_DIAGNOSTIC:
-        gotoDiagnostic();
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
 
       break;
         case MENU_BLUETOOTH:
@@ -74,10 +66,7 @@ void menusw1( ){
 void menusw2( ){
 
       menuspeed=-1;
-<<<<<<< HEAD
 
-=======
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
 
 }
 void menusw3( ){
@@ -92,15 +81,9 @@ void menusw3( ){
 */
 char menuCap[][15]={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings"};
 void drawMenus(){
-<<<<<<< HEAD
 ///char menuCap[][15]={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings"};
    drawString(26,0,"< MAIN MENU >",smallFont);
    drawString(0,56,menuCap[menuindex%(sizeof(menuCap)/15)],smallFont);
-=======
- char menuCap[][15]={"Exit","Stopwatch","Gyrocube","Diagnostic"};
-   drawString(26,0,"< MAIN MENU >",smallFont);
-   drawString(0,56,menuCap[menuindex%4],smallFont);
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
 
 drawLine(48,12,80,12);
 

@@ -98,21 +98,14 @@ extern func_type functions[];
 void handleFunction(func_type f);
 
 void gotoMenu(  );
-<<<<<<< HEAD
+ 
 void gotoWatchFace( );
 void gotoGyroFace( );
 void gotoDiagnostic();
 void gotoStopWatch( );
 void gotoBlueTooth( );
 void gotoSettings( );
-=======
-void gotoWatchFace();
-void gotoGyroFace();
-void gotoDiagnostic();
-void gotoStopWatch();
 
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
-//void drawFun(  char *cmd);
 
 
 
