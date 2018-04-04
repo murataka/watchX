@@ -14,10 +14,17 @@ void error(const __FlashStringHelper*err){
 
   }
   unsigned char i;
+<<<<<<< HEAD
   void handleBle( ){
 
 if(ble->available()){ i=0;
 
+=======
+  void handleBle(){
+
+if(ble->available()){ i=0;
+
+>>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
      while ( ble->available() )
         {
 
@@ -26,7 +33,11 @@ if(ble->available()){ i=0;
 
       //     functions[sw1Func]= ble_sw1;
          // Serial.print((char)c);
+<<<<<<< HEAD
 ///digitalWrite(13,HIGH);
+=======
+//digitalWrite(13,HIGH);
+>>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
 
         }
 
@@ -37,11 +48,15 @@ if(ble->available()){ i=0;
     //    NanoCanvas c(128,32,buf3);
     //      c.charF6x8(0, 0,strtmpbuf);
     //  c.blt(0,0);
+<<<<<<< HEAD
       //
     //  functions[uiFunc]=NULL;
 
       gotoBlueTooth( );
       //functions[uiFunc]=drawBle;
+=======
+        nextUIFunc=drawBle;
+>>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
        }
 }
     }
@@ -59,14 +74,14 @@ void ble_connect(){
    //error(F("Couldn't find Bluefruit, make sure it's in CoMmanD mode & check wiring?"));
   }
 
-
+/*
     if ( FACTORYRESET_ENABLE )
   {
     if ( ! ble->factoryReset() ){
      // error(F("Couldn't factory reset"));
     }
   }
-
+*/
   /* Disable command echo from Bluefruit */
   ble->echo(false);
   ble->verbose(false);  // debug info is a little annoying after this point!

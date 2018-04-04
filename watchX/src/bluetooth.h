@@ -21,7 +21,11 @@
 #define MODE_LED_BEHAVIOUR          "MODE"
 
 void drawBle();
+<<<<<<< HEAD
 void handleBle(bool fromfunction);
+=======
+void handleBle();
+>>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
 void ble_connect();
 void ble_sw1();
 /* ...hardware SPI, using SCK/MOSI/MISO hardware SPI pins and then user selected CS/IRQ/RST */

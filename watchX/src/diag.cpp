@@ -1,10 +1,32 @@
 #include "watchX.h"
 #include "diag.h"
 #include "oled.h"
+<<<<<<< HEAD
 #include "temperature.h"
 #include "watchXmpu6050.h"
 
 void drawDiag(){
+=======
+
+//#include "gyroaccel.h"
+
+//unsigned long last=0;
+
+void drawDiag(){
+
+  drawString(16,0,"< DIAGNOSTICS >",smallFont);
+/*
+if(millis()-last>1000){
+  batterylevel=readBattery();
+  last=millis();
+}
+*/
+/*
+  uint8_t buf[128*8];
+NanoCanvas c(128,64,buf);
+
+    c.charF6x8(16,0,"< DIAGNOSTICS >" );
+>>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
 
   drawString(16,0,"< DIAGNOSTICS >",smallFont);
 

@@ -16,7 +16,11 @@ extern unsigned char DEVICESTATE;
 
 //unsigned int i=0;
 
+<<<<<<< HEAD
 void drawWatchFace(  ){
+=======
+void drawWatchFace( ){
+>>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
   const char months[12][BUFFSIZE_STR_MONTHS]  = {
     "JAN",
     "FEB",
