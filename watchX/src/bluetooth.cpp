@@ -14,7 +14,7 @@ void error(const __FlashStringHelper*err){
 
   }
   unsigned char i;
-  void handleBle(bool fromfunction){
+  void handleBle( ){
 
 if(ble->available()){ i=0;
 
@@ -40,7 +40,7 @@ if(ble->available()){ i=0;
       //
     //  functions[uiFunc]=NULL;
 
-      gotoBlueTooth(true);
+      gotoBlueTooth( );
       //functions[uiFunc]=drawBle;
        }
 }

@@ -55,7 +55,7 @@ enum ANIMATIONS{LINEARX=0,LINEARY,SWINGX,SWINGY};
 
 enum WATCHKEYS{PREVKEY=10,NEXTKEY=11,SELECTKEY=8};
 
-typedef void (*func_type)(  bool fromfunction   );
+typedef void (*func_type)(    );
 
 
 #define USBDEVICE UDADDR & _BV(ADDEN)
@@ -97,13 +97,13 @@ extern func_type nextUIFunc;
 extern func_type functions[];
 void handleFunction(func_type f);
 
-void gotoMenu( bool fromfunction =false);
-void gotoWatchFace(bool fromfunction=false);
-void gotoGyroFace(bool fromfunction=false);
-void gotoDiagnostic(bool fromfunction=false);
-void gotoStopWatch(bool fromfunction=false);
-void gotoBlueTooth(bool fromfunction=false);
-void gotoSettings(bool fromfunction=false);
+void gotoMenu(  );
+void gotoWatchFace( );
+void gotoGyroFace( );
+void gotoDiagnostic();
+void gotoStopWatch( );
+void gotoBlueTooth( );
+void gotoSettings( );
 //void drawFun(  char *cmd);
 
 

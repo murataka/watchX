@@ -120,29 +120,29 @@ if(batterylevel<530){
     }
   //}
 }
-void gotoMenu( bool fromfunction){
+void gotoMenu( ){
 //if(menuindex<2)
 //menuindex=1;
     //  if(animation_offsetY==0)
 
         nextUIFunc=drawMenus;
- 
+
          functions[sw1Func]=menusw1;
          functions[sw2Func]=menusw2;
           functions[sw3Func]=menusw3;
 
-         functions[batteryFunc]=NULL;
+          functions[batteryFunc]=NULL;
 
-      functions[usbFunc]=NULL;
+     functions[usbFunc]=NULL;
          // Old_DEVICESTATE=DEVICESTATE; /// TODO DEFINE ACTIONCOMPLETE
 
 
 }
-void gotoSettings( bool fromfunction){
+void gotoSettings( ){
 //if(menuindex<2)
 //menuindex=1;
   if(animation_offsetY==0)
-       if(fromfunction|| (~SW1_WASPUSHED)&SW1_PUSHED){
+       if( (~SW1_WASPUSHED)&SW1_PUSHED){
 //    ssd1306_clearScreen();
         //  usbFunc= drawUsb;
       ///  nextUIFunc=functions[ uiFunc];
@@ -161,9 +161,9 @@ void gotoSettings( bool fromfunction){
 }
 
 
-void gotoWatchFace(bool fromfunction){
+void gotoWatchFace(){
   //  if(animation_offsetY==0)
-    //       if(fromfunction|| (~SW1_WASPUSHED)&SW1_PUSHED){
+    //       if( (~SW1_WASPUSHED)&SW1_PUSHED){
           nextUIFunc= drawWatchFace;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
           functions[sw1Func]=gotoMenu; /// TODO here i am
           functions[sw2Func]=NULL;
@@ -176,12 +176,12 @@ void gotoWatchFace(bool fromfunction){
     //  functions[  bleFunc] =handleBle;
          functions[usbFunc]=drawUsb;
       functions[batteryFunc]=drawBattery;
-      functions[updateFunc]=updateThings;
+    //  functions[updateFunc]=updateThings;
   //    }
   }
-  void gotoGyroFace(bool fromfunction){
+  void gotoGyroFace(){
       if(animation_offsetY==0)
-       if(fromfunction|| (~SW1_WASPUSHED)&SW1_PUSHED){
+       if( (~SW1_WASPUSHED)&SW1_PUSHED){
             nextUIFunc=drawGyroCube;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
             functions[sw1Func]=gotoMenu;
             functions[sw2Func]=NULL;
@@ -195,7 +195,7 @@ void gotoWatchFace(bool fromfunction){
         functions[updateFunc]=updateThings;
       }
     }
-void gotoStopWatch(bool fromfunction){
+void gotoStopWatch(){
    watchMode = 1;
               nextUIFunc=drawWatchFace;
               functions[sw1Func]=gotoMenu;
@@ -203,9 +203,9 @@ void gotoStopWatch(bool fromfunction){
               functions[sw3Func]=NULL;
 
 }
-void gotoBlueTooth(bool fromfunction){
+void gotoBlueTooth(){
     if(animation_offsetY==0)
-           if(fromfunction|| (~SW1_WASPUSHED)&SW1_PUSHED){
+           if( (~SW1_WASPUSHED)&SW1_PUSHED){
                 nextUIFunc=drawBle;
               functions[sw1Func]=gotoMenu;
               functions[sw2Func]=NULL;
@@ -213,9 +213,9 @@ void gotoBlueTooth(bool fromfunction){
       }
 }
 
-void gotoDiagnostic(bool fromfunction){
+void gotoDiagnostic(){
     if(animation_offsetY==0)
-           if(fromfunction|| (~SW1_WASPUSHED)&SW1_PUSHED){
+           if( (~SW1_WASPUSHED)&SW1_PUSHED){
               functions[uiFunc]=drawDiag;
               functions[sw1Func]=gotoMenu;
               functions[sw2Func]=NULL;
@@ -236,14 +236,14 @@ void setup()
 soundenabled=true;
 sound.tone(1200, 100,1000, 50,1800, 200);
 setPrescale();
-while(!Serial);
+//while(!Serial);
 Serial.begin(57600);
 
 //timerOneFunc=timerOneTones;
           /* Set timer1 interrupt to 20Hz */
   //  startTimerOne();
 
-Serial.println("Hello");
+//Serial.println("Hello");
      SPI.begin();
 
 
@@ -332,7 +332,7 @@ setDateTime();
 //goto
 //functions[uiFunc]=drawWatchFace;
     //  functions[  bleFunc] =handleBle;
-     gotoWatchFace(true);
+     gotoMenu();
     // gotoDiagnostic(true);
   //  ble_connect(); // TODO: bluetoot enable / disable
 updateThings();
@@ -349,7 +349,7 @@ clearAll();
 //     ssd1306_sendCommand(SSD1306_SETSTARTLINE | (animPos) % 64);
 //if(functions[uiFunc]!=NULL)
   //  handleFunction(functions[uiFunc]);
-handleFunction(nextUIFunc);
+//handleFunction(nextUIFunc); ///// todo draw not stable !!!
 animation_offsetY++;
      if(animation_offsetY>=64){
       animation_offsetY=0;
@@ -390,7 +390,7 @@ void loop()
 
 
 if(DEVICESTATE&B00000111){
-Serial.println(DEVICESTATE&B00000111);
+//Serial.println(DEVICESTATE&B00000111);
 
   if(animation_offsetY==0)
 
@@ -416,7 +416,7 @@ Serial.println(DEVICESTATE&B00000111);
   }
 
 
-buttonFX(500|((DEVICESTATE&B00000111)*300));
+//buttonFX(500|((DEVICESTATE&B00000111)*300));
 
 }
 
@@ -434,6 +434,6 @@ digitalWrite(LED2,sound.playing()?HIGH: LOW);
 }
 
 void handleFunction(func_type f){
-  if(f!=NULL)f( false );
+  if(f!=NULL)f(   );
 
 }
