@@ -332,7 +332,7 @@ setDateTime();
 //goto
 //functions[uiFunc]=drawWatchFace;
     //  functions[  bleFunc] =handleBle;
-     gotoMenu();
+     gotoWatchFace();
     // gotoDiagnostic(true);
   //  ble_connect(); // TODO: bluetoot enable / disable
 updateThings();
@@ -416,7 +416,7 @@ if(DEVICESTATE&B00000111){
   }
 
 
-//buttonFX(500|((DEVICESTATE&B00000111)*300));
+buttonFX(500|((DEVICESTATE&B00000111)*300));
 
 }
 
