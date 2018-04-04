@@ -29,13 +29,6 @@
 #include <Tones.h>
 #include "soundfx.h"
 #include "menu.h"
-<<<<<<< HEAD
-=======
-
-#include "bluetooth.h"
-
-
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
 
 #include "bluetooth.h"
 #include "watchXmpu6050.h"
@@ -111,7 +104,6 @@ void updateThings( ){
   if(millis()-batteryread>1000){
     batterylevel=readBattery(BATTERY_EN,BATTERY_PIN);
 if(batterylevel<530){
-<<<<<<< HEAD
 
 }else{
    mpu.readRawGyro();
@@ -140,22 +132,12 @@ void gotoMenu( ){
           functions[sw3Func]=menusw3;
 
           functions[batteryFunc]=NULL;
-=======
-
-}else{
-  MPU6050_update();
-  getPressure();
-}
-
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
 
      functions[usbFunc]=NULL;
          // Old_DEVICESTATE=DEVICESTATE; /// TODO DEFINE ACTIONCOMPLETE
 
-  batteryread=millis();
 
 }
-<<<<<<< HEAD
 void gotoSettings( ){
 //if(menuindex<2)
 //menuindex=1;
@@ -166,17 +148,6 @@ void gotoSettings( ){
       ///  nextUIFunc=functions[ uiFunc];
     nextUIFunc=drawSettings;
          functions[sw1Func]=gotoMenu;
-=======
-void gotoMenu( ){
-//if(menuindex<2)
-//menuindex=1;
-       if(functions[uiFunc]==NULL|| (~SW1_WASPUSHED)&SW1_PUSHED){
-//    ssd1306_clearScreen();
-        //  usbFunc= drawUsb;
-      ///  nextUIFunc=functions[ uiFunc];
-      nextUIFunc= drawMenus;
-         functions[sw1Func]=menusw1;
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
          functions[sw2Func]=menusw2;
           functions[sw3Func]=menusw3;
         //  speed=0;
@@ -189,21 +160,12 @@ void gotoMenu( ){
         }
 }
 
-<<<<<<< HEAD
 
 void gotoWatchFace(){
   //  if(animation_offsetY==0)
     //       if( (~SW1_WASPUSHED)&SW1_PUSHED){
           nextUIFunc= drawWatchFace;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
           functions[sw1Func]=gotoMenu; /// TODO here i am
-=======
-
-
-void gotoWatchFace(){
-           if(functions[uiFunc]==NULL||(~SW1_WASPUSHED)&SW1_PUSHED){
-        nextUIFunc= drawWatchFace;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
-          functions[sw1Func]=gotoMenu;
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
           functions[sw2Func]=NULL;
           functions[sw3Func]=NULL;
         //  functions[ uiFunc];
@@ -211,7 +173,6 @@ void gotoWatchFace(){
         //  speed=4;
         //  sw2Func=gotoMenu;
         //  sw3Func=NULL;
-<<<<<<< HEAD
     //  functions[  bleFunc] =handleBle;
          functions[usbFunc]=drawUsb;
       functions[batteryFunc]=drawBattery;
@@ -222,67 +183,26 @@ void gotoWatchFace(){
       if(animation_offsetY==0)
        if( (~SW1_WASPUSHED)&SW1_PUSHED){
             nextUIFunc=drawGyroCube;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
-=======
-      functions[  bleFunc] =handleBle;
-         functions[usbFunc]=drawUsb;
-      functions[batteryFunc]=drawBattery;
-      functions[updateFunc]=updateThings;
-      }
-  }
-  void gotoGyroFace(){
-       if(functions[uiFunc]==NULL||(~SW1_WASPUSHED)&SW1_PUSHED){
-          nextUIFunc= drawGyroCube;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
             functions[sw1Func]=gotoMenu;
             functions[sw2Func]=NULL;
             functions[sw3Func]=NULL;
             //    nextUIFunc=functions[ uiFunc];
           //  sw2Func=gotoMenu;
           //  sw3Func=NULL;
-<<<<<<< HEAD
       //  functions[  bleFunc] =handleBle;
-=======
-        functions[  bleFunc] =handleBle;
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
            functions[usbFunc]=drawUsb;
         functions[batteryFunc]=drawBattery;
         functions[updateFunc]=updateThings;
       }
     }
 void gotoStopWatch(){
-<<<<<<< HEAD
    watchMode = 1;
               nextUIFunc=drawWatchFace;
               functions[sw1Func]=gotoMenu;
               functions[sw2Func]=NULL;
               functions[sw3Func]=NULL;
-=======
-           if(functions[uiFunc]==NULL||(~SW1_WASPUSHED)&SW1_PUSHED){
-              nextUIFunc=drawStopwatch;
-              functions[sw1Func]=gotoMenu;
-              functions[sw2Func]=NULL;
-              functions[sw3Func]=NULL;
-      }
-}
-void gotoBlueTooth(){
-           if(functions[uiFunc]==NULL||(~SW1_WASPUSHED)&SW1_PUSHED){
-              nextUIFunc=drawBle;
-              functions[sw1Func]=gotoMenu;
-              functions[sw2Func]=NULL;
-              functions[sw3Func]=NULL;
-      }
-}
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
 
-void gotoDiagnostic(){
-           if(functions[uiFunc]==NULL||(~SW1_WASPUSHED)&SW1_PUSHED){
-              nextUIFunc=drawDiag;
-              functions[sw1Func]=gotoMenu;
-              functions[sw2Func]=NULL;
-              functions[sw3Func]=NULL;
-      }
 }
-<<<<<<< HEAD
 void gotoBlueTooth(){
     if(animation_offsetY==0)
            if( (~SW1_WASPUSHED)&SW1_PUSHED){
@@ -307,13 +227,6 @@ void gotoDiagnostic(){
 
 
 
-=======
-
-
-
-
-
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
 const uint8_t melody[]={NOTE_B0};
 
 
@@ -400,11 +313,6 @@ MAG3110_begin();
 
 //   mpu6050.calcGyroOffsets(true);
 
-MPU6050_begin();
-MAG3110_begin();
-
-//   mpu6050.calcGyroOffsets(true);
-
 
 startSqw(); /// Starts 1 second SquareWave from DS3231
 
@@ -422,17 +330,11 @@ setDateTime();
     ssd1306_configure();
 
 //goto
-<<<<<<< HEAD
 //functions[uiFunc]=drawWatchFace;
     //  functions[  bleFunc] =handleBle;
      gotoMenu();
     // gotoDiagnostic(true);
   //  ble_connect(); // TODO: bluetoot enable / disable
-=======
-functions[uiFunc]=drawWatchFace;
-     gotoWatchFace();
-  //  ble_connect(); // TODO: bluetoot enable / disable 
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
 updateThings();
 
 }
@@ -441,7 +343,6 @@ updateThings();
 void drawLoop( ){
 
 clearAll();
-<<<<<<< HEAD
 
  if(nextUIFunc!=NULL){
 
@@ -455,41 +356,19 @@ animation_offsetY++;
       if(nextUIFunc!=NULL)
       functions[uiFunc]=nextUIFunc;
  nextUIFunc=NULL;
-=======
-/*
- if(nextUIFunc!=NULL&&nextUIFunc!=functions[uiFunc]){
-
-//     ssd1306_sendCommand(SSD1306_SETSTARTLINE | (animPos) % 64);
-  //   handleFunction(functions[uiFunc]);
-animation_offsetY++;
-     if(animation_offsetY>=64){
-      animation_offsetY=0;
-      functions[uiFunc]=nextUIFunc;
- //nextUIFunc=NULL;
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
       }
 
  }else{
 //animation_offsetY=0;
 
-<<<<<<< HEAD
 for(int a=0;a<HANDLEDFUNCTIONS_COUNT;a++)
 handleFunction(functions[a]);
 
 
  }
 
-=======
-//
-
- }
->>>>>>> 7491ed92dc86d1f629b90c364edffced25f63699
  //while(1);
 
-if(animation_offsetY==0)
-*/
-for(int a=0;a<HANDLEDFUNCTIONS_COUNT;a++)
-handleFunction(functions[a]);
 
  ssd1306_drawBuffer(0, 0, 128,64, mbuf);
 }
