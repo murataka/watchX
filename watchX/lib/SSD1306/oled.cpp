@@ -36,6 +36,7 @@ for( uint8_t i=0; i<sizeof(s_oled128x64_initData); i++)
 }
  void ssd1306_drawBuffer(byte x, byte y, byte w, byte h, const byte *buf)
 {
+      
     uint8_t i, j;
     // ssd1306_setRamBlock(x, y, w);
     ssd1306_spiDataStart();
@@ -49,6 +50,7 @@ for( uint8_t i=0; i<sizeof(s_oled128x64_initData); i++)
    //     ssd1306_nextRamPage();
     }
     ssd1306_spiStop_hw();
+
 }
 
 void ssd1306_sendCommand(uint8_t command)

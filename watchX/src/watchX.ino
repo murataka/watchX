@@ -41,6 +41,7 @@ volatile uint8_t animating=1;
  unsigned char mbuf[128*8];
 extern volatile uint8_t animating;
 volatile unsigned long lastcolon;
+unsigned long _tm=millis();
 char strtmpbuf[50];
 
 //extern volatile unsigned long lastcolon;
@@ -120,6 +121,25 @@ if(batterylevel<530){
     }
   //}
 }
+
+void gotoWatchFace(){
+  //  if(animation_offsetY==0)
+    //       if( (~SW1_WASPUSHED)&SW1_PUSHED){
+          nextUIFunc= drawWatchFace;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
+          functions[sw1Func]=gotoMenu; /// TODO here i am
+          functions[sw2Func]=NULL;
+          functions[sw3Func]=NULL;
+        //  functions[ uiFunc];
+            //  nextUIFunc=functions[ uiFunc];
+        //  speed=4;
+        //  sw2Func=gotoMenu;
+        //  sw3Func=NULL;
+    //  functions[  bleFunc] =handleBle;
+         functions[usbFunc]=NULL;
+      functions[batteryFunc]=NULL;
+    //  functions[updateFunc]=updateThings;
+  //    }
+  }
 void gotoMenu( ){
 //if(menuindex<2)
 //menuindex=1;
@@ -161,24 +181,6 @@ void gotoSettings( ){
 }
 
 
-void gotoWatchFace(){
-  //  if(animation_offsetY==0)
-    //       if( (~SW1_WASPUSHED)&SW1_PUSHED){
-          nextUIFunc= drawWatchFace;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
-          functions[sw1Func]=gotoMenu; /// TODO here i am
-          functions[sw2Func]=NULL;
-          functions[sw3Func]=NULL;
-        //  functions[ uiFunc];
-            //  nextUIFunc=functions[ uiFunc];
-        //  speed=4;
-        //  sw2Func=gotoMenu;
-        //  sw3Func=NULL;
-    //  functions[  bleFunc] =handleBle;
-         functions[usbFunc]=drawUsb;
-      functions[batteryFunc]=drawBattery;
-    //  functions[updateFunc]=updateThings;
-  //    }
-  }
   void gotoGyroFace(){
       if(animation_offsetY==0)
        if( (~SW1_WASPUSHED)&SW1_PUSHED){
@@ -336,6 +338,9 @@ setDateTime();
     // gotoDiagnostic(true);
   //  ble_connect(); // TODO: bluetoot enable / disable
 updateThings();
+Serial.println("."); //// TODO: idkw serial must print something for stability.
+//delay(100);
+//cli();
 
 }
 //uint8_t buffer[64*128/8];
@@ -348,14 +353,19 @@ clearAll();
 
 //     ssd1306_sendCommand(SSD1306_SETSTARTLINE | (animPos) % 64);
 //if(functions[uiFunc]!=NULL)
-  //  handleFunction(functions[uiFunc]);
-//handleFunction(nextUIFunc); ///// todo draw not stable !!!
-animation_offsetY++;
+//    handleFunction(functions[uiFunc]);
+//if(nextUIFunc!=NULL)
+handleFunction(nextUIFunc); ///// todo draw not stable !!!
+animation_offsetY+=1;
+//Serial.println(".");
+//delay(5);
      if(animation_offsetY>=64){
+
       animation_offsetY=0;
       if(nextUIFunc!=NULL)
       functions[uiFunc]=nextUIFunc;
- nextUIFunc=NULL;
+       nextUIFunc=NULL;
+       return;
       }
 
  }else{
@@ -424,9 +434,12 @@ buttonFX(500|((DEVICESTATE&B00000111)*300));
     }
 
 digitalWrite(LED2,sound.playing()?HIGH: LOW);
+  drawLoop();
+if(millis()-_tm>30){
 
+  _tm=millis();
+}
 
-     drawLoop();
 
 
 
