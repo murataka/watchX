@@ -76,9 +76,12 @@ void menusw3( ){
      }
 
 }
-
+/*
+  When memory is dynamically allocated, the atmega chip cannot allocate memory ...
+*/
+char menuCap[][15]={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings"};
 void drawMenus(){
- char menuCap[][15]={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings"};
+///char menuCap[][15]={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings"};
    drawString(26,0,"< MAIN MENU >",smallFont);
    drawString(0,56,menuCap[menuindex%(sizeof(menuCap)/15)],smallFont);
 

@@ -44,7 +44,7 @@ volatile unsigned long lastcolon;
 char strtmpbuf[50];
 
 //extern volatile unsigned long lastcolon;
-func_type functions[HANDLEDFUNCTIONS_COUNT];
+func_type functions[HANDLEDFUNCTIONS_COUNT+3];
 
 func_type nextUIFunc=NULL;
 
@@ -124,22 +124,19 @@ void gotoMenu( bool fromfunction){
 //if(menuindex<2)
 //menuindex=1;
     //  if(animation_offsetY==0)
-  //     if(fromfunction|| (~SW1_WASPUSHED)&SW1_PUSHED){
-//    ssd1306_clearScreen();
-        //  usbFunc= drawUsb;
+
         nextUIFunc=drawMenus;
-//      functions[uiFunc]= drawMenus;
+ 
          functions[sw1Func]=menusw1;
          functions[sw2Func]=menusw2;
           functions[sw3Func]=menusw3;
-        //  speed=0;
-          functions[batteryFunc]=NULL;
-        //  batteryFunc=drawBattery;
+
+         functions[batteryFunc]=NULL;
+
       functions[usbFunc]=NULL;
          // Old_DEVICESTATE=DEVICESTATE; /// TODO DEFINE ACTIONCOMPLETE
 
 
-    //    }
 }
 void gotoSettings( bool fromfunction){
 //if(menuindex<2)
@@ -237,13 +234,16 @@ void setup()
 {
 
 soundenabled=true;
-//sound.tone(1200, 100,1000, 50,1800, 200);
+sound.tone(1200, 100,1000, 50,1800, 200);
 setPrescale();
+while(!Serial);
+Serial.begin(57600);
 
 //timerOneFunc=timerOneTones;
           /* Set timer1 interrupt to 20Hz */
   //  startTimerOne();
 
+Serial.println("Hello");
      SPI.begin();
 
 
@@ -353,6 +353,7 @@ handleFunction(nextUIFunc);
 animation_offsetY++;
      if(animation_offsetY>=64){
       animation_offsetY=0;
+      if(nextUIFunc!=NULL)
       functions[uiFunc]=nextUIFunc;
  nextUIFunc=NULL;
       }
@@ -360,7 +361,7 @@ animation_offsetY++;
  }else{
 //animation_offsetY=0;
 
-for(int a=3;a<HANDLEDFUNCTIONS_COUNT;a++)
+for(int a=0;a<HANDLEDFUNCTIONS_COUNT;a++)
 handleFunction(functions[a]);
 
 
@@ -381,30 +382,39 @@ void loop()
 //  buttons = buttons | (((~PIND) & B00010000) >>3); ///B00011000 => SQW pin _BV(4)
 
 //  DEVICESTATE=(USBDEVICE )|((digitalRead(SW1)==LOW))|((digitalRead(SW2)==LOW)<<1)|((digitalRead(SW3)==LOW)<<2);
-  DEVICESTATE= USBDEVICE|((((~PINB) & B11010000)+B00010000)>>5);//;//|((digitalRead(SW2)==LOW)<<1)|((digitalRead(SW3)==LOW)<<2);
+  DEVICESTATE= (USBDEVICE)|((((~PINB) & B11010000)+B00010000)>>5);//;//|((digitalRead(SW2)==LOW)<<1)|((digitalRead(SW3)==LOW)<<2);
   if(DEVICESTATE!=Old_DEVICESTATE){
 //      ssd1306_fillScreen(0x00);
 //  interact();
 //buttonFX(2400);
-if(animation_offsetY==0)
-switch(DEVICESTATE&B00000111){
-    case 1:
-    if(~(SW1_WASPUSHED))
-      handleFunction(functions[sw1Func]);
-    break;
-    case 2:
-      if(~(SW2_WASPUSHED))
-      handleFunction(functions[sw2Func]);
-    break;
-    case 4:
-    if(~(SW3_WASPUSHED))
-      handleFunction(functions[sw3Func]);
-    break;
 
 
-
-}
 if(DEVICESTATE&B00000111){
+Serial.println(DEVICESTATE&B00000111);
+
+  if(animation_offsetY==0)
+
+  switch(DEVICESTATE&B00000111){
+      case 1:
+      if(~(SW1_WASPUSHED)&&SW1_PUSHED){
+         handleFunction(functions[sw1Func]);
+      }
+
+      // gotoMenu();
+      break;
+      case 2:
+        if(~(SW2_WASPUSHED)&&SW2_PUSHED)
+        handleFunction(functions[sw2Func]);
+      break;
+      case 4:
+      if(~(SW3_WASPUSHED)&&SW3_PUSHED)
+        handleFunction(functions[sw3Func]);
+      break;
+
+
+
+  }
+
 
 buttonFX(500|((DEVICESTATE&B00000111)*300));
 
