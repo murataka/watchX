@@ -3,6 +3,15 @@
 //unsigned char seconds, minutes, hours, day, date, month, year;
 volatile unsigned char   curtm[7] ;
 
+void stopSqw(){
+
+  Wire.beginTransmission(0x68);
+  Wire.write(0x0e);        // set register address
+
+    Wire.write(0B00100011);         // ... and send it from buffer
+
+  Wire.endTransmission();
+}
 void startSqw(){
 
   Wire.beginTransmission(0x68);

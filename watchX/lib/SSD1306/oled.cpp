@@ -36,7 +36,7 @@ for( uint8_t i=0; i<sizeof(s_oled128x64_initData); i++)
 }
  void ssd1306_drawBuffer(byte x, byte y, byte w, byte h, const byte *buf)
 {
-      
+
     uint8_t i, j;
     // ssd1306_setRamBlock(x, y, w);
     ssd1306_spiDataStart();
@@ -111,8 +111,8 @@ void drawLine( uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2)
   int8_t ystep;
 
   uint8_t swapxy = 0;
-y1+=animation_offsetY;
-y2+=animation_offsetY;
+//y1+=animation_offsetY;
+//y2+=animation_offsetY;
   /* no intersection check at the moment, should be added... */
 
   if ( x1 > x2 ) dx = x1-x2; else dx = x2-x1;
@@ -155,6 +155,8 @@ y2+=animation_offsetY;
 }
 
 void drawPixel(uint8_t x, uint8_t y,char color=1) {
+  y=y+animation_offsetY;
+  if(y<64)
 mbuf[(y/8)*128 +x]|=1<<y%8;
 }
 

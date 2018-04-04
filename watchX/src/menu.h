@@ -13,7 +13,7 @@
 
 #define MENU_BLUETOOTH 4
 #define MENU_SETTINGS 5
- 
+
 void drawMenus( );
 
 void menusw1( );

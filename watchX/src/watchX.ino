@@ -123,32 +123,25 @@ if(batterylevel<530){
 }
 
 void gotoWatchFace(){
-  //  if(animation_offsetY==0)
-    //       if( (~SW1_WASPUSHED)&SW1_PUSHED){
+stopSqw();
+watchMode=0;
           nextUIFunc= drawWatchFace;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
           functions[sw1Func]=gotoMenu; /// TODO here i am
           functions[sw2Func]=NULL;
           functions[sw3Func]=NULL;
-        //  functions[ uiFunc];
-            //  nextUIFunc=functions[ uiFunc];
-        //  speed=4;
-        //  sw2Func=gotoMenu;
-        //  sw3Func=NULL;
-    //  functions[  bleFunc] =handleBle;
-         functions[usbFunc]=NULL;
-      functions[batteryFunc]=NULL;
+
+         functions[usbFunc]=drawUsb;
+      functions[batteryFunc]=drawBattery;
     //  functions[updateFunc]=updateThings;
   //    }
   }
 void gotoMenu( ){
-//if(menuindex<2)
-//menuindex=1;
-    //  if(animation_offsetY==0)
-
+stopSqw();
+menuspeed=0;
         nextUIFunc=drawMenus;
 
          functions[sw1Func]=menusw1;
-         functions[sw2Func]=menusw2;
+       functions[sw2Func]=menusw2;
           functions[sw3Func]=menusw3;
 
           functions[batteryFunc]=NULL;
@@ -159,9 +152,7 @@ void gotoMenu( ){
 
 }
 void gotoSettings( ){
-//if(menuindex<2)
-//menuindex=1;
-  if(animation_offsetY==0)
+stopSqw();
        if( (~SW1_WASPUSHED)&SW1_PUSHED){
 //    ssd1306_clearScreen();
         //  usbFunc= drawUsb;
@@ -182,6 +173,7 @@ void gotoSettings( ){
 
 
   void gotoGyroFace(){
+    stopSqw();
       if(animation_offsetY==0)
        if( (~SW1_WASPUSHED)&SW1_PUSHED){
             nextUIFunc=drawGyroCube;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
@@ -198,6 +190,7 @@ void gotoSettings( ){
       }
     }
 void gotoStopWatch(){
+  stopSqw();
    watchMode = 1;
               nextUIFunc=drawWatchFace;
               functions[sw1Func]=gotoMenu;
@@ -206,6 +199,7 @@ void gotoStopWatch(){
 
 }
 void gotoBlueTooth(){
+  stopSqw();
     if(animation_offsetY==0)
            if( (~SW1_WASPUSHED)&SW1_PUSHED){
                 nextUIFunc=drawBle;
@@ -216,6 +210,7 @@ void gotoBlueTooth(){
 }
 
 void gotoDiagnostic(){
+  stopSqw();
     if(animation_offsetY==0)
            if( (~SW1_WASPUSHED)&SW1_PUSHED){
               functions[uiFunc]=drawDiag;
@@ -234,12 +229,12 @@ const uint8_t melody[]={NOTE_B0};
 
 void setup()
 {
-
+menuspeed=0;
 soundenabled=true;
 sound.tone(1200, 100,1000, 50,1800, 200);
 setPrescale();
 //while(!Serial);
-Serial.begin(57600);
+//Serial.begin(57600);
 
 //timerOneFunc=timerOneTones;
           /* Set timer1 interrupt to 20Hz */
@@ -316,7 +311,7 @@ MAG3110_begin();
 //   mpu6050.calcGyroOffsets(true);
 
 
-startSqw(); /// Starts 1 second SquareWave from DS3231
+ startSqw(); /// Starts 1 second SquareWave from DS3231
 
 
 get3231Temp();
@@ -338,38 +333,43 @@ setDateTime();
     // gotoDiagnostic(true);
   //  ble_connect(); // TODO: bluetoot enable / disable
 updateThings();
-Serial.println("."); //// TODO: idkw serial must print something for stability.
+//Serial.println("."); //// TODO: idkw serial must print something for stability.
 //delay(100);
 //cli();
 
 }
 //uint8_t buffer[64*128/8];
-
+uint8_t anmof=0;
 void drawLoop( ){
 
 clearAll();
 
  if(nextUIFunc!=NULL){
 
-//     ssd1306_sendCommand(SSD1306_SETSTARTLINE | (animPos) % 64);
-//if(functions[uiFunc]!=NULL)
-//    handleFunction(functions[uiFunc]);
-//if(nextUIFunc!=NULL)
-handleFunction(nextUIFunc); ///// todo draw not stable !!!
-animation_offsetY+=1;
+   animation_offsetY=anmof-64;
+
+   handleFunction(nextUIFunc); ///// todo draw not stable !!!
+
+animation_offsetY=anmof;
+    handleFunction(functions[uiFunc]);
+
+
+anmof+=(64-anmof)/16+1;
+
 //Serial.println(".");
 //delay(5);
-     if(animation_offsetY>=64){
+     if(anmof>64){
 
-      animation_offsetY=0;
+      anmof=0;
       if(nextUIFunc!=NULL)
       functions[uiFunc]=nextUIFunc;
        nextUIFunc=NULL;
+        startSqw();
        return;
       }
 
  }else{
-//animation_offsetY=0;
+animation_offsetY=0;
 
 for(int a=0;a<HANDLEDFUNCTIONS_COUNT;a++)
 handleFunction(functions[a]);
@@ -402,7 +402,7 @@ void loop()
 if(DEVICESTATE&B00000111){
 //Serial.println(DEVICESTATE&B00000111);
 
-  if(animation_offsetY==0)
+//  if(animation_offsetY==0)
 
   switch(DEVICESTATE&B00000111){
       case 1:

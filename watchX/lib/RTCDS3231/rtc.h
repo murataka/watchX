@@ -19,5 +19,6 @@ extern volatile unsigned char curtm[];
 void getDateTime();
 void setDateTime();
 void startSqw();
+void stopSqw();
 void setDateTime();
 #endif

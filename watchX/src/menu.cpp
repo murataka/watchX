@@ -8,7 +8,7 @@
 #include "oled.h"
 #include "gyrocube.h"
 #include "settings.h"
-      int _x=0;
+        int _x=0;
 int menuspeed=0;
 int scrollto=0;
 
@@ -64,15 +64,15 @@ void menusw1( ){
 
 
 void menusw2( ){
-
-      menuspeed=-1;
+//if(animation_offsetY==0)
+    menuspeed=-2;
 
 
 }
 void menusw3( ){
-
+if(animation_offsetY==0)
      if(menuindex>0){
-        menuspeed=1;
+        menuspeed=2;
      }
 
 }
@@ -108,6 +108,15 @@ if(menuindex!=MENU_GYROCUBE|| menuindex+a-1!=MENU_GYROCUBE||menuspeed!=0)
 }
 
 _x+=menuspeed;
+switch(_x){
+case 16:
+menuspeed=1;
+break;
+case -16:
+menuspeed=-1;
+break;
+
+}
  if(_x==48){
   menuspeed=0;
    _x=0;

@@ -44,25 +44,27 @@ extern unsigned char DEVICESTATE;
  };
 void drawWatchFace( ){
 
-
-    unsigned char b[16]="    00     2000";
+if(watchMode==0){
+  unsigned char b[16]="    00     2000";
 memcpy(b,days[day],3);
 
 memcpy(b+7,months[month],3);
 
-    b[13]+=year/10;
-    b[14]+=year%10;
-    b[4]+=date/10;
-    b[5]+=date%10;
+  b[13]+=year/10;
+  b[14]+=year%10;
+  b[4]+=date/10;
+  b[5]+=date%10;
 
 drawString(20,0,b,smallFont);
 
+
+}
 
 
   draw_bitmap( 0, 24, font_mid+((hours/10)*57), 19, 24, false, 0);
   draw_bitmap( 22, 24, font_mid+((hours%10)*57), 19, 24, false, 0);
 
- 
+
 
 if(animating){
  draw_bitmap( 117, 32, small2Font+(((seconds  )%10)*22), 11,  16, false,(lastcolon*22/256)); //// top side
