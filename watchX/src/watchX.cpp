@@ -1,4 +1,3 @@
-#define IR_USE_TIMER1
 
 
 #include <Arduino.h>
@@ -8,12 +7,11 @@
 #include "watchX.h"
 #include "oled.h"
 #include "cpu.h"
-#include "timerone.h"
-#include "buzzer.h"
-#include "gyroaccel.h"
+
+
 #include "gyrocube.h"
 #include "mag3110.h"
-#include "pressure.h"
+//#include "pressure.h"
 
 #include "resources.h"
 #include "usb.h"
@@ -31,18 +29,55 @@
 #include "menu.h"
 
 #include "bluetooth.h"
-#include "watchXmpu6050.h"
+//#include "watchXmpu6050.h"
+//#include "tinyMpu6050.h"
+#include <tinyMpu6050.h>
 #include "settings.h"
 
 
-MPU6050 mpu;
+// Declared weak in Arduino.h to allow user redefinitions.
+//int atexit(void (* /*func*/ )()) { return 0; }
+
+// Weak empty variant initialization function.
+// May be redefined by variant files.
+//void initVariant() __attribute__((weak));
+//void initVariant() { }
+
+//void setupUSB() __attribute__((weak));
+//void setupUSB() { }
+/*
+int main(void)
+{
+//	init();
+
+	//initVariant();
+
+#if defined(USBCON)
+	//USBDevice.attach();
+#endif
+
+	setup();
+
+	for (;;) {
+		loop();
+	//	if (serialEventRun) serialEventRun();
+	}
+
+	return 0;
+}
+*/
+
+
 //BMP280 bmp280;
+
 volatile uint8_t animating=1;
- unsigned char mbuf[128*8];
+const uint8_t melody[]={NOTE_B0};
+volatile uint8_t mpuIsReady=1;
+
 extern volatile uint8_t animating;
 volatile unsigned long lastcolon;
 unsigned long _tm=millis();
-char strtmpbuf[50];
+char strtmpbuf[15];
 
 //extern volatile unsigned long lastcolon;
 func_type functions[HANDLEDFUNCTIONS_COUNT+3];
@@ -104,10 +139,13 @@ void updateThings( ){
 
   if(millis()-batteryread>1000){
     batterylevel=readBattery(BATTERY_EN,BATTERY_PIN);
+     //updateMpu6050();
+  //  updateMpu6050();
 if(batterylevel<530){
 
 }else{
-   mpu.readRawGyro();
+
+//   mpu.readRawGyro();
 // MPU6050_update();
 //  MPU6050_calc();
 //  getPressure();
@@ -118,7 +156,15 @@ if(batterylevel<530){
 
   batteryread=millis();
 
-    }
+}else{
+      if(0){
+
+        //  digitalWrite(13,HIGH);
+          //delay(1000);
+          mpuIsReady=0;
+      }
+
+}
   //}
 }
 
@@ -183,9 +229,9 @@ stopSqw();
             //    nextUIFunc=functions[ uiFunc];
           //  sw2Func=gotoMenu;
           //  sw3Func=NULL;
-      //  functions[  bleFunc] =handleBle;
-           functions[usbFunc]=drawUsb;
-        functions[batteryFunc]=drawBattery;
+        functions[  bleFunc] =handleBle;
+           functions[usbFunc]=NULL;
+        functions[batteryFunc]=NULL;
         functions[updateFunc]=updateThings;
       }
     }
@@ -199,14 +245,15 @@ void gotoStopWatch(){
 
 }
 void gotoBlueTooth(){
+  sound.tone(1200, 1000,600, 500,1800, 400);
   stopSqw();
-    if(animation_offsetY==0)
-           if( (~SW1_WASPUSHED)&SW1_PUSHED){
+    //if(animation_offsetY==0)
+        //   if( (~SW1_WASPUSHED)&SW1_PUSHED){
                 nextUIFunc=drawBle;
               functions[sw1Func]=gotoMenu;
               functions[sw2Func]=NULL;
               functions[sw3Func]=NULL;
-      }
+    //  }
 }
 
 void gotoDiagnostic(){
@@ -224,17 +271,19 @@ void gotoDiagnostic(){
 
 
 
-const uint8_t melody[]={NOTE_B0};
+void intUpdate(){
 
-
+mpuIsReady=1;
+}
 void setup()
 {
+/// stopSqw();
 menuspeed=0;
 soundenabled=true;
 sound.tone(1200, 100,1000, 50,1800, 200);
-setPrescale();
+//setPrescale();
 //while(!Serial);
-//Serial.begin(57600);
+
 
 //timerOneFunc=timerOneTones;
           /* Set timer1 interrupt to 20Hz */
@@ -250,12 +299,12 @@ pinMode(rstPin, OUTPUT);
 pinMode(CHARGE_PIN,INPUT);
 pinMode(LED1, OUTPUT);
 pinMode(LED2, OUTPUT);
-
+pinMode(MPU_INT,INPUT_PULLUP);
     pinMode(cesPin, OUTPUT);
     pinMode(dcPin, OUTPUT);
 
 digitalWrite(rstPin, HIGH);
-
+digitalWrite(MPU_INT,LOW);
   digitalWrite(rstPin, HIGH);
   digitalWrite(dcPin, HIGH);
   digitalWrite(cesPin, HIGH);
@@ -286,12 +335,16 @@ digitalWrite(rstPin, HIGH);
      *                                 7*8+7=63-rd pixel          */
 //setDateTime();
 
-
+// ble_connect(); // TODO: bluetoot enable / disable
  attachInterrupt(digitalPinToInterrupt(PIN_INTERRUPT), nextSecond, CHANGE);
+ attachInterrupt(digitalPinToInterrupt(MPU_INT), intUpdate, RISING);
 
 //MPU6050_Initialize();
 //MPU6050_begin();
-mpu.begin();
+
+//startMpu6050();
+  /*
+ mpu.begin();
 mpu.setAccelPowerOnDelay(MPU6050_DELAY_3MS);
 
 mpu.setIntFreeFallEnabled(true);
@@ -307,14 +360,14 @@ mpu.setZeroMotionDetectionThreshold(4);
 mpu.setZeroMotionDetectionDuration(2);
 
 MAG3110_begin();
-
+/**/
 //   mpu6050.calcGyroOffsets(true);
 
 
  startSqw(); /// Starts 1 second SquareWave from DS3231
 
 
-get3231Temp();
+//get3231Temp();
 setDateTime();
 
      pinMode(SW1,INPUT_PULLUP);
@@ -328,10 +381,10 @@ setDateTime();
 
 //goto
 //functions[uiFunc]=drawWatchFace;
-    //  functions[  bleFunc] =handleBle;
+    functions[  bleFunc] =handleBle;
      gotoWatchFace();
     // gotoDiagnostic(true);
-  //  ble_connect(); // TODO: bluetoot enable / disable
+startMpu6050();
 updateThings();
 //Serial.println("."); //// TODO: idkw serial must print something for stability.
 //delay(100);
@@ -364,7 +417,7 @@ anmof+=(64-anmof)/16+1;
       if(nextUIFunc!=NULL)
       functions[uiFunc]=nextUIFunc;
        nextUIFunc=NULL;
-        startSqw();
+       startSqw();
        return;
       }
 
@@ -435,8 +488,8 @@ buttonFX(500|((DEVICESTATE&B00000111)*300));
 
 digitalWrite(LED2,sound.playing()?HIGH: LOW);
   drawLoop();
-if(millis()-_tm>30){
-
+if(millis()-_tm>300){
+//  updateMpu6050();
   _tm=millis();
 }
 

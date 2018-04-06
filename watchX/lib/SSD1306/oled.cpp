@@ -1,11 +1,20 @@
 #include <Arduino.h>
-#include "oled.h"
+
 #include <SPI.h>
+
+  #include "oled.h"
  unsigned char animation_offsetY=0;
+  unsigned char mbuf[1024]={0};
 uint8_t uiX,uiY;
 
+/*
+  Over a long run session, memory becomes fragmented and eventually an allocation fails
+  due to lack of a sufficiently large free area,
+  even though the total free memory is more than adequate for the request.
+*/
 /// TODO global left right position setting
 void ssd1306_configure(){
+
 
     const uint8_t  s_oled128x64_initData[] =
  {

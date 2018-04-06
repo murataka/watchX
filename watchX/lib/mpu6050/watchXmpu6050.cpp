@@ -49,7 +49,7 @@ bool MPU6050::begin(mpu6050_dps_t scale, mpu6050_range_t range, int mpua)
     actualThreshold = 0;
 
     // Check MPU6050 Who Am I Register
-    if (fastRegister8(MPU6050_REG_WHO_AM_I) != 0x69)
+    if (fastRegister8(MPU6050_REG_WHO_AM_I) != 0x68)
     {
 	return false;
     }
@@ -632,7 +632,7 @@ uint8_t MPU6050::fastRegister8(uint8_t reg)
 	value = Wire.read();
     #else
 	value = Wire.receive();
-    #endif
+    #endif;
     Wire.endTransmission();
 
     return value;

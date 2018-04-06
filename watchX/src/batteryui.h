@@ -2,5 +2,5 @@
 #define BATTERY_UI
 
 void drawBattery();
-
+ 
 #endif

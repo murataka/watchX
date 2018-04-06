@@ -7,7 +7,7 @@
 
 
  uint8_t watchMode=0;
-extern unsigned char DEVICESTATE;
+
 //uint8_t buf2[16*2];
 
 
@@ -45,7 +45,7 @@ extern unsigned char DEVICESTATE;
 void drawWatchFace( ){
 
 if(watchMode==0){
-  unsigned char b[16]="    00     2000";
+  unsigned char b[16] ="    00     2000";
 memcpy(b,days[day],3);
 
 memcpy(b+7,months[month],3);

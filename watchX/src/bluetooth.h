@@ -23,10 +23,10 @@
 void drawBle();
 
 void handleBle();
- 
+
 void ble_connect();
 void ble_sw1();
 /* ...hardware SPI, using SCK/MOSI/MISO hardware SPI pins and then user selected CS/IRQ/RST */
-extern Adafruit_BluefruitLE_SPI *ble;
+ 
 
 #endif

@@ -7,7 +7,6 @@
 #include "resources.h"
 
 
-extern unsigned char DEVICESTATE;
 
 
 void drawUsb(  ){
@@ -19,7 +18,7 @@ void drawUsb(  ){
       //NanoCanvas c(24,8,buf);
         if(DEVICESTATE&128){
         //   draw_bitmap(40, 0, watchXui,8,8,false,0);
-if(digitalRead(CHARGE_PIN)==LOW&& batterylevel<630)
+//if(digitalRead(CHARGE_PIN)==LOW&& batterylevel<630)
 draw_bitmap( 36, 56, watchXui+64, 8, 8, false, 0);
 //
 draw_bitmap(18, 56, watchXui+80,16,8,false,0);

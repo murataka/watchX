@@ -1,6 +1,7 @@
 #include "timerone.h"
 
 //func_type timerOneFunc=NULL;
+/*
 void startTimerOne(){
 
   cli();//stop interrupts
@@ -19,3 +20,4 @@ ISR(TIMER1_COMPA_vect){
 //if(timerOneFunc)timerOneFunc( ); /// TODO : multiple timerone handler functions
 
 }
+*/

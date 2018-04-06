@@ -6,11 +6,12 @@
 #include "watchface.h"
 #include "menu.h"
 #include "temperature.h"
-#include "watchXmpu6050.h"
+#include <tinyMpu6050.h>
+
 #define SW1 8
 #define SW2 11
 #define SW3 10
-
+#define MPU_INT 7
 #define LED1 13
 #define LED2 6
 #define BUZZER_PIN 9
@@ -19,10 +20,7 @@
 
 
 
-extern MPU6050 mpu;
 
-extern volatile uint8_t animating;
-extern volatile unsigned long lastcolon;
 
 // Scrolling #defines
 
@@ -39,8 +37,7 @@ extern volatile unsigned long lastcolon;
 
 #define PIN_INTERRUPT   PD1 // interrupt pin
 
-extern unsigned char DEVICESTATE;
-extern unsigned char Old_DEVICESTATE;
+
 
 
 
@@ -87,10 +84,14 @@ typedef void (*func_type)(    );
 #define bleFunc 1
 #define updateFunc 3
 
+  extern volatile uint8_t animating;
+  extern volatile unsigned long lastcolon;
 extern unsigned char DEVICESTATE;
+extern unsigned char Old_DEVICESTATE;
+
 //extern char *activekeyframe;
-extern char strtmpbuf[];
-extern unsigned char mbuf[128*8];
+extern char strtmpbuf[15];
+
 extern func_type nextUIFunc;
 
 //extern func_type usbFunc ,sw1Func,sw2Func,sw3Func,uiFunc,batteryFunc,bleFunc;
@@ -98,14 +99,13 @@ extern func_type functions[];
 void handleFunction(func_type f);
 
 void gotoMenu(  );
- 
+
 void gotoWatchFace( );
 void gotoGyroFace( );
 void gotoDiagnostic();
 void gotoStopWatch( );
 void gotoBlueTooth( );
 void gotoSettings( );
-
 
 
 

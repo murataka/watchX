@@ -1,13 +1,14 @@
-#include "menu.h"
+
 #include <Arduino.h>
 
 
 #include "watchX.h"
-
+#include "menu.h"
 #include "diag.h"
 #include "oled.h"
 #include "gyrocube.h"
 #include "settings.h"
+
         int _x=0;
 int menuspeed=0;
 int scrollto=0;
@@ -30,11 +31,11 @@ void menusw1( ){
 
       break;
       case MENU_GYROCUBE:
-      //  gotoGyroFace();
+         gotoGyroFace();
 
       break;
         case MENU_BLUETOOTH:
-        //    gotoBlueTooth(true);
+           gotoBlueTooth();
         break;
       case MENU_DIAGNOSTIC:
         gotoDiagnostic();
@@ -79,7 +80,7 @@ if(animation_offsetY==0)
 /*
   When memory is dynamically allocated, the atmega chip cannot allocate memory ...
 */
-char menuCap[][15]={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings"};
+const char menuCap[][15]  ={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings"};
 void drawMenus(){
 ///char menuCap[][15]={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings"};
    drawString(26,0,"< MAIN MENU >",smallFont);
@@ -100,8 +101,8 @@ for(   char a=-1;a<4;a++)
 
 
 if(menuindex+a-1>=0){
-//  if(menuindex==MENU_GYROCUBE&&menuspeed==0)
- //gyroCube(8);
+  if(menuindex==MENU_GYROCUBE&&menuspeed==0)
+ gyroCube(8);
 
 if(menuindex!=MENU_GYROCUBE|| menuindex+a-1!=MENU_GYROCUBE||menuspeed!=0)
   draw_bitmap(_x+(a*48) , 16, menus_bits+((menuindex+a-1)*4*32), 32, 32, false, 0);

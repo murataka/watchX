@@ -7,5 +7,5 @@
 
 //extern func_type timerOneFunc;
 
-void startTimerOne();
+//void startTimerOne();
 #endif

@@ -1,137 +1,80 @@
 #include "gyrocube.h"
-#include "watchX.h"
 #include "oled.h"
-#include "gyroaccel.h"
+#include <tinyMpu6050.h>
+#include "watchX.h"
+//3D_Cube for Arduino OLED module by Colin Ord, 9/1/2015
+//A port of my original JustBasic Cube_3D demo to the Arduino Uno using U8G library.
 
 
 
-// Overall scale and perspective distance
-uint8_t sZ = 4, scale = 8;
-// screen center
-uint8_t centerX = 64;
-uint8_t centerY = 32;
+float r, x1, ya, z1, x2, y2, z2, x3, y3, z3;               //
+int f[8][2];                                               // Draw box
+int x = 64;                                                // 64=128/2
+int y = 32;                                                // 32= 64/2
+int c[8][3] = {                                            // Cube
+ {-20,-20, 20},{20,-20, 20},{20,20, 20},{-20,20, 20},      //
+ {-20,-20,-20},{20,-20,-20},{20,20,-20},{-20,20,-20} };    //
 
-// Initialize cube point arrays
-double C1[] = {  1,  1,  1 };
-double C2[] = {  1,  1, -1 };
-double C3[] = {  1, -1,  1 };
-double C4[] = {  1, -1, -1 };
-double C5[] = { -1,  1,  1 };
-double C6[] = { -1,  1, -1 };
-double C7[] = { -1, -1,  1 };
-double C8[] = { -1, -1, -1 };
 
-// Initialize cube points coords
-uint8_t P1[] = { 0, 0 };
-uint8_t P2[] = { 0, 0 };
-uint8_t P3[] = { 0, 0 };
-uint8_t P4[] = { 0, 0 };
-uint8_t P5[] = { 0, 0 };
-uint8_t P6[] = { 0, 0 };
-uint8_t P7[] = { 0, 0 };
-uint8_t P8[] = { 0, 0 };
 
-void vectRotXYZ(double angle, int axe) {
-  int8_t m1; // coords polarity
-  uint8_t i1, i2; // coords index
+int16_t a;
+void gyroCube(uint8_t scale){
+float sinr,cosr;
 
-  switch(axe) {
-    case 1: // X
-      i1 = 1; // y
-      i2 = 2; // z
-      m1 = -1;
-    break;
-    case 2: // Y
-      i1 = 0; // x
-      i2 = 2; // z
-      m1 = 1;
-    break;
-    case 3: // Z
-      i1 = 0; // x
-      i2 = 1; // y
-      m1 = 1;
-    break;
+if(functions[uiFunc]!=drawGyroCube)
+a++;
+else
+if(animation_offsetY==0)
+ a=GyX;
+
+  for(uint8_t i=0;i<8;i++){
+c[i][0]=c[i][0]>0?scale:-scale;
+    c[i][1]=c[i][1]>0?scale:-scale;
+    c[i][2]=c[i][2]>0?scale:-scale;
   }
 
-  double t1 = C1[i1];
-  double t2 = C1[i2];
-  C1[i1] = t1*cos(angle)+(m1*t2)*sin(angle);
-  C1[i2] = (-m1*t1)*sin(angle)+t2*cos(angle);
+  //for (int a = 0; a <= 360; a = a + 3 ) {                   // 0 to 360 deg 3step
+    for (int i = 0; i < 8; i++) {                           //
+     r  = a * 0.0174532;
+          cosr=cos(r); sinr=sin(r);                               // 1 degree
+     x1 = c[i][2] * sinr + c[i][0] * cosr;              // rotate Y
+     ya = c[i][1];                                          //
+     z1 = c[i][2] * cosr - c[i][0] * sinr;              //
+     x2 = x1;                                               //
+     y2 = ya * cosr - z1 * sinr;                        // rotate X
+     z2 = ya * sinr + z1 * cosr;                        //
+     x3 = x2 * cosr - y2 * sinr;                        // rotate Z
+     y3 = x2 * sinr + y2 * cosr;                        //
+     z3 = z2;                                               //
+     x3 = x3 + x ;                                          //
+     y3 = y3 + y ;                                          //
+     f[i][0] = x3;                                          // store new values
+     f[i][1] = y3;                                          //
+     f[i][2] = z3;                                          //
+    }                                                       //
 
-  t1 = C2[i1];
-  t2 = C2[i2];
-  C2[i1] = t1*cos(angle)+(m1*t2)*sin(angle);
-  C2[i2] = (-m1*t1)*sin(angle)+t2*cos(angle);
+    drawLine(f[0][0],f[0][1],f[1][0],f[1][1]);//
+    drawLine(f[1][0],f[1][1],f[2][0],f[2][1]);//
+    drawLine(f[2][0],f[2][1],f[3][0],f[3][1]);//
+    drawLine(f[3][0],f[3][1],f[0][0],f[0][1]);//
+    drawLine(f[4][0],f[4][1],f[5][0],f[5][1]);//
+    drawLine(f[5][0],f[5][1],f[6][0],f[6][1]);//
+    drawLine(f[6][0],f[6][1],f[7][0],f[7][1]);//
+    drawLine(f[7][0],f[7][1],f[4][0],f[4][1]);//
+    drawLine(f[0][0],f[0][1],f[4][0],f[4][1]);//
+    drawLine(f[1][0],f[1][1],f[5][0],f[5][1]);//
+    drawLine(f[2][0],f[2][1],f[6][0],f[6][1]);//
+    drawLine(f[3][0],f[3][1],f[7][0],f[7][1]);//
 
-  t1 = C3[i1];
-  t2 = C3[i2];
-  C3[i1] = t1*cos(angle)+(m1*t2)*sin(angle);
-  C3[i2] = (-m1*t1)*sin(angle)+t2*cos(angle);
-
-  t1 = C4[i1];
-  t2 = C4[i2];
-  C4[i1] = t1*cos(angle)+(m1*t2)*sin(angle);
-  C4[i2] = (-m1*t1)*sin(angle)+t2*cos(angle);
-
-  t1 = C5[i1];
-  t2 = C5[i2];
-  C5[i1] = t1*cos(angle)+(m1*t2)*sin(angle);
-  C5[i2] = (-m1*t1)*sin(angle)+t2*cos(angle);
-
-  t1 = C6[i1];
-  t2 = C6[i2];
-  C6[i1] = t1*cos(angle)+(m1*t2)*sin(angle);
-  C6[i2] = (-m1*t1)*sin(angle)+t2*cos(angle);
-
-  t1 = C7[i1];
-  t2 = C7[i2];
-  C7[i1] = t1*cos(angle)+(m1*t2)*sin(angle);
-  C7[i2] = (-m1*t1)*sin(angle)+t2*cos(angle);
-
-  t1 = C8[i1];
-  t2 = C8[i2];
-  C8[i1] = t1*cos(angle)+(m1*t2)*sin(angle);
-  C8[i2] = (-m1*t1)*sin(angle)+t2*cos(angle);
-
-}
-
-void gyroCube(uint8_t scale){
-  // scale angles down, rotate
-  //char r=(rand()%20)==0?r:(rand()%3)-1;
-char r=1;
-  vectRotXYZ((double)0.03*r, (millis()/1000)%3+1); // X
-  //vectRotXYZ((double)-gx/MMPI_TIME, 2); // Y
-  //vectRotXYZ((double)gz/MMPI_TIME, 3); // Z
-
-  // calculate each point coords
-  P1[0] = centerX + scale/(1+C1[2]/sZ)*C1[0]; P1[1] = centerY + scale/(1+C1[2]/sZ)*C1[1];
-  P2[0] = centerX + scale/(1+C2[2]/sZ)*C2[0]; P2[1] = centerY + scale/(1+C2[2]/sZ)*C2[1];
-  P3[0] = centerX + scale/(1+C3[2]/sZ)*C3[0]; P3[1] = centerY + scale/(1+C3[2]/sZ)*C3[1];
-  P4[0] = centerX + scale/(1+C4[2]/sZ)*C4[0]; P4[1] = centerY + scale/(1+C4[2]/sZ)*C4[1];
-  P5[0] = centerX + scale/(1+C5[2]/sZ)*C5[0]; P5[1] = centerY + scale/(1+C5[2]/sZ)*C5[1];
-  P6[0] = centerX + scale/(1+C6[2]/sZ)*C6[0]; P6[1] = centerY + scale/(1+C6[2]/sZ)*C6[1];
-  P7[0] = centerX + scale/(1+C7[2]/sZ)*C7[0]; P7[1] = centerY + scale/(1+C7[2]/sZ)*C7[1];
-  P8[0] = centerX + scale/(1+C8[2]/sZ)*C8[0]; P8[1] = centerY + scale/(1+C8[2]/sZ)*C8[1];
-
-  // draw each cube edge
-  drawLine(P1[0], P1[1], P2[0], P2[1]); //1-2
-  drawLine(P1[0], P1[1], P3[0], P3[1]); //1-3
-  drawLine(P1[0], P1[1], P5[0], P5[1]); //1-5
-  drawLine(P2[0], P2[1], P4[0], P4[1]); //2-4
-  drawLine(P2[0], P2[1], P6[0], P6[1]); //2-6
-  drawLine(P3[0], P3[1], P4[0], P4[1]); //3-4
-  drawLine(P3[0], P3[1], P7[0], P7[1]); //3-7
-  drawLine(P4[0], P4[1], P8[0], P8[1]); //4-8
-  drawLine(P5[0], P5[1], P6[0], P6[1]); //5-6
-  drawLine(P5[0], P5[1], P7[0], P7[1]); //5-7
-  drawLine(P6[0], P6[1], P8[0], P8[1]); //6-8
-  drawLine(P7[0], P7[1], P8[0], P8[1]); //7-8
-
-
+    drawLine(f[1][0],f[1][1],f[3][0],f[3][1]);// cross
+    drawLine(f[0][0],f[0][1],f[2][0],f[2][1]);// cross
+                      //  delay(1000);                     //
+//  }
 
 
 }
 void drawGyroCube(){
 
 gyroCube(16);
+
 }

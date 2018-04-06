@@ -3,13 +3,13 @@
 //#include <ssd1306.h>
 
 
-extern uint8_t watchMode;
+
 
 #include "resources.h"
- 
+
+   extern uint8_t watchMode;
 void drawWatchFace( );
 
-void drawWatchAnim( );
-
+ 
 
 #endif

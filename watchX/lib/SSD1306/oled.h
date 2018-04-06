@@ -73,8 +73,8 @@
 
 #define uint unsigned int
 //#define byte unsigned char
-extern unsigned char mbuf[128*8];
- 
+extern   unsigned char mbuf[1024];
+
 extern uint8_t uiX,uiY;
 extern unsigned char animation_offsetY;
 void ssd1306_drawBuffer(byte x, byte y, byte w, byte h, const byte *buf);
