@@ -13,18 +13,18 @@
 
 // String buffer sizes
 // Don't forget to add 1 for null terminator
-#define BUFFSIZE_STR_MENU	24
-#define BUFFSIZE_STR_DAYS	4
-#define BUFFSIZE_STR_MONTHS	4
+#define BUFFSIZE_STR_MENU	0x18
+#define BUFFSIZE_STR_DAYS	0x4
+#define BUFFSIZE_STR_MONTHS	0x4
 
-#define BUFFSIZE_DATE_FORMAT		((BUFFSIZE_STR_DAYS - 1) + (BUFFSIZE_STR_MONTHS - 1) + 12)
-#define BUFFSIZE_TIME_FORMAT_SMALL		9
+//#define BUFFSIZE_DATE_FORMAT		((BUFFSIZE_STR_DAYS - 1) + (BUFFSIZE_STR_MONTHS - 1) + 12)
+//#define BUFFSIZE_TIME_FORMAT_SMALL		9
 
 
 
 // String formats
-#define DATE_FORMAT ("%s %02hhu %s 20%02hhu")
-#define TIME_FORMAT_SMALL ("%02hhu:%02hhu%c")
+//#define DATE_FORMAT ("%s %02hhu %s 20%02hhu")
+//#define TIME_FORMAT_SMALL ("%02hhu:%02hhu%c")
 
 
 
@@ -42,7 +42,7 @@
 #define STR_DOWCHARS	"MTWTFSS"
 
 
-
+/*
 // Days
 // Also see BUFFSIZE_STR_DAYS
 #define STR_MON			"Mon"
@@ -68,10 +68,10 @@
 #define STR_NOV			"Nov"
 #define STR_DEC			"Dec"
 
-
+*/
 // Menu strings
 // Also see BUFFSIZE_STR_MENU
-
+/*
 #define STR_MAINMENU	"< MAIN MENU >"
 #define STR_ALARMS		"Alarms"
 #define STR_FLASHLIGHT	"Flashlight"
@@ -135,7 +135,7 @@
 #define STR_HIGHSCORE	"Highscore:"
 #define STR_NEWHIGHSCORE	"!NEW HIGHSCORE!"
 
-
+*/
 
 // Little images (8x8) for showing day of week of next alarm on main screen
 /*

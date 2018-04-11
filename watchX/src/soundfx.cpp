@@ -1,9 +1,9 @@
 #include <soundfx.h>
 
-bool soundenabled=false;
+
 bool outEnabled(){
 
-  return soundenabled;
+  return true;
 }
 
 Tones sound(outEnabled);

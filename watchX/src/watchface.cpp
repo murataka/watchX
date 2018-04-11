@@ -3,6 +3,7 @@
 #include "rtc.h"
 #include "oled.h"
 #include "cpu.h"
+#include "battery.h"
 //#include <nano_gfx.h>
 
 
@@ -11,13 +12,13 @@
 //uint8_t buf2[16*2];
 
 
-  int speed;
+  int8_t speed;
 
 
 //unsigned int i=0;
 
 
- const char months[12][BUFFSIZE_STR_MONTHS]  = {
+ const char months[12][BUFFSIZE_STR_MONTHS] PROGMEM = {
    "JAN",
    "FEB",
    "MAR",
@@ -33,7 +34,7 @@
  };
 
 
- const char days[7][BUFFSIZE_STR_DAYS]  = {
+ const char days[7][BUFFSIZE_STR_DAYS] PROGMEM = {
    "MON",
    "TUE",
    "WED",
@@ -46,9 +47,12 @@ void drawWatchFace( ){
 
 if(watchMode==0){
   unsigned char b[16] ="    00     2000";
-memcpy(b,days[day],3);
+for(byte i=0;i<3;i++){
 
-memcpy(b+7,months[month],3);
+  b[i]=pgm_read_byte(days[day]+i);
+  b[i+7]=pgm_read_byte(months[month]+i);
+
+}
 
   b[13]+=year/10;
   b[14]+=year%10;
@@ -145,4 +149,21 @@ if(lastcolon<256){
  lastcolon+=speed;
 }
 //else lastcolon=0;
+
+////usbFunc
+if(DEVICESTATE&128){
+//   draw_bitmap(40, 0, watchXui,8,8,false,0);
+if(digitalRead(CHARGE_PIN)==LOW)
+draw_bitmap( 36, 56, watchXui+64, 8, 8, false, 0);
+
+draw_bitmap(18, 56, watchXui+80,16,8,false,0);
+
+//
+
+}
+
+/// battery
+//
+draw_bitmap( 0, 56, watchXui+(unsigned)(((batterylevel-500)/40)*16), 16, 8, false, 0);
+
 }

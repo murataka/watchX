@@ -3,8 +3,7 @@
 #include <SPI.h>
 
   #include "oled.h"
- unsigned char animation_offsetY=0;
-  unsigned char mbuf[1024]={0};
+
 uint8_t uiX,uiY;
 
 /*
@@ -18,22 +17,23 @@ void ssd1306_configure(){
 
     const uint8_t  s_oled128x64_initData[] =
  {
-     SSD1306_DISPLAYOFF, // display off
+  //   SSD1306_DISPLAYOFF, // display off
      SSD1306_MEMORYMODE, HORIZONTAL_ADDRESSING_MODE, // Page Addressing mode
      SSD1306_COMSCANDEC,             // Scan from 127 to 0 (Reverse scan)
-     SSD1306_SETSTARTLINE | 0x00,    // First line to start scanning from
-     SSD1306_SETCONTRAST, 0x7F,      // contast value to 0x7F according to datasheet
+//     SSD1306_SETSTARTLINE | 0x00,    // First line to start scanning from
+     SSD1306_SETCONTRAST, 0xFF,      // contast value to 0x7F according to datasheet
      SSD1306_SEGREMAP | 0x01,        // Use reverse mapping. 0x00 - is normal mapping
-    SSD1306_NORMALDISPLAY,
-     SSD1306_SETMULTIPLEX, 63,       // Reset to default MUX. See datasheet
-     SSD1306_SETDISPLAYOFFSET, 0x00, // no offset
-     SSD1306_SETDISPLAYCLOCKDIV, 0x80,// set to default ratio/osc frequency
-     SSD1306_SETPRECHARGE, 0xF1,     // switch precharge to 0x22 // 0xF1
-     SSD1306_SETCOMPINS, 0x12,       // set divide ratio
-     SSD1306_SETVCOMDETECT, 0x40,    // vcom deselect to 0x20 // 0x40
+  //  SSD1306_NORMALDISPLAY,
+  //   SSD1306_SETMULTIPLEX, 63,       // Reset to default MUX. See datasheet
+//     SSD1306_SETDISPLAYOFFSET, 0x00, // no offset
+//     SSD1306_SETDISPLAYCLOCKDIV, 0x80,// set to default ratio/osc frequency
+  //   SSD1306_SETPRECHARGE, 0xF1,     // switch precharge to 0x22 // 0xF1
+//     SSD1306_SETCOMPINS, 0x12,       // set divide ratio
+  //   SSD1306_SETVCOMDETECT, 0x40,    // vcom deselect to 0x20 // 0x40
      SSD1306_CHARGEPUMP, 0x14,       // Enable charge pump
+
     // 0X20,0X80,
-     SSD1306_DISPLAYALLON_RESUME,
+  //   SSD1306_DISPLAYALLON_RESUME,
      SSD1306_DISPLAYON
  };
 
@@ -96,9 +96,35 @@ void ssd1306_sendData(uint8_t data)
 
 void clearAll(){
 //if(animation_offsetY==0)
-  memset(mbuf, 0x00, 128*8);
+  memset(mbuf, 0x00, 1024);
+//for(uint16_t i=0;i<1024;i++) mbuf[i]=0;
 }
 
+
+/*
+
+for (k = 0; k < strlen_P(signMessage); k++)
+  {
+    myChar =  pgm_read_byte_near(signMessage + k);
+    Serial.print(myChar);
+  }
+
+*/
+void drawString_P(uint8_t x,uint8_t y,const byte*s,const byte* font,char startindex){
+   char c;
+if(!s)return;
+for(int a=0;a<strlen_P(s);a++){
+  c=pgm_read_byte_near(s+a);
+
+//  strtmpbuf[a]= pgm_read_byte_near(months[month]+a);
+//  draw_bitmap( 0, 32, font_mid, 19, 24, false, 0);
+
+   draw_bitmap( x+(a*6),  y, font+((startindex+c)*5), 5, 8, false, 0);
+
+
+}
+
+}
 void drawString(uint8_t x,uint8_t y,const char*s,const byte* font,char startindex){
 char a=0;
 if(!s)return;
@@ -222,7 +248,7 @@ void draw_bitmap(byte x, byte yy, const byte* bitmap, byte w, byte h, bool inver
   byte h2 = h / 8;
 
   //
-  byte pixelOffset = (y % 8);
+
 
   byte thing3 = (yy+h);
 
@@ -253,7 +279,7 @@ void draw_bitmap(byte x, byte yy, const byte* bitmap, byte w, byte h, bool inver
 
     // If() outside of loop makes it faster (doesn't have to keep re-evaluating it)
     // Downside is code duplication
-    if(!pixelOffset && hhh < FRAME_HEIGHT)
+    if(!(y % 8) && hhh < FRAME_HEIGHT)
     {
       //
       LOOP(w, ww)
@@ -292,13 +318,13 @@ void draw_bitmap(byte x, byte yy, const byte* bitmap, byte w, byte h, bool inver
 
         //
         if(hhh < FRAME_HEIGHT)
-          mbuf[xx + aa] |= pixels << pixelOffset;
-          //setBuffByte(buff, xx, hhh, pixels << pixelOffset, colour);
+          mbuf[xx + aa] |= pixels << (y % 8);
+          //setBuffByte(buff, xx, hhh, pixels << (y % 8), colour);
 
         //
         if(hhhh < FRAME_HEIGHT)
-          mbuf[xx + aaa] |= pixels >> (8 - pixelOffset);
-          //setBuffByte(buff, xx, hhhh, pixels >> (8 - pixelOffset), colour);
+          mbuf[xx + aaa] |= pixels >> (8 - (y % 8));
+          //setBuffByte(buff, xx, hhhh, pixels >> (8 - (y % 8)), colour);
       }
     }
   }

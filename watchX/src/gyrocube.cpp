@@ -1,6 +1,7 @@
 #include "gyrocube.h"
 #include "oled.h"
 #include <tinyMpu6050.h>
+
 #include "watchX.h"
 //3D_Cube for Arduino OLED module by Colin Ord, 9/1/2015
 //A port of my original JustBasic Cube_3D demo to the Arduino Uno using U8G library.
@@ -9,23 +10,24 @@
 
 float r, x1, ya, z1, x2, y2, z2, x3, y3, z3;               //
 int f[8][2];                                               // Draw box
-int x = 64;                                                // 64=128/2
-int y = 32;                                                // 32= 64/2
-int c[8][3] = {                                            // Cube
+//int x = 64;                                                // 64=128/2
+//int y = 32;
+int16_t a;                                             // 32= 64/2
+
+void gyroCube(uint8_t scale){
+float sinr,cosr;
+
+
+int8_t c[8][3] = {                                            // Cube
  {-20,-20, 20},{20,-20, 20},{20,20, 20},{-20,20, 20},      //
  {-20,-20,-20},{20,-20,-20},{20,20,-20},{-20,20,-20} };    //
 
-
-
-int16_t a;
-void gyroCube(uint8_t scale){
-float sinr,cosr;
 
 if(functions[uiFunc]!=drawGyroCube)
 a++;
 else
 if(animation_offsetY==0)
- a=GyX;
+ a=ac[4]/50;
 
   for(uint8_t i=0;i<8;i++){
 c[i][0]=c[i][0]>0?scale:-scale;
@@ -46,8 +48,8 @@ c[i][0]=c[i][0]>0?scale:-scale;
      x3 = x2 * cosr - y2 * sinr;                        // rotate Z
      y3 = x2 * sinr + y2 * cosr;                        //
      z3 = z2;                                               //
-     x3 = x3 + x ;                                          //
-     y3 = y3 + y ;                                          //
+     x3 = x3 + 64 ;                                          //
+     y3 = y3 + 32 ;                                          //
      f[i][0] = x3;                                          // store new values
      f[i][1] = y3;                                          //
      f[i][2] = z3;                                          //

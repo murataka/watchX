@@ -24,7 +24,7 @@ if(ble.available()){ i=0;
 
          strtmpbuf[i++]=ble.read();
 
-
+ 
 
         }
 
@@ -36,9 +36,10 @@ if(ble.available()){ i=0;
        }
 }
     }
+    const char title[] PROGMEM="< INCOMING MESSAGE >";
     void drawBle(){
      /// TODO do we need ?
-        drawString(4,0,"< INCOMING MESSAGE >",smallFont);
+        drawString_P(4,0,title,smallFont);
         drawString(0,8,strtmpbuf,smallFont);
 
       }
@@ -51,15 +52,15 @@ void ble_connect(){
        //error(F("Couldn't find Bluefruit, make sure it's in CoMmanD mode & check wiring?"));
       }
 
-/*
+  /*
         if ( FACTORYRESET_ENABLE )
       {
         if ( ! ble.factoryReset() ){
          // error(F("Couldn't factory reset"));
         }
       }
-*/
-      /* Disable command echo from Bluefruit */
+
+    Disable command echo from Bluefruit */
   //    ble.echo(false);
   //    ble.verbose(false);  // debug info is a little annoying after this point!
 

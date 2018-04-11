@@ -10,7 +10,7 @@
 
 
 
-#define CHARGE_PIN PC6
+#define CHARGE_PIN 5
 
 unsigned long readBattery(uint8_t b_en_pin,uint8_t bat_pin);
 extern unsigned long batterylevel;

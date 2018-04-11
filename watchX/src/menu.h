@@ -6,6 +6,7 @@
 //#define MENU_LENGTH 8
   extern int menuindex;
   extern int menuspeed;
+  #define MENUCOUNT 0x08
 #define MENU_WATCH 0
 #define MENU_STOPWATCH 1
 #define MENU_GYROCUBE 2

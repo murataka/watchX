@@ -17,8 +17,8 @@
   #include <SoftwareSerial.h>
 #endif
 
-#define MINIMUM_FIRMWARE_VERSION    "0.6.6"
-#define MODE_LED_BEHAVIOUR          "MODE"
+//#define MINIMUM_FIRMWARE_VERSION    "0.6.6"
+//#define MODE_LED_BEHAVIOUR          "MODE"
 
 void drawBle();
 
@@ -27,6 +27,6 @@ void handleBle();
 void ble_connect();
 void ble_sw1();
 /* ...hardware SPI, using SCK/MOSI/MISO hardware SPI pins and then user selected CS/IRQ/RST */
- 
+
 
 #endif

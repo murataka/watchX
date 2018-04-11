@@ -2,11 +2,12 @@
 #define WATCHX_H
 
 #include <Arduino.h>
-#include "batteryui.h"
+
 #include "watchface.h"
 #include "menu.h"
 #include "temperature.h"
-#include <tinyMpu6050.h>
+//#include <tinyMpu6050.h>
+#include "watchXmpu6050.h"
 
 #define SW1 8
 #define SW2 11
@@ -50,7 +51,7 @@ enum CMD{END=0,TEXT,BITMAP,LINE,STATE,ANIMATE,RECT};
 enum STATES{PROGRESS=0,DONE};
 enum ANIMATIONS{LINEARX=0,LINEARY,SWINGX,SWINGY};
 
-enum WATCHKEYS{PREVKEY=10,NEXTKEY=11,SELECTKEY=8};
+//enum WATCHKEYS{PREVKEY=10,NEXTKEY=11,SELECTKEY=8};
 
 typedef void (*func_type)(    );
 
@@ -74,15 +75,15 @@ typedef void (*func_type)(    );
 #define SECOND_CHANGED DEVICESTATE&8
 #define SECOND_WASCHANGED Old_DEVICESTATE&8
 
-#define HANDLEDFUNCTIONS_COUNT 5
-#define usbFunc 0
-#define sw1Func 7
-#define sw2Func 6
-#define sw3Func 5
-#define uiFunc 4
-#define batteryFunc 2
-#define bleFunc 1
-#define updateFunc 3
+#define HANDLEDFUNCTIONS_COUNT 2
+//#define usbFunc 0
+#define sw1Func 4
+#define sw2Func 3
+#define sw3Func 2
+#define uiFunc 1
+//#define batteryFunc 2
+#define bleFunc 0
+//#define updateFunc 3
 
   extern volatile uint8_t animating;
   extern volatile unsigned long lastcolon;
@@ -101,6 +102,7 @@ void handleFunction(func_type f);
 void gotoMenu(  );
 
 void gotoWatchFace( );
+
 void gotoGyroFace( );
 void gotoDiagnostic();
 void gotoStopWatch( );

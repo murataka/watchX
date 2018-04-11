@@ -1,6 +1,6 @@
 
 
-#include <Arduino.h>
+//#include <Arduino.h>
 #include <SPI.h>
 #include <Wire.h>
 //#include <TimeLib.h>
@@ -14,7 +14,7 @@
 //#include "pressure.h"
 
 #include "resources.h"
-#include "usb.h"
+
 #include "watchface.h"
 
 #include "menu.h"
@@ -30,8 +30,8 @@
 
 #include "bluetooth.h"
 //#include "watchXmpu6050.h"
-//#include "tinyMpu6050.h"
-#include <tinyMpu6050.h>
+#include "tinyMpu6050.h"
+//#include <tinyMpu6050.h>
 #include "settings.h"
 
 
@@ -69,14 +69,16 @@ int main(void)
 
 
 //BMP280 bmp280;
-
+int16_t ac[7];
+unsigned char animation_offsetY=0;
+ unsigned char mbuf[1024];
 volatile uint8_t animating=1;
 const uint8_t melody[]={NOTE_B0};
-volatile uint8_t mpuIsReady=1;
+//volatile uint8_t mpuIsReady=1;
 
 extern volatile uint8_t animating;
 volatile unsigned long lastcolon;
-unsigned long _tm=millis();
+
 char strtmpbuf[15];
 
 //extern volatile unsigned long lastcolon;
@@ -131,13 +133,16 @@ if(animating){
 
 
 void updateThings( ){
+//  handleBle();
 //get3231Date();
 //  dt =Rtc.GetDateTime();// RtcDateTime(__DATE__, __TIME__);
 
 //  if(seconds==0) {   /// TODO change batteryread to something more global
 
 
-  if(millis()-batteryread>1000){
+  if(millis()-batteryread>50){
+    updateMpu6050();
+    handleBle();
     batterylevel=readBattery(BATTERY_EN,BATTERY_PIN);
      //updateMpu6050();
   //  updateMpu6050();
@@ -157,18 +162,14 @@ if(batterylevel<530){
   batteryread=millis();
 
 }else{
-      if(0){
 
-        //  digitalWrite(13,HIGH);
-          //delay(1000);
-          mpuIsReady=0;
-      }
 
 }
   //}
 }
 
-void gotoWatchFace(){
+void   gotoWatchFace(){
+
 stopSqw();
 watchMode=0;
           nextUIFunc= drawWatchFace;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
@@ -176,27 +177,30 @@ watchMode=0;
           functions[sw2Func]=NULL;
           functions[sw3Func]=NULL;
 
-         functions[usbFunc]=drawUsb;
-      functions[batteryFunc]=drawBattery;
+    //     functions[usbFunc]=drawUsb;
+    //  functions[batteryFunc]=drawBattery;
     //  functions[updateFunc]=updateThings;
   //    }
   }
+
 void gotoMenu( ){
 stopSqw();
 menuspeed=0;
+
         nextUIFunc=drawMenus;
 
          functions[sw1Func]=menusw1;
        functions[sw2Func]=menusw2;
           functions[sw3Func]=menusw3;
 
-          functions[batteryFunc]=NULL;
+        //  functions[batteryFunc]=NULL;
 
-     functions[usbFunc]=NULL;
+//     functions[usbFunc]=NULL;
          // Old_DEVICESTATE=DEVICESTATE; /// TODO DEFINE ACTIONCOMPLETE
 
 
 }
+
 void gotoSettings( ){
 stopSqw();
        if( (~SW1_WASPUSHED)&SW1_PUSHED){
@@ -208,9 +212,9 @@ stopSqw();
          functions[sw2Func]=menusw2;
           functions[sw3Func]=menusw3;
         //  speed=0;
-          functions[batteryFunc]=NULL;
+        //  functions[batteryFunc]=NULL;
         //  batteryFunc=drawBattery;
-      functions[usbFunc]=NULL;
+      //functions[usbFunc]=NULL;
          // Old_DEVICESTATE=DEVICESTATE; /// TODO DEFINE ACTIONCOMPLETE
 
 
@@ -229,10 +233,10 @@ stopSqw();
             //    nextUIFunc=functions[ uiFunc];
           //  sw2Func=gotoMenu;
           //  sw3Func=NULL;
-        functions[  bleFunc] =handleBle;
-           functions[usbFunc]=NULL;
-        functions[batteryFunc]=NULL;
-        functions[updateFunc]=updateThings;
+      //  functions[  bleFunc] =handleBle;
+      //     functions[usbFunc]=NULL;
+    //    functions[batteryFunc]=NULL;
+      //  functions[updateFunc]=updateThings;
       }
     }
 void gotoStopWatch(){
@@ -270,16 +274,17 @@ void gotoDiagnostic(){
 
 
 
-
+/*
 void intUpdate(){
 
 mpuIsReady=1;
 }
+*/
 void setup()
 {
 /// stopSqw();
 menuspeed=0;
-soundenabled=true;
+
 sound.tone(1200, 100,1000, 50,1800, 200);
 //setPrescale();
 //while(!Serial);
@@ -295,113 +300,76 @@ sound.tone(1200, 100,1000, 50,1800, 200);
 
 
 //Serial.begin(115200);
-pinMode(rstPin, OUTPUT);
+pinMode(MPU_INT,INPUT_PULLUP);
 pinMode(CHARGE_PIN,INPUT);
+  pinMode(13,OUTPUT);
+pinMode(rstPin, OUTPUT);
 pinMode(LED1, OUTPUT);
 pinMode(LED2, OUTPUT);
-pinMode(MPU_INT,INPUT_PULLUP);
-    pinMode(cesPin, OUTPUT);
-    pinMode(dcPin, OUTPUT);
+pinMode(cesPin, OUTPUT);
+pinMode(dcPin, OUTPUT);
 
 digitalWrite(rstPin, HIGH);
 digitalWrite(MPU_INT,LOW);
   digitalWrite(rstPin, HIGH);
   digitalWrite(dcPin, HIGH);
   digitalWrite(cesPin, HIGH);
+  pinMode(SW1,INPUT_PULLUP);
+    pinMode(SW2,INPUT_PULLUP);
+    pinMode(SW3,INPUT_PULLUP);
 
 
-  pinMode(13,OUTPUT);
 
      pinMode(BATTERY_EN, OUTPUT);
     digitalWrite(BATTERY_EN,LOW);
 
            pinMode(PIN_INTERRUPT, INPUT_PULLUP);
 
-//wdt_enable (WDTO_250MS);
- // wdt_disable();
 
-//wdt_enable(WDTO_2S);
 
 
      Wire.begin();
-    //ssd1306_sendCommand(SSD1306_SEGREMAP | 0x2);
-    /* Set range of the SpritePool field on the screen in blocks. *
-     * Use whole LCD display                                      *
-     * 0,0   means left-top block of lcd display.                 *
-     *                         that is 0*8=0 - pixel              *
-     *                                 0*8=0 - pixel              *
-     * 15,7  means right-bottom block of lcd:                     *
-     *                         that is 15*8+7=127-th pixel        *
-     *                                 7*8+7=63-rd pixel          */
-//setDateTime();
 
-// ble_connect(); // TODO: bluetoot enable / disable
  attachInterrupt(digitalPinToInterrupt(PIN_INTERRUPT), nextSecond, CHANGE);
- attachInterrupt(digitalPinToInterrupt(MPU_INT), intUpdate, RISING);
-
-//MPU6050_Initialize();
-//MPU6050_begin();
-
-//startMpu6050();
-  /*
- mpu.begin();
-mpu.setAccelPowerOnDelay(MPU6050_DELAY_3MS);
-
-mpu.setIntFreeFallEnabled(true);
-mpu.setIntZeroMotionEnabled(true);
-mpu.setIntMotionEnabled(true);
-
-mpu.setDHPFMode(MPU6050_DHPF_5HZ);
-
-mpu.setMotionDetectionThreshold(2);
-mpu.setMotionDetectionDuration(5);
-
-mpu.setZeroMotionDetectionThreshold(4);
-mpu.setZeroMotionDetectionDuration(2);
-
-MAG3110_begin();
-/**/
-//   mpu6050.calcGyroOffsets(true);
 
 
  startSqw(); /// Starts 1 second SquareWave from DS3231
 
 
-//get3231Temp();
 setDateTime();
 
-     pinMode(SW1,INPUT_PULLUP);
-       pinMode(SW2,INPUT_PULLUP);
-       pinMode(SW3,INPUT_PULLUP);
 
 
 
+ble_connect();
+//functions[  bleFunc] =handleBle;
 
     ssd1306_configure();
 
-//goto
-//functions[uiFunc]=drawWatchFace;
-    functions[  bleFunc] =handleBle;
-     gotoWatchFace();
-    // gotoDiagnostic(true);
+
+
+
+
+      gotoWatchFace();
+
 startMpu6050();
 updateThings();
-//Serial.println("."); //// TODO: idkw serial must print something for stability.
-//delay(100);
-//cli();
+
 
 }
-//uint8_t buffer[64*128/8];
+
 uint8_t anmof=0;
 void drawLoop( ){
 
-clearAll();
+ memset(mbuf, 0x00, 1024);
+//return;
+//clearAll();
 
  if(nextUIFunc!=NULL){
 
    animation_offsetY=anmof-64;
 
-   handleFunction(nextUIFunc); ///// todo draw not stable !!!
+   handleFunction(nextUIFunc);
 
 animation_offsetY=anmof;
     handleFunction(functions[uiFunc]);
@@ -409,8 +377,7 @@ animation_offsetY=anmof;
 
 anmof+=(64-anmof)/16+1;
 
-//Serial.println(".");
-//delay(5);
+
      if(anmof>64){
 
       anmof=0;
@@ -424,13 +391,13 @@ anmof+=(64-anmof)/16+1;
  }else{
 animation_offsetY=0;
 
-for(int a=0;a<HANDLEDFUNCTIONS_COUNT;a++)
+for(uint8_t a=0;a<HANDLEDFUNCTIONS_COUNT;a++)
 handleFunction(functions[a]);
 
 
  }
 
- //while(1);
+
 
 
  ssd1306_drawBuffer(0, 0, 128,64, mbuf);
@@ -441,21 +408,15 @@ handleFunction(functions[a]);
 void loop()
 {
 
-//  buttons = buttons | (((~PINF) & B10000000) >>4);
-//  buttons = buttons | (((~PIND) & B00010000) >>3); ///B00011000 => SQW pin _BV(4)
 
-//  DEVICESTATE=(USBDEVICE )|((digitalRead(SW1)==LOW))|((digitalRead(SW2)==LOW)<<1)|((digitalRead(SW3)==LOW)<<2);
-  DEVICESTATE= (USBDEVICE)|((((~PINB) & B11010000)+B00010000)>>5);//;//|((digitalRead(SW2)==LOW)<<1)|((digitalRead(SW3)==LOW)<<2);
+
+   DEVICESTATE= (USBDEVICE)|((((~PINB) & B11010000)+B00010000)>>5);//;//|((digitalRead(SW2)==LOW)<<1)|((digitalRead(SW3)==LOW)<<2);
+
   if(DEVICESTATE!=Old_DEVICESTATE){
-//      ssd1306_fillScreen(0x00);
-//  interact();
-//buttonFX(2400);
 
 
 if(DEVICESTATE&B00000111){
-//Serial.println(DEVICESTATE&B00000111);
 
-//  if(animation_offsetY==0)
 
   switch(DEVICESTATE&B00000111){
       case 1:
@@ -463,7 +424,6 @@ if(DEVICESTATE&B00000111){
          handleFunction(functions[sw1Func]);
       }
 
-      // gotoMenu();
       break;
       case 2:
         if(~(SW2_WASPUSHED)&&SW2_PUSHED)
@@ -487,11 +447,9 @@ buttonFX(500|((DEVICESTATE&B00000111)*300));
     }
 
 digitalWrite(LED2,sound.playing()?HIGH: LOW);
+updateThings();
   drawLoop();
-if(millis()-_tm>300){
-//  updateMpu6050();
-  _tm=millis();
-}
+
 
 
 

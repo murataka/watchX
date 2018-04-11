@@ -15,7 +15,7 @@ int scrollto=0;
 
 
   int menuindex=0;
-
+int targetmenuindex=0;
 
 void menusw1( ){
 
@@ -38,7 +38,7 @@ void menusw1( ){
            gotoBlueTooth();
         break;
       case MENU_DIAGNOSTIC:
-        gotoDiagnostic();
+      //  gotoDiagnostic();
 
       break;
       case MENU_SETTINGS:
@@ -66,25 +66,38 @@ void menusw1( ){
 
 void menusw2( ){
 //if(animation_offsetY==0)
-    menuspeed=-2;
-
+if(animation_offsetY==0)
+     if(menuindex<MENUCOUNT-1){
+        menuspeed=-3;
+        targetmenuindex=menuindex+1;
+     }else{
+       targetmenuindex=0;
+       menuspeed=5;
+     }
 
 }
 void menusw3( ){
 if(animation_offsetY==0)
      if(menuindex>0){
-        menuspeed=2;
+         targetmenuindex=menuindex-1;
+        menuspeed=3;
+     }else{
+targetmenuindex=MENUCOUNT-1;
+       menuspeed=-5;
      }
 
 }
 /*
   When memory is dynamically allocated, the atmega chip cannot allocate memory ...
 */
-const char menuCap[][15]  ={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings"};
+const char title[] PROGMEM= "< MAIN MENU >";
+const char menuCap[][15] PROGMEM ={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings","About","Help"};
 void drawMenus(){
 ///char menuCap[][15]={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings"};
-   drawString(26,0,"< MAIN MENU >",smallFont);
-   drawString(0,56,menuCap[menuindex%(sizeof(menuCap)/15)],smallFont);
+//const char* title PROGMEM= "< MAIN MENU >";
+
+   drawString_P(26,0,title,smallFont);
+   drawString_P(0,56,menuCap[menuindex%MENUCOUNT],smallFont);
 
 drawLine(48,12,80,12);
 
@@ -100,30 +113,33 @@ for(   char a=-1;a<4;a++)
 
 
 
-if(menuindex+a-1>=0){
+if(menuindex+a-1>=0&&menuindex+a-1<MENUCOUNT){
   if(menuindex==MENU_GYROCUBE&&menuspeed==0)
  gyroCube(8);
 
 if(menuindex!=MENU_GYROCUBE|| menuindex+a-1!=MENU_GYROCUBE||menuspeed!=0)
+
   draw_bitmap(_x+(a*48) , 16, menus_bits+((menuindex+a-1)*4*32), 32, 32, false, 0);
 }
 
 _x+=menuspeed;
 switch(_x){
-case 16:
+case 8:
 menuspeed=1;
 break;
-case -16:
+case -8:
 menuspeed=-1;
 break;
 
 }
- if(_x==48){
+ if(_x>=48){
+   if(targetmenuindex==menuindex-1)
   menuspeed=0;
    _x=0;
   menuindex--;
   }
-  if(_x==-48){
+  if(_x<=-48){
+     if(targetmenuindex==menuindex+1)
   menuspeed=0;
   _x=0;
   menuindex++;
