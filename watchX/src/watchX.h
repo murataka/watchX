@@ -92,11 +92,12 @@ extern unsigned char Old_DEVICESTATE;
 
 //extern char *activekeyframe;
 extern char strtmpbuf[15];
-
+void nextSecond();
 extern func_type nextUIFunc;
 
 //extern func_type usbFunc ,sw1Func,sw2Func,sw3Func,uiFunc,batteryFunc,bleFunc;
 extern func_type functions[];
+
 void handleFunction(func_type f);
 
 void gotoMenu(  );
@@ -108,7 +109,9 @@ void gotoDiagnostic();
 void gotoStopWatch( );
 void gotoBlueTooth( );
 void gotoSettings( );
-
+void watchsw1( );
+void watchsw2( );
+void watchsw3( );
 
 
 

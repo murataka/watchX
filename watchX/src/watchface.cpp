@@ -43,6 +43,18 @@
    "SAT",
    "SUN"
  };
+
+ void watchsw1( ){
+
+ watchMode=1;
+
+ }
+ void watchsw2( ){
+if(watchMode==2)
+ watchMode=1;
+ if(watchMode==1)
+watchMode=2;
+ }
 void drawWatchFace( ){
 
 if(watchMode==0){
@@ -142,28 +154,41 @@ if(animating&&seconds==0&&minutes%10==9){
 
 if(lastcolon==160) speed=2;
 if(lastcolon==210) speed=1;
+if(watchMode==1){
+//  speed=10;
+//  animating=1;
 
+}
 if(lastcolon<256){
 //curtm[0]++;
-
+if(watchMode==1){
+ lastcolon+=speed*2;
+ if((lastcolon/10)%4==0){
+ nextSecond();
+// animating=1;
+ }
+}
+if(watchMode==0)
  lastcolon+=speed;
 }
 //else lastcolon=0;
 
-////usbFunc
-if(DEVICESTATE&128){
-//   draw_bitmap(40, 0, watchXui,8,8,false,0);
-if(digitalRead(CHARGE_PIN)==LOW)
-draw_bitmap( 36, 56, watchXui+64, 8, 8, false, 0);
+      if(watchMode==0){
+      ////usbFunc
 
-draw_bitmap(18, 56, watchXui+80,16,8,false,0);
+      if(DEVICESTATE&128){
+              //   draw_bitmap(40, 0, watchXui,8,8,false,0);
+              if(digitalRead(CHARGE_PIN)==LOW){
+              draw_bitmap( 36, 56, watchXui+64, 8, 8, false, 0);
+              }
+              draw_bitmap(18, 56, watchXui+80,16,8,false,0);
 
-//
+              //
 
-}
+              }
 
-/// battery
-//
-draw_bitmap( 0, 56, watchXui+(unsigned)(((batterylevel-500)/40)*16), 16, 8, false, 0);
-
+              /// battery
+              //
+              draw_bitmap( 0, 56, watchXui+(unsigned)(((batterylevel-500)/40)*16), 16, 8, false, 0);
+      }
 }

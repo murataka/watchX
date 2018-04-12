@@ -4,6 +4,7 @@
 #include "resources.h"
 
 //#define MENU_LENGTH 8
+extern uint8_t menuapp;
   extern int menuindex;
   extern int menuspeed;
   #define MENUCOUNT 0x08

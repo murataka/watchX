@@ -96,36 +96,7 @@ unsigned char Old_DEVICESTATE=DEVICESTATE;
 //func_type usbFunc =NULL,sw1Func=NULL,sw2Func=NULL,sw3Func=NULL,uiFunc=NULL,batteryFunc=NULL,bleFunc=NULL;
 
 
-void nextSecond(/* arguments */) {
 
-//if(lastcolon>=160){
-
-
-
-//}
-if(!animating) lastcolon=0;
-  animating=!animating;
-curtm[0]+=animating;
-if(animating){
-  if(curtm[0]==59){
-
-     curtm[0]=0;
-
-     curtm[1]++;
-          if(curtm[1]==59){
-              curtm[1]=0;
-              curtm[2]++;
-
-          }
-
-  }
-}
-
-//lastcolon=0;
-///secondsofday+=animating;
-
-
-}
 
 
 
@@ -168,6 +139,44 @@ if(batterylevel<530){
   //}
 }
 
+void nextSecond( ){
+
+//if(lastcolon>=160){
+
+
+
+//}
+switch(watchMode){
+  case 0:
+  case 1:
+if(!animating) lastcolon=0;
+  animating=!animating;
+curtm[0]+=animating;
+if(animating){
+  if(curtm[0]==59){
+
+     curtm[0]=0;
+
+     curtm[1]++;
+          if(curtm[1]==59){
+              curtm[1]=0;
+              curtm[2]++;
+
+          }
+
+  }
+}
+break;
+default :
+
+break;
+}
+//lastcolon=0;
+///secondsofday+=animating;
+
+
+}
+
 void   gotoWatchFace(){
 
 stopSqw();
@@ -186,7 +195,7 @@ watchMode=0;
 void gotoMenu( ){
 stopSqw();
 menuspeed=0;
-
+menuapp=0;
         nextUIFunc=drawMenus;
 
          functions[sw1Func]=menusw1;
@@ -203,11 +212,13 @@ menuspeed=0;
 
 void gotoSettings( ){
 stopSqw();
-       if( (~SW1_WASPUSHED)&SW1_PUSHED){
+menuapp=1;
+menuindex=0;
 //    ssd1306_clearScreen();
         //  usbFunc= drawUsb;
       ///  nextUIFunc=functions[ uiFunc];
-    nextUIFunc=drawSettings;
+  //  nextUIFunc=drawSettings;
+    nextUIFunc=drawMenus;
          functions[sw1Func]=gotoMenu;
          functions[sw2Func]=menusw2;
           functions[sw3Func]=menusw3;
@@ -218,7 +229,7 @@ stopSqw();
          // Old_DEVICESTATE=DEVICESTATE; /// TODO DEFINE ACTIONCOMPLETE
 
 
-        }
+
 }
 
 
@@ -244,8 +255,8 @@ void gotoStopWatch(){
    watchMode = 1;
               nextUIFunc=drawWatchFace;
               functions[sw1Func]=gotoMenu;
-              functions[sw2Func]=NULL;
-              functions[sw3Func]=NULL;
+              functions[sw2Func]=watchsw1;
+              functions[sw3Func]=watchsw2;
 
 }
 void gotoBlueTooth(){
@@ -349,9 +360,9 @@ ble_connect();
 
 
 
-
-      gotoWatchFace();
-
+//gotoSettings();
+       gotoWatchFace();
+///gotoStopWatch();
 startMpu6050();
 updateThings();
 

@@ -12,7 +12,7 @@
         int _x=0;
 int menuspeed=0;
 int scrollto=0;
-
+uint8_t menuapp=0;
 
   int menuindex=0;
 int targetmenuindex=0;
@@ -90,14 +90,14 @@ targetmenuindex=MENUCOUNT-1;
 /*
   When memory is dynamically allocated, the atmega chip cannot allocate memory ...
 */
-const char title[] PROGMEM= "< MAIN MENU >";
-const char menuCap[][15] PROGMEM ={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings","About","Help"};
+const char title[][15] PROGMEM= {"< MAIN MENU >","< SETTINGS >"};
+const char menuCap[][15] PROGMEM ={"Exit","Stopwatch","Gyrocube","Diagnostic","Messages","Settings","About","Help","Bluetooth","Screen","Settings3","Settings4","Settings5","Settings6","Settings7","Settings8"};
 void drawMenus(){
 ///char menuCap[][15]={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings"};
 //const char* title PROGMEM= "< MAIN MENU >";
 
-   drawString_P(26,0,title,smallFont);
-   drawString_P(0,56,menuCap[menuindex%MENUCOUNT],smallFont);
+   drawString_P(26,0,title[menuapp],smallFont);
+   drawString_P(0,56,menuCap[(menuindex%MENUCOUNT)+(menuapp*MENUCOUNT)],smallFont);
 
 drawLine(48,12,80,12);
 
@@ -114,12 +114,12 @@ for(   char a=-1;a<4;a++)
 
 
 if(menuindex+a-1>=0&&menuindex+a-1<MENUCOUNT){
-  if(menuindex==MENU_GYROCUBE&&menuspeed==0)
+  if(menuindex==MENU_GYROCUBE&&menuspeed==0&&menuapp==0)
  gyroCube(8);
 
-if(menuindex!=MENU_GYROCUBE|| menuindex+a-1!=MENU_GYROCUBE||menuspeed!=0)
+if(menuindex!=MENU_GYROCUBE|| menuindex+a-1!=MENU_GYROCUBE||menuspeed!=0||menuapp==1)
 
-  draw_bitmap(_x+(a*48) , 16, menus_bits+((menuindex+a-1)*4*32), 32, 32, false, 0);
+  draw_bitmap(_x+(a*48) , 16, menus_bits+(((menuapp*8)+menuindex+a-1)*4*32), 32, 32, false, 0);
 }
 
 _x+=menuspeed;
