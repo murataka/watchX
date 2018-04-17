@@ -197,7 +197,12 @@ watchMode=0;
   void   gotoBlueToothSettings(){
 
   stopSqw();
-  EEPROM.write(0,8);
+//  EEPROM.write(0,8);
+//  Serial.println(EEPROM.read(0));
+nextUIFunc=drawSettings;
+functions[sw1Func]=gotoMenu; /// TODO here i am
+functions[sw2Func]=settingsSw1;
+functions[sw3Func]=settingsSw2;
 /*
   watchMode=0;
             nextUIFunc= drawWatchFace;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
@@ -216,8 +221,11 @@ stopSqw();
 
 
 menuspeed=0;
-if(menuapp==1)
-menuapp=0;
+if(menuapp==1){
+  menuapp=0;
+  menuindex=MENUCOUNT-1;
+}
+
 
         nextUIFunc=drawMenus;
 
@@ -319,7 +327,7 @@ menuspeed=0;
 
 sound.tone(1200, 100,1000, 50,1800, 200);
 //setPrescale();
-//while(!Serial);
+
 
 
 //timerOneFunc=timerOneTones;
@@ -331,7 +339,8 @@ sound.tone(1200, 100,1000, 50,1800, 200);
 
 
 
-Serial.begin(115200);
+//Serial.begin(115200);
+//while(!Serial);
 pinMode(MPU_INT,INPUT_PULLUP);
 pinMode(CHARGE_PIN,INPUT);
   pinMode(13,OUTPUT);
@@ -370,20 +379,25 @@ digitalWrite(MPU_INT,LOW);
 
 setDateTime();
 
-
-
-
+devices=EEPROM.read(0);
+//devices=1;
+if(BLOOTOOTH_STATE==1)
 ble_connect();
+else{
+  ble.end();
+}
+
+//ble_connect();
 //functions[  bleFunc] =handleBle;
 
     ssd1306_configure();
 
 
 
-gotoBlueToothSettings();
+//gotoBlueToothSettings();
 
 //gotoSettings();
-    //   gotoWatchFace();
+      gotoWatchFace();
 ///gotoStopWatch();
 startMpu6050();
 updateThings();

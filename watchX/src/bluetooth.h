@@ -20,6 +20,7 @@
 //#define MINIMUM_FIRMWARE_VERSION    "0.6.6"
 //#define MODE_LED_BEHAVIOUR          "MODE"
 
+extern Adafruit_BluefruitLE_SPI ble;
 void drawBle();
 
 void handleBle();
