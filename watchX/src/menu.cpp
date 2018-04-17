@@ -19,6 +19,7 @@ int targetmenuindex=0;
 
 void menusw1( ){
 
+<<<<<<< HEAD
 switch(menuapp){
   case 0:
         switch(menuindex){
@@ -80,6 +81,46 @@ switch(menuapp){
   default:
   break;
 }
+=======
+    switch(menuindex){
+      case MENU_WATCH:
+    // ssd1306_clearScreen();
+      gotoWatchFace();
+
+      break;
+      case MENU_STOPWATCH:
+      gotoStopWatch();
+
+
+      break;
+      case MENU_GYROCUBE:
+         gotoGyroFace();
+
+      break;
+        case MENU_BLUETOOTH:
+           gotoBlueTooth();
+        break;
+      case MENU_TORCH:
+         gotoTorch();
+
+      break;
+      case MENU_SETTINGS:
+        gotoSettings();
+      break;
+      case 6:
+ //     uiFunc=drawDiag;
+ //     sw1Func=gotoMenu;
+ //     sw2Func=gotoMenu;
+ //     sw3Func=NULL;
+//       batteryFunc=NULL;
+//       usbFunc=NULL;
+      break;
+
+      default:
+   //   itoa(getSelectedMenu(),strtmpbuf,10);
+     //      c2.charF6x8(32,56,strtmpbuf);
+      break;
+>>>>>>> 5931df99f01437ea40f2eae201c02fee232dc899
 
 
 }
@@ -113,7 +154,11 @@ targetmenuindex=MENUCOUNT-1;
   When memory is dynamically allocated, the atmega chip cannot allocate memory ...
 */
 const char title[][15] PROGMEM= {"< MAIN MENU >","< SETTINGS >"};
+<<<<<<< HEAD
 const char menuCap[][15] PROGMEM ={"Exit","Stopwatch","Gyrocube","Torch","Messages","Settings","Exit","Date&Time","Bluetooth","Screen","Settings3","Settings4","Settings5","Settings6","Settings7","Settings8"};
+=======
+const char menuCap[][15] PROGMEM ={"Exit","Stopwatch","Gyrocube","Torch","Messages","Settings","About","Help","Bluetooth","Screen","Settings3","Settings4","Settings5","Settings6","Settings7","Settings8"};
+>>>>>>> 5931df99f01437ea40f2eae201c02fee232dc899
 void drawMenus(){
 ///char menuCap[][15]={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings"};
 //const char* title PROGMEM= "< MAIN MENU >";
