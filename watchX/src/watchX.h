@@ -103,9 +103,9 @@ void handleFunction(func_type f);
 void gotoMenu(  );
 
 void gotoWatchFace( );
-
+  void   gotoBlueToothSettings();
 void gotoGyroFace( );
-void gotoDiagnostic();
+void gotoTorch();
 void gotoStopWatch( );
 void gotoBlueTooth( );
 void gotoSettings( );

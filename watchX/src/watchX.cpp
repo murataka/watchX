@@ -3,6 +3,7 @@
 //#include <Arduino.h>
 #include <SPI.h>
 #include <Wire.h>
+#include <EEPROM.h>
 //#include <TimeLib.h>
 #include "watchX.h"
 #include "oled.h"
@@ -19,7 +20,7 @@
 
 #include "menu.h"
 #include "battery.h"
-#include "diag.h"
+#include "torch.h"
 #include "altitude.h"
 #include "pressure.h"
 #include "temperature.h"
@@ -71,7 +72,7 @@ int main(void)
 //BMP280 bmp280;
 int16_t ac[7];
 unsigned char animation_offsetY=0;
- unsigned char mbuf[1024];
+
 volatile uint8_t animating=1;
 const uint8_t melody[]={NOTE_B0};
 //volatile uint8_t mpuIsReady=1;
@@ -192,10 +193,32 @@ watchMode=0;
   //    }
   }
 
+
+  void   gotoBlueToothSettings(){
+
+  stopSqw();
+  EEPROM.write(0,8);
+/*
+  watchMode=0;
+            nextUIFunc= drawWatchFace;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
+            functions[sw1Func]=gotoMenu; /// TODO here i am
+            functions[sw2Func]=NULL;
+            functions[sw3Func]=NULL;
+*/
+      //     functions[usbFunc]=drawUsb;
+      //  functions[batteryFunc]=drawBattery;
+      //  functions[updateFunc]=updateThings;
+    //    }
+    }
+
 void gotoMenu( ){
 stopSqw();
+
+
 menuspeed=0;
+if(menuapp==1)
 menuapp=0;
+
         nextUIFunc=drawMenus;
 
          functions[sw1Func]=menusw1;
@@ -219,7 +242,7 @@ menuindex=0;
       ///  nextUIFunc=functions[ uiFunc];
   //  nextUIFunc=drawSettings;
     nextUIFunc=drawMenus;
-         functions[sw1Func]=gotoMenu;
+         functions[sw1Func]=menusw1;
          functions[sw2Func]=menusw2;
           functions[sw3Func]=menusw3;
         //  speed=0;
@@ -235,8 +258,7 @@ menuindex=0;
 
   void gotoGyroFace(){
     stopSqw();
-      if(animation_offsetY==0)
-       if( (~SW1_WASPUSHED)&SW1_PUSHED){
+
             nextUIFunc=drawGyroCube;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
             functions[sw1Func]=gotoMenu;
             functions[sw2Func]=NULL;
@@ -248,7 +270,7 @@ menuindex=0;
       //     functions[usbFunc]=NULL;
     //    functions[batteryFunc]=NULL;
       //  functions[updateFunc]=updateThings;
-      }
+
     }
 void gotoStopWatch(){
   stopSqw();
@@ -271,15 +293,14 @@ void gotoBlueTooth(){
     //  }
 }
 
-void gotoDiagnostic(){
+void gotoTorch(){
   stopSqw();
-    if(animation_offsetY==0)
-           if( (~SW1_WASPUSHED)&SW1_PUSHED){
-              functions[uiFunc]=drawDiag;
+
+              functions[uiFunc]=drawTorch;
               functions[sw1Func]=gotoMenu;
               functions[sw2Func]=NULL;
               functions[sw3Func]=NULL;
-      }
+
 }
 
 
@@ -310,7 +331,7 @@ sound.tone(1200, 100,1000, 50,1800, 200);
 
 
 
-//Serial.begin(115200);
+Serial.begin(115200);
 pinMode(MPU_INT,INPUT_PULLUP);
 pinMode(CHARGE_PIN,INPUT);
   pinMode(13,OUTPUT);
@@ -359,9 +380,10 @@ ble_connect();
 
 
 
+gotoBlueToothSettings();
 
 //gotoSettings();
-       gotoWatchFace();
+    //   gotoWatchFace();
 ///gotoStopWatch();
 startMpu6050();
 updateThings();
@@ -396,6 +418,8 @@ anmof+=(64-anmof)/16+1;
       functions[uiFunc]=nextUIFunc;
        nextUIFunc=NULL;
        startSqw();
+       digitalWrite(13,LOW);
+       digitalWrite(6,LOW);
        return;
       }
 

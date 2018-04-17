@@ -7,11 +7,13 @@
 extern uint8_t menuapp;
   extern int menuindex;
   extern int menuspeed;
-  #define MENUCOUNT 0x08
+  #define MENUCOUNT 0x06
 #define MENU_WATCH 0
+#define MENU_SETTINGS_EXIT 0
 #define MENU_STOPWATCH 1
 #define MENU_GYROCUBE 2
-#define MENU_DIAGNOSTIC 3
+#define MENU_SETTINGS_BLUETOOTH 2
+#define MENU_TORCH 3
 
 #define MENU_BLUETOOTH 4
 #define MENU_SETTINGS 5

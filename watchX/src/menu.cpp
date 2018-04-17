@@ -4,7 +4,7 @@
 
 #include "watchX.h"
 #include "menu.h"
-#include "diag.h"
+#include "torch.h"
 #include "oled.h"
 #include "gyrocube.h"
 #include "settings.h"
@@ -19,47 +19,69 @@ int targetmenuindex=0;
 
 void menusw1( ){
 
-    switch(menuindex){
-      case MENU_WATCH:
-    // ssd1306_clearScreen();
-      gotoWatchFace();
+switch(menuapp){
+  case 0:
+        switch(menuindex){
+          case MENU_WATCH:
+        // ssd1306_clearScreen();
+          gotoWatchFace();
 
-      break;
-      case MENU_STOPWATCH:
-      gotoStopWatch();
-
-
-      break;
-      case MENU_GYROCUBE:
-         gotoGyroFace();
-
-      break;
-        case MENU_BLUETOOTH:
-           gotoBlueTooth();
-        break;
-      case MENU_DIAGNOSTIC:
-      //  gotoDiagnostic();
-
-      break;
-      case MENU_SETTINGS:
-        gotoSettings();
-      break;
-      case 6:
- //     uiFunc=drawDiag;
- //     sw1Func=gotoMenu;
- //     sw2Func=gotoMenu;
- //     sw3Func=NULL;
-//       batteryFunc=NULL;
-//       usbFunc=NULL;
-      break;
-
-      default:
-   //   itoa(getSelectedMenu(),strtmpbuf,10);
-     //      c2.charF6x8(32,56,strtmpbuf);
-      break;
+          break;
+          case MENU_STOPWATCH:
+          gotoStopWatch();
 
 
+          break;
+          case MENU_GYROCUBE:
+             gotoGyroFace();
+
+          break;
+            case MENU_BLUETOOTH:
+               gotoBlueTooth();
+            break;
+          case MENU_TORCH:
+             gotoTorch();
+
+          break;
+          case MENU_SETTINGS:
+            gotoSettings();
+          break;
+          case 6:
+      //     uiFunc=drawDiag;
+      //     sw1Func=gotoMenu;
+      //     sw2Func=gotoMenu;
+      //     sw3Func=NULL;
+      //       batteryFunc=NULL;
+      //       usbFunc=NULL;
+          break;
+
+          default:
+       //   itoa(getSelectedMenu(),strtmpbuf,10);
+         //      c2.charF6x8(32,56,strtmpbuf);
+          break;
+
+
+      }
+  break;
+
+  case 1:
+  switch(menuindex){
+          case MENU_SETTINGS_EXIT:
+        // ssd1306_clearScreen();
+          gotoMenu();
+
+          break;
+          case MENU_SETTINGS_BLUETOOTH:
+          gotoBlueToothSettings();
+          break;
+
+        }
+  break;
+  default:
+  break;
 }
+
+
 }
 
 
@@ -91,7 +113,7 @@ targetmenuindex=MENUCOUNT-1;
   When memory is dynamically allocated, the atmega chip cannot allocate memory ...
 */
 const char title[][15] PROGMEM= {"< MAIN MENU >","< SETTINGS >"};
-const char menuCap[][15] PROGMEM ={"Exit","Stopwatch","Gyrocube","Diagnostic","Messages","Settings","About","Help","Bluetooth","Screen","Settings3","Settings4","Settings5","Settings6","Settings7","Settings8"};
+const char menuCap[][15] PROGMEM ={"Exit","Stopwatch","Gyrocube","Torch","Messages","Settings","Exit","Date&Time","Bluetooth","Screen","Settings3","Settings4","Settings5","Settings6","Settings7","Settings8"};
 void drawMenus(){
 ///char menuCap[][15]={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings"};
 //const char* title PROGMEM= "< MAIN MENU >";
