@@ -105,7 +105,7 @@ void gotoMenu(  );
 void gotoWatchFace( );
 
 void gotoGyroFace( );
-void gotoDiagnostic();
+void gotoTorch();
 void gotoStopWatch( );
 void gotoBlueTooth( );
 void gotoSettings( );

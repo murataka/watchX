@@ -19,7 +19,7 @@
 
 #include "menu.h"
 #include "battery.h"
-#include "diag.h"
+#include "torch.h"
 #include "altitude.h"
 #include "pressure.h"
 #include "temperature.h"
@@ -71,7 +71,7 @@ int main(void)
 //BMP280 bmp280;
 int16_t ac[7];
 unsigned char animation_offsetY=0;
- unsigned char mbuf[1024];
+
 volatile uint8_t animating=1;
 const uint8_t melody[]={NOTE_B0};
 //volatile uint8_t mpuIsReady=1;
@@ -194,6 +194,8 @@ watchMode=0;
 
 void gotoMenu( ){
 stopSqw();
+
+
 menuspeed=0;
 menuapp=0;
         nextUIFunc=drawMenus;
@@ -271,15 +273,14 @@ void gotoBlueTooth(){
     //  }
 }
 
-void gotoDiagnostic(){
+void gotoTorch(){
   stopSqw();
-    if(animation_offsetY==0)
-           if( (~SW1_WASPUSHED)&SW1_PUSHED){
-              functions[uiFunc]=drawDiag;
+
+              functions[uiFunc]=drawTorch;
               functions[sw1Func]=gotoMenu;
               functions[sw2Func]=NULL;
               functions[sw3Func]=NULL;
-      }
+
 }
 
 
@@ -396,6 +397,8 @@ anmof+=(64-anmof)/16+1;
       functions[uiFunc]=nextUIFunc;
        nextUIFunc=NULL;
        startSqw();
+       digitalWrite(13,LOW);
+       digitalWrite(6,LOW);
        return;
       }
 

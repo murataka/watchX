@@ -5,7 +5,7 @@
   #include "oled.h"
 
 uint8_t uiX,uiY;
-
+ unsigned char mbuf[1024];
 /*
   Over a long run session, memory becomes fragmented and eventually an allocation fails
   due to lack of a sufficiently large free area,
@@ -17,19 +17,19 @@ void ssd1306_configure(){
 
     const uint8_t  s_oled128x64_initData[] =
  {
-  //   SSD1306_DISPLAYOFF, // display off
+     SSD1306_DISPLAYOFF, // display off
      SSD1306_MEMORYMODE, HORIZONTAL_ADDRESSING_MODE, // Page Addressing mode
      SSD1306_COMSCANDEC,             // Scan from 127 to 0 (Reverse scan)
-//     SSD1306_SETSTARTLINE | 0x00,    // First line to start scanning from
+     SSD1306_SETSTARTLINE | 0x00,    // First line to start scanning from
      SSD1306_SETCONTRAST, 0xFF,      // contast value to 0x7F according to datasheet
      SSD1306_SEGREMAP | 0x01,        // Use reverse mapping. 0x00 - is normal mapping
-  //  SSD1306_NORMALDISPLAY,
-  //   SSD1306_SETMULTIPLEX, 63,       // Reset to default MUX. See datasheet
+    SSD1306_NORMALDISPLAY,
+     SSD1306_SETMULTIPLEX, 63,       // Reset to default MUX. See datasheet
 //     SSD1306_SETDISPLAYOFFSET, 0x00, // no offset
 //     SSD1306_SETDISPLAYCLOCKDIV, 0x80,// set to default ratio/osc frequency
   //   SSD1306_SETPRECHARGE, 0xF1,     // switch precharge to 0x22 // 0xF1
 //     SSD1306_SETCOMPINS, 0x12,       // set divide ratio
-  //   SSD1306_SETVCOMDETECT, 0x40,    // vcom deselect to 0x20 // 0x40
+     SSD1306_SETVCOMDETECT, 0x40,    // vcom deselect to 0x20 // 0x40
      SSD1306_CHARGEPUMP, 0x14,       // Enable charge pump
 
     // 0X20,0X80,
@@ -37,10 +37,10 @@ void ssd1306_configure(){
      SSD1306_DISPLAYON
  };
 
-for( uint8_t i=0; i<sizeof(s_oled128x64_initData); i++)
-{
-  ssd1306_sendCommand(s_oled128x64_initData[i]);
-}
+    for( uint8_t i=0; i<sizeof(s_oled128x64_initData); i++)
+    {
+      ssd1306_sendCommand(s_oled128x64_initData[i]);
+    }
 
 }
  void ssd1306_drawBuffer(byte x, byte y, byte w, byte h, const byte *buf)

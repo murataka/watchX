@@ -4,7 +4,7 @@
 
 #include "watchX.h"
 #include "menu.h"
-#include "diag.h"
+#include "torch.h"
 #include "oled.h"
 #include "gyrocube.h"
 #include "settings.h"
@@ -37,8 +37,8 @@ void menusw1( ){
         case MENU_BLUETOOTH:
            gotoBlueTooth();
         break;
-      case MENU_DIAGNOSTIC:
-      //  gotoDiagnostic();
+      case MENU_TORCH:
+         gotoTorch();
 
       break;
       case MENU_SETTINGS:
@@ -91,7 +91,7 @@ targetmenuindex=MENUCOUNT-1;
   When memory is dynamically allocated, the atmega chip cannot allocate memory ...
 */
 const char title[][15] PROGMEM= {"< MAIN MENU >","< SETTINGS >"};
-const char menuCap[][15] PROGMEM ={"Exit","Stopwatch","Gyrocube","Diagnostic","Messages","Settings","About","Help","Bluetooth","Screen","Settings3","Settings4","Settings5","Settings6","Settings7","Settings8"};
+const char menuCap[][15] PROGMEM ={"Exit","Stopwatch","Gyrocube","Torch","Messages","Settings","About","Help","Bluetooth","Screen","Settings3","Settings4","Settings5","Settings6","Settings7","Settings8"};
 void drawMenus(){
 ///char menuCap[][15]={"Exit","Stopwatch","Gyrocube","Diagnostic","Bluetooth","Settings"};
 //const char* title PROGMEM= "< MAIN MENU >";
