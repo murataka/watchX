@@ -381,10 +381,33 @@ setDateTime();
 
 devices=EEPROM.read(0);
 //devices=1;
-if(BLOOTOOTH_STATE==1)
-ble_connect();
+ ble_connect();
+if(BLOOTOOTH_STATE==1){
+    /* Disable command echo from Bluefruit */
+
+/*
+   ble.echo(false);
+   ble.verbose(false);  // debug info is a little annoying after this point!
+
+     ble.setMode(BLUEFRUIT_MODE_DATA);
+    ble.sendCommandCheckOK(F( "AT+GAPDEVNAME=watchXdev" ));
+    */
+}
+
 else{
+  //  delay(100);
+/*
+  ble.sendCommandCheckOK(F( "AT+HWMODELED=DISABLE" ));
+//  delay(100);
+  ble.sendCommandCheckOK(F( "AT+UARTFLOW=OFF" ));
+//  delay(100);
+  ble.sendCommandCheckOK(F( "AT+BLEPOWERLEVEL=-12" ));
+  //delay(100);
+  ble.sendCommandCheckOK(F( "AT+BLEMIDIEN=OFF" ));
+  //delay(100);
+  ble.sendCommandCheckOK(F( "AT+GAPSTOPADV" ));
   ble.end();
+  */
 }
 
 //ble_connect();
