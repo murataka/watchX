@@ -105,7 +105,7 @@ unsigned char Old_DEVICESTATE=DEVICESTATE;
 
 
 void updateThings( ){
-//  handleBle();
+
 //get3231Date();
 //  dt =Rtc.GetDateTime();// RtcDateTime(__DATE__, __TIME__);
 
@@ -114,7 +114,7 @@ void updateThings( ){
 
   if(millis()-batteryread>50){
     updateMpu6050();
-    handleBle();
+     handleBle();
     batterylevel=readBattery(BATTERY_EN,BATTERY_PIN);
      //updateMpu6050();
   //  updateMpu6050();
@@ -154,12 +154,12 @@ if(!animating) lastcolon=0;
   animating=!animating;
 curtm[0]+=animating;
 if(animating){
-  if(curtm[0]==59){
+  if(curtm[0]==60){
 
      curtm[0]=0;
 
      curtm[1]++;
-          if(curtm[1]==59){
+          if(curtm[1]==60){
               curtm[1]=0;
               curtm[2]++;
 
@@ -181,6 +181,7 @@ break;
 void   gotoWatchFace(){
 
 stopSqw();
+
 watchMode=0;
           nextUIFunc= drawWatchFace;//printWatchFace;//printWatchFace;// drawWatchFace;// printWatchFace;
           functions[sw1Func]=gotoMenu; /// TODO here i am
@@ -196,7 +197,7 @@ watchMode=0;
 
   void   gotoBlueToothSettings(){
 
-  stopSqw();
+//  stopSqw();
 //  EEPROM.write(0,8);
 //  Serial.println(EEPROM.read(0));
 nextUIFunc=drawSettings;
@@ -329,6 +330,7 @@ sound.tone(1200, 100,1000, 50,1800, 200);
 //setPrescale();
 
 
+Wire.begin();
 
 //timerOneFunc=timerOneTones;
           /* Set timer1 interrupt to 20Hz */
@@ -369,29 +371,35 @@ digitalWrite(MPU_INT,LOW);
 
 
 
-     Wire.begin();
 
  attachInterrupt(digitalPinToInterrupt(PIN_INTERRUPT), nextSecond, CHANGE);
+ curtm[0]=255;
+ curtm[1]=255;
+ curtm[2]=255;
+ curtm[3]=255;
+ curtm[4]=255;
+ curtm[5]=255;
+ curtm[6]=255;
+       setDateTime();
 
-
+// getDateTime();
  startSqw(); /// Starts 1 second SquareWave from DS3231
 
 
-setDateTime();
 
-devices=EEPROM.read(0);
+
+//devices=EEPROM.read(0);
 //devices=1;
  ble_connect();
 if(BLOOTOOTH_STATE==1){
     /* Disable command echo from Bluefruit */
 
-/*
+
    ble.echo(false);
    ble.verbose(false);  // debug info is a little annoying after this point!
 
-     ble.setMode(BLUEFRUIT_MODE_DATA);
-    ble.sendCommandCheckOK(F( "AT+GAPDEVNAME=watchXdev" ));
-    */
+
+ble.setMode(BLUEFRUIT_MODE_DATA);
 }
 
 else{
@@ -413,10 +421,10 @@ else{
 //ble_connect();
 //functions[  bleFunc] =handleBle;
 
-    ssd1306_configure();
+   ssd1306_configure();
 
 
-
+getDateTime();
 //gotoBlueToothSettings();
 
 //gotoSettings();
@@ -472,7 +480,7 @@ handleFunction(functions[a]);
 
 
 
- ssd1306_drawBuffer(0, 0, 128,64, mbuf);
+  ssd1306_drawBuffer(0, 0, 128,64, mbuf);
 }
 
 

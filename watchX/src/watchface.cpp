@@ -61,8 +61,8 @@ if(watchMode==0){
   unsigned char b[16] ="    00     2000";
 for(byte i=0;i<3;i++){
 
-  b[i]=pgm_read_byte(days[day]+i);
-  b[i+7]=pgm_read_byte(months[month]+i);
+  b[i]=pgm_read_byte(days[day%7]+i);
+  b[i+7]=pgm_read_byte(months[month%12]+i);
 
 }
 
@@ -178,9 +178,10 @@ if(watchMode==0)
 
       if(DEVICESTATE&128){
               //   draw_bitmap(40, 0, watchXui,8,8,false,0);
-              if(digitalRead(CHARGE_PIN)==LOW){
+            //  if(digitalRead(CHARGE_PIN)==LOW){
               draw_bitmap( 36, 56, watchXui+64, 8, 8, false, 0);
-              }
+            //  }
+            if(batterylevel<6500)
               draw_bitmap(18, 56, watchXui+80,16,8,false,0);
 
               //

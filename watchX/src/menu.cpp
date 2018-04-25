@@ -33,7 +33,7 @@ switch(menuapp){
 
           break;
           case MENU_GYROCUBE:
-             gotoGyroFace();
+          //   gotoGyroFace();
 
           break;
             case MENU_BLUETOOTH:
@@ -137,7 +137,9 @@ for(   char a=-1;a<4;a++)
 
 if(menuindex+a-1>=0&&menuindex+a-1<MENUCOUNT){
   if(menuindex==MENU_GYROCUBE&&menuspeed==0&&menuapp==0)
- gyroCube(8);
+{
+//  gyroCube(8);
+}
 
 if(menuindex!=MENU_GYROCUBE|| menuindex+a-1!=MENU_GYROCUBE||menuspeed!=0||menuapp==1)
 

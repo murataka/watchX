@@ -3,8 +3,10 @@
 #include "bluetooth.h"
 #include "oled.h"
 #include "watchX.h"
+#include "settings.h"
 const char title[] PROGMEM = "< SETTINGS >";
 const char items[][10] PROGMEM={"Off","On"};
+//struct Settings EEMEM st;
 uint8_t devices;
 
 void drawSettings(){
