@@ -13,9 +13,7 @@ extern volatile unsigned char curtm[];
 //seconds, minutes, hours, day, date, month, year;
 
 
-#define  bcdToDec(val) ((val/16*10) + (val%16) );
 
-#define decToBcd(val) ( (val/10*16) + (val%10) )
 void getDateTime();
 void setDateTime();
 void startSqw();
