@@ -8,7 +8,7 @@
 
 
  uint8_t watchMode=0;
-
+  //float divval  ;
 //uint8_t buf2[16*2];
 
 
@@ -55,7 +55,36 @@ if(watchMode==2)
  if(watchMode==1)
 watchMode=2;
  }
+/*
+/// prints 2 digit numbers animated
+ void printAnimated( unsigned char * font ,unsigned char x,unsigned char y,unsigned val,unsigned char mod){
+unsigned char width=11,height=16;
+if(font==small2Font)
+divval=(lastcolon*22/256);
+else
+divval=(lastcolon*24/256);
+
+
+   if(animating){
+    draw_bitmap( x, y, small2Font+(((val +mod-1 )%10)*22), 11,  16, false,divval); //// top side
+
+     draw_bitmap( x, y, small2Font+(((val  )%10)*22), 11,  16, false,((lastcolon-256)*22/256)); //// bottom side
+
+
+   }else{
+     draw_bitmap( x, y, small2Font+(((val  )%10)*22), 11,  16, false,0); //// bottom side
+   speed=4;
+   }
+
+
+
+
+ }
+*/
+
 void drawWatchFace( ){
+
+//divval=((lastcolon-256)*24/256);
 
 if(watchMode==0){
   unsigned char b[16] ="    00     2000";
@@ -77,65 +106,65 @@ drawString(20,0,b,smallFont);
 }
 
 
-  draw_bitmap( 0, 24, font_mid+((hours/10)*57), 19, 24, false, 0);
-  draw_bitmap( 22, 24, font_mid+((hours%10)*57), 19, 24, false, 0);
+//printAnimated(small2Font,117,32,seconds,60);
+
+draw_bitmap( 117, 32, small2Font+(((seconds +59 )%10)*22), 11,  16, false,(lastcolon*22/256)); //// top side
+
+draw_bitmap( 117, 32, small2Font+(((seconds  )%10)*22), 11,  16, false,((lastcolon-256)*22/256)); //// bottom side
 
 
-
-if(animating){
- draw_bitmap( 117, 32, small2Font+(((seconds  )%10)*22), 11,  16, false,(lastcolon*22/256)); //// top side
-
-  draw_bitmap( 117, 32, small2Font+(((seconds +1 )%10)*22), 11,  16, false,((lastcolon-256)*22/256)); //// bottom side
+if(!animating){
 
 
-}else{
-  draw_bitmap( 117, 32, small2Font+(((seconds +1 )%10)*22), 11,  16, false,0); //// bottom side
-speed=4;
+   speed=4;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
-if(animating&&seconds%10==9||seconds==0 ){
- draw_bitmap( 104, 32, small2Font+(((seconds %60 )/10)*22), 11,  16, false,(lastcolon*22/256)); //// top side
+if(animating)
+draw_bitmap( 104, 32, small2Font+((((seconds+59) %60 )/10)*22), 11,  16, false,(animating&&seconds%10==0)?(lastcolon*22/256):0); //// top side
 
-  draw_bitmap( 104, 32, small2Font+((((seconds +1 )%60)/10)*22), 11,  16, false,((lastcolon-256)*22/256)); //// bottom side
+ draw_bitmap( 104, 32, small2Font+((((seconds  )%60)/10)*22), 11,  16, false,(animating&&seconds%10==0)?((lastcolon-256)*22/256):0); //// bottom side
 
 
-}else{
-  draw_bitmap( 104, 32, small2Font+((((seconds +1) %60 )/10)*22), 11,  16, false,0); //// bottom side
 
-}
 ////////////////////////////////////////////////////////////////////////////////////////
 
-
+if((animating&&seconds==0))
+draw_bitmap( 78, 24, font_mid+(((minutes+59)%10)*57), 19, 24, false,(animating&&seconds==0)? (lastcolon*24/256):0);
+draw_bitmap( 78, 24, font_mid+(((minutes)%10)*57), 19, 24, false, (animating&&seconds==0)? ((lastcolon-256)*24/256):0);
 
 //////////////////////////////
+/*
 if(animating&&seconds==0){
-//  draw_bitmap( 56, 16, font_mid+(((minutes+1)%10)*57), 19, 24, false, (lastcolon*24/256));
-//  draw_bitmap( 56, 16, font_mid+(((minutes)%10)*57), 19, 24, false, ((lastcolon-256)*24/256));
 
-  draw_bitmap( 78, 24, font_mid+(((minutes)%10)*57), 19, 24, false, (lastcolon*24/256));
-  draw_bitmap( 78, 24, font_mid+(((minutes+1)%10)*57), 19, 24, false, ((lastcolon-256)*24/256));
+  draw_bitmap( 78, 24, font_mid+(((minutes+59)%10)*57), 19, 24, false, (lastcolon*24/256));
+  draw_bitmap( 78, 24, font_mid+(((minutes)%10)*57), 19, 24, false, ((lastcolon-256)*24/256));
 
 }else{
 
-//  draw_bitmap( 56, 16, font_mid+((minutes/10)*57), 19, 24, false, 0);
-  draw_bitmap( 78, 24, font_mid+(((minutes+1)%10)*57), 19, 24, false, 0);
+  draw_bitmap( 78, 24, font_mid+(((minutes)%10)*57), 19, 24, false, 0);
 
 }
+*/
 
-if(animating&&seconds==0&&minutes%10==9){
-//  draw_bitmap( 56, 16, font_mid+(((minutes+1)%10)*57), 19, 24, false, (lastcolon*24/256));
-//  draw_bitmap( 56, 16, font_mid+(((minutes)%10)*57), 19, 24, false, ((lastcolon-256)*24/256));
+if(animating&&seconds==0&&minutes%10==0)
+  draw_bitmap( 56, 24, font_mid+(((minutes+59)/10)*57), 19, 24, false, (animating&&seconds==0&&minutes%10==0)?(lastcolon*24/256):0);
+  draw_bitmap( 56, 24, font_mid+(((minutes)/10)*57), 19, 24, false, (animating&&seconds==0&&minutes%10==0)?((lastcolon-256)*24/256):0);
 
-  draw_bitmap( 56, 24, font_mid+(((minutes)/10)*57), 19, 24, false, (lastcolon*24/256));
-  draw_bitmap( 56, 24, font_mid+(((minutes+1)/10)*57), 19, 24, false, ((lastcolon-256)*24/256));
 
-}else{
+if(animating&&seconds==0&&minutes==0)
+  draw_bitmap( 22, 24, font_mid+(((hours+59)%10)*57), 19, 24, false, (animating&&seconds==0&&minutes==0)?(lastcolon*24/256):0);
 
-//  draw_bitmap( 56, 16, font_mid+((minutes/10)*57), 19, 24, false, 0);
-  draw_bitmap( 56, 24, font_mid+(((minutes)/10)*57), 19, 24, false, 0);
+  draw_bitmap( 22, 24, font_mid+(((hours+59)%10)*57), 19, 24, false, (animating&&seconds==0&&minutes==0)?((lastcolon-256)*24/256):0);
 
-}
+
+
+if(animating&&seconds==0&&minutes==0&&hours%10==0)
+  draw_bitmap( 0, 24, font_mid+(((hours+59)/10)*57), 19, 24, false, (animating&&seconds==0&&minutes==0&&hours%10==0) ?(lastcolon*24/256):0);
+
+  draw_bitmap( 0, 24, font_mid+(((hours)/10)*57), 19, 24, false, (animating&&seconds==0&&minutes==0&&hours%10==0)?((lastcolon-256)*24/256):0);
+
+
 
 
 
@@ -178,9 +207,9 @@ if(watchMode==0)
 
       if(DEVICESTATE&128){
               //   draw_bitmap(40, 0, watchXui,8,8,false,0);
-            //  if(digitalRead(CHARGE_PIN)==LOW){
+              if(digitalRead(CHARGE_PIN)==LOW){
               draw_bitmap( 36, 56, watchXui+64, 8, 8, false, 0);
-            //  }
+              }
             if(batterylevel<6500)
               draw_bitmap(18, 56, watchXui+80,16,8,false,0);
 
@@ -190,6 +219,6 @@ if(watchMode==0)
 
               /// battery
               //
-              draw_bitmap( 0, 56, watchXui+(unsigned)(((batterylevel-500)/40)*16), 16, 8, false, 0);
+              draw_bitmap( 0, 56, watchXui+(((650-500)*16/50)), 16, 8, false, 0);
       }
 }

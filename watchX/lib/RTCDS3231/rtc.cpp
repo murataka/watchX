@@ -3,6 +3,22 @@
 //unsigned char seconds, minutes, hours, day, date, month, year;
 volatile unsigned char   curtm[7] ;
 
+
+
+
+// Convert normal decimal numbers to binary coded decimal
+uint8_t decToBcd(uint8_t val)
+{
+  return( (val/10*16) + (val%10) );
+}
+// Convert binary coded decimal to normal decimal numbers
+uint8_t bcdToDec(uint8_t val)
+{
+  return( (val/16*10) + (val%16) );
+}
+
+
+
 void stopSqw(){
 
   Wire.beginTransmission(0x68);
@@ -22,27 +38,15 @@ void startSqw(){
   Wire.endTransmission();
 }
 #define DS3231_I2C_ADDRESS 0x68
-/*
-// Convert normal decimal numbers to binary coded decimal
-byte decToBcd(byte val)
-{
-  return( (val/10*16) + (val%10) );
-}
-// Convert binary coded decimal to normal decimal numbers
-byte bcdToDec(byte val)
-{
-  return( (val/16*10) + (val%16) );
-}
-*/
 
 void setDateTime( )
 {
   // sets time and date data to DS3231
-  year=18;
-  date=28;
-  day=2;
-  month=2;
-  seconds=57;
+//  year=18;
+//  date=28;
+//  day=2;
+//  month=2;
+//  seconds=57;
   Wire.beginTransmission(DS3231_I2C_ADDRESS);
   Wire.write(0); // set next input to start at the seconds register
   Wire.write(decToBcd(seconds)); // set seconds

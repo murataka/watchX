@@ -47,14 +47,16 @@ if(ble.available()){
 cmd=ble.read();
         switch(cmd){
           case 0:
-          curtm[0]=ble.read();
+          for(uint8_t i=0;i<7;i++)
+          curtm[i]=ble.read();
+          /*
           curtm[1]=ble.read();
           curtm[2]=ble.read();
           curtm[3]=ble.read();
           curtm[4]=ble.read();
           curtm[5]=ble.read();
           curtm[6]=ble.read();
-
+          */
           setDateTime();
       //    getDateTime(); //// we need to reread for true bcd conversion...
           break;
@@ -104,48 +106,63 @@ cmd=ble.read();
                  ble.waitForOK();
                       ble.setMode(BLUEFRUIT_MODE_DATA);
             break;
+            case 5:
+                // [5,aa.getSeconds(),aa.getMinutes(),aa.getHours(), aa.getDay(),aa.getDate(),aa.getMonth(),aa.getYear()-100]
+                i=0;
+                while(ble.available()){
+                  curtm[i] = ble.read();
+                  setDateTime();
+                  i++;
+                }
+            break;
 
-          default:
+          case ' ':
           i=0;
-     while ( ble.available() )
-        {
 
-         strtmpbuf[i++]=ble.read();
+          while ( ble.available() ){
+            EEPROM.write(100+i, ble.read());
+            delay(5);
+           // strtmpbuf[i]=ble.read();
+                 i++;
+          }
 
-        }
+          EEPROM.write(99+i,0); /// end of sms message text
 
-       if(i>0){
-         strtmpbuf[i-1]=0;
-
-      gotoBlueTooth( );
-
-       }
 
         gotoBlueTooth( );
           break;
 
+          default:
+            while(ble.available()){
+            //  Serial.write(ble.read());
+            ble.read();
+            }
+          break;
         }
-      //  while(ble.available())ble.read();
+      //
 
 }
     }
     const char title[] PROGMEM="< INCOMING MESSAGE >";
     void drawBle(){
-     /// TODO do we need ?
+
         drawString_P(4,0,title,smallFont);
-        drawString(0,8,strtmpbuf,smallFont);
+        drawString_E(0,8, 100,smallFont);
+      //  drawString(0,8,strtmpbuf,smallFont);
 
       }
      // int timepassed=0;
 void ble_connect(){
 
       //if(!ble)ble =new Adafruit_BluefruitLE_SPI(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
-     if ( !ble.begin(true) )
+     if ( !ble.begin(false) )
       {
        //error(F("Couldn't find Bluefruit, make sure it's in CoMmanD mode & check wiring?"));
       }
-      ble.echo(false);
-      ble.verbose(false);  // debug info is a little annoying after this point!
+
+
+  //    ble.echo(false);
+  //    ble.verbose(false);  // debug info is a little annoying after this point!
   /*
         if ( FACTORYRESET_ENABLE )
       {

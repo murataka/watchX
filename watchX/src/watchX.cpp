@@ -70,8 +70,9 @@ int main(void)
 
 
 //BMP280 bmp280;
-int16_t ac[7];
-unsigned char animation_offsetY=0;
+int16_t ac[7]; /// acceleration detect
+
+unsigned char animation_offsetY=0; /// screen transitions position
 
 volatile uint8_t animating=1;
 const uint8_t melody[]={NOTE_B0};
@@ -162,11 +163,24 @@ if(animating){
           if(curtm[1]==60){
               curtm[1]=0;
               curtm[2]++;
+              if(curtm[2]==24){
+                  curtm[2]=0;
+                  curtm[3]++;
+                  curtm[4]++;
+                  if(curtm[4]>=30){
+                    //// need read  time ?
+
+                  }
+
+              }
 
           }
 
   }
 }
+
+
+
 break;
 default :
 
@@ -323,66 +337,69 @@ mpuIsReady=1;
 */
 void setup()
 {
-/// stopSqw();
-menuspeed=0;
+      /// stopSqw();
+      menuspeed=0;
 
-sound.tone(1200, 100,1000, 50,1800, 200);
-//setPrescale();
-
-
-Wire.begin();
-
-//timerOneFunc=timerOneTones;
-          /* Set timer1 interrupt to 20Hz */
-  //  startTimerOne();
-
-//Serial.println("Hello");
-     SPI.begin();
+      sound.tone(1200, 100,1000, 50,1800, 200);
+      //setPrescale();
 
 
+      Wire.begin();
 
-//Serial.begin(115200);
-//while(!Serial);
-pinMode(MPU_INT,INPUT_PULLUP);
-pinMode(CHARGE_PIN,INPUT);
-  pinMode(13,OUTPUT);
-pinMode(rstPin, OUTPUT);
-pinMode(LED1, OUTPUT);
-pinMode(LED2, OUTPUT);
-pinMode(cesPin, OUTPUT);
-pinMode(dcPin, OUTPUT);
+      //timerOneFunc=timerOneTones;
+      /* Set timer1 interrupt to 20Hz */
+      //  startTimerOne();
 
-digitalWrite(rstPin, HIGH);
-digitalWrite(MPU_INT,LOW);
-  digitalWrite(rstPin, HIGH);
-  digitalWrite(dcPin, HIGH);
-  digitalWrite(cesPin, HIGH);
-  pinMode(SW1,INPUT_PULLUP);
-    pinMode(SW2,INPUT_PULLUP);
-    pinMode(SW3,INPUT_PULLUP);
+      //Serial.println("Hello");
+      SPI.begin();
 
 
 
-     pinMode(BATTERY_EN, OUTPUT);
-    digitalWrite(BATTERY_EN,LOW);
+  //    Serial.begin(115200);
+    //  while(!Serial);
+    //  for(int a=0;a<32;a++)
+    //  Serial.write(EEPROM.read(100+a));
+      pinMode(MPU_INT,INPUT_PULLUP);
+      pinMode(CHARGE_PIN,INPUT);
+      pinMode(13,OUTPUT);
+      pinMode(rstPin, OUTPUT);
+      pinMode(LED1, OUTPUT);
+      pinMode(LED2, OUTPUT);
+      pinMode(cesPin, OUTPUT);
+      pinMode(dcPin, OUTPUT);
 
-           pinMode(PIN_INTERRUPT, INPUT_PULLUP);
+      digitalWrite(rstPin, HIGH);
+      digitalWrite(MPU_INT,LOW);
+      digitalWrite(rstPin, HIGH);
+      digitalWrite(dcPin, HIGH);
+      digitalWrite(cesPin, HIGH);
+      pinMode(SW1,INPUT_PULLUP);
+      pinMode(SW2,INPUT_PULLUP);
+      pinMode(SW3,INPUT_PULLUP);
+
+
+
+      pinMode(BATTERY_EN, OUTPUT);
+      digitalWrite(BATTERY_EN,LOW);
+
+      pinMode(PIN_INTERRUPT, INPUT_PULLUP);
 
 
 
 
 
  attachInterrupt(digitalPinToInterrupt(PIN_INTERRUPT), nextSecond, CHANGE);
- curtm[0]=255;
- curtm[1]=255;
- curtm[2]=255;
- curtm[3]=255;
- curtm[4]=255;
- curtm[5]=255;
- curtm[6]=255;
+ /*
+ curtm[0]=50; //seconds
+ curtm[1]=05; //minutes
+ curtm[2]=21; /// hours
+ curtm[3]=0; /// day of week ?
+ curtm[4]=14; /// day
+ curtm[5]=4; /// month
+ curtm[6]=18; ///  year - 2000
        setDateTime();
-
-// getDateTime();
+*/
+ getDateTime();
  startSqw(); /// Starts 1 second SquareWave from DS3231
 
 

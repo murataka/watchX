@@ -1,17 +1,17 @@
 #include <Arduino.h>
 
 #include <SPI.h>
+#include <EEPROM.h>
+#include "oled.h"
 
-  #include "oled.h"
-
-uint8_t uiX,uiY;
- unsigned char mbuf[1024];
-/*
+  uint8_t uiX,uiY;
+  unsigned char mbuf[1024];
+  /*
   Over a long run session, memory becomes fragmented and eventually an allocation fails
   due to lack of a sufficiently large free area,
   even though the total free memory is more than adequate for the request.
-*/
-/// TODO global left right position setting
+  */
+  /// TODO global left right position setting
 void ssd1306_configure(){
 
 
@@ -46,6 +46,7 @@ void ssd1306_configure(){
     }
 
 }
+
  void ssd1306_drawBuffer(byte x, byte y, byte w, byte h, const byte *buf)
 {
 
@@ -98,21 +99,12 @@ void ssd1306_sendData(uint8_t data)
 }
 
 void clearAll(){
-//if(animation_offsetY==0)
-  memset(mbuf, 0x00, 1024);
-//for(uint16_t i=0;i<1024;i++) mbuf[i]=0;
+
+for(uint16_t i=0;i<1024;i++) mbuf[i]=0;
 }
 
 
-/*
 
-for (k = 0; k < strlen_P(signMessage); k++)
-  {
-    myChar =  pgm_read_byte_near(signMessage + k);
-    Serial.print(myChar);
-  }
-
-*/
 void drawString_P(uint8_t x,uint8_t y,const byte*s,const byte* font,char startindex){
    char c;
 if(!s)return;
@@ -128,12 +120,30 @@ for(int a=0;a<strlen_P(s);a++){
 }
 
 }
+
+void drawString_E(uint8_t x,uint8_t y,uint16_t idx,const byte* font,char startindex){
+   char c; uint8_t a=0;
+do{
+
+   c=EEPROM.read(idx);
+  // delay(5);
+     if(c==0) return;
+   draw_bitmap( x+(a*6),  y, font+((startindex+c)*5), 5, 8, false, 0);
+   idx++;
+   a++;
+
+   if(a*6+x>=128){
+     a=0;
+     y+=8;
+   }
+}while(c!=0);
+
+
+}
 void drawString(uint8_t x,uint8_t y,const char*s,const byte* font,char startindex){
 char a=0;
 if(!s)return;
   while(s[a]!=0){
-  //  strtmpbuf[a]= pgm_read_byte_near(months[month]+a);
-//  draw_bitmap( 0, 32, font_mid, 19, 24, false, 0);
 
      draw_bitmap( x+(a*6),  y, font+((s[a]+startindex)*5), 5, 8, false, 0);
      a++;
@@ -149,8 +159,7 @@ void drawLine( uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2)
   int8_t ystep;
 
   uint8_t swapxy = 0;
-//y1+=animation_offsetY;
-//y2+=animation_offsetY;
+
   /* no intersection check at the moment, should be added... */
 
   if ( x1 > x2 ) dx = x1-x2; else dx = x2-x1;
